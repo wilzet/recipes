@@ -1,0 +1,29 @@
+:root {
+    --font-mono: 'Roobert','-apple-system,BlinkMacSystemFont',"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+    --foreground-color: #9b9bc5;
+    --background-color: #131016;
+
+    --color-black: #000000;
+    --color-white: #cccccc;
+    --color-gray: #2d2d3d;
+    --color-blue: #3c3c8f;
+    --color-green: #3c8f3c;
+    --color-red: #8f3c3c;
+    --color-pink: #a695b8;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --foreground-color: #131016;
+        --background-color: #9b9bc5;
+    
+        --color-black: #000000;
+        --color-white: #cccccc;
+        --color-gray: #2d2d3d;
+        --color-blue: #3c3c8f;
+        --color-green: #3c8f3c;
+        --color-red: #8f3c3c;
+        --color-pink: #a695b8;
+    }
+}

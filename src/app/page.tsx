@@ -24,11 +24,17 @@ export default function Home() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
+    if (lBoard.error) {
+      setLeaderboard([]);
+      return;
+    }
+
     setLeaderboard(lBoard);
   }
 
   const fetchUser = async (username: string) => {
     await fetchLeaderboard();
+
     const user = leaderboard.find((element) => element.name === username);
     if (user) 
     {
@@ -57,8 +63,10 @@ export default function Home() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    setLeaderboard(lBoard);
-    if (selectedUser) selectedUser.score = lBoard.find((element: UserUI) => element.name === selectedUser.name).score;
+    if (!lBoard.error) {
+      if (selectedUser) selectedUser.score = lBoard.find((element: UserUI) => element.name === selectedUser.name).score;
+      setLeaderboard(lBoard);
+    }
   }
 
   const renderUser = (user: UserUI) => {

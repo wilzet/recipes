@@ -90,33 +90,41 @@ export default function Home() {
     <div className='main'>
       <h1>Our Recipes</h1>
       <h3>{welcomeMessage}</h3>
-        <div>
+      <div className='containerH'>
+        <div className='containerH left'>
           <Button
             value={process.env.NEXT_PUBLIC_USER_1}
             class={''}
             active={true}
             onClick={() => fetchUser(process.env.NEXT_PUBLIC_USER_1 as string)}
           />
+        </div>
+        <div className='center'>
           <Button
             value={process.env.NEXT_PUBLIC_USER_2}
             class={''}
             active={true}
             onClick={() => fetchUser(process.env.NEXT_PUBLIC_USER_2 as string)}
           />
+        </div>
+        <div className='containerH right'>
           <Button
             value={'Guest'}
             class={'buttonGreen'}
             active={true}
             onClick={() => fetchUser("Guest")}
           />
-          <Button
-            value={'Log Out'}
-            class={'buttonRed'}
-            active={selectedUser ? true : false}
-            onClick={logOut}
-          />
         </div>
-      {selectedUser && <div>
+      </div>
+      <div className='containerH'>
+        <Button
+          value={'Log Out'}
+          class={'buttonRed'}
+          active={selectedUser ? true : false}
+          onClick={logOut}
+        />
+      </div>
+      {selectedUser && <div className='containerH'>
         <Button
           value={'+'}
           class={''}
@@ -130,23 +138,21 @@ export default function Home() {
           onClick={() => makePost(-1)}
         />
       </div>}
-      {leaderboard.length > 0 && <div className='containerH'>
-        <div className='containerV'>
-          <h2>Leaderboard</h2>
-          <table style={{fontSize: 'large'}}>
-            <thead>
-              <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
-                <th>Name</th>
-                <th>Contributions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboard.map((user: UserUI) => (
-                renderUser(user)
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {leaderboard.length > 0 && <div className='containerV'>
+        <h2>Leaderboard</h2>
+        <table style={{fontSize: 'large'}}>
+          <thead>
+            <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
+              <th>Name</th>
+              <th>Contributions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((user: UserUI) => (
+              renderUser(user)
+            ))}
+          </tbody>
+        </table>
       </div>}
     </div>
   );

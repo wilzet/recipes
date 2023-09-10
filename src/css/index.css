@@ -37,25 +37,42 @@ th, td {
   margin: auto;
 }
 
-.center {
-  text-align: center;
-}
-
-.container, .containerH, .containerV {
+.containerH, .containerV {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-wrap: wrap;
   justify-content: center;
-  align-self: center;
   align-items: center;
   margin: 0 auto;
+  /* DEBUG &::after {
+    content:"";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 2px dotted #ff0000;
+  } */
 }
 
 .containerH {
-  position: relative;
-  display: flex;
-  width: auto;
+  flex-direction: row;
 }
 
 .containerV {
-  position: relative;
+  flex-direction: column;
+}
+
+.left {
+  justify-content: right;  
+}
+
+.right {
+  justify-content: left;
+}
+
+.center {
   display: inline-block;
-  height: 100%;
 }

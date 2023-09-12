@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readFileSync, writeFileSync } from 'fs';
-import { User } from '@/types/user';
-const dataPath = process.env.DATA_USERS_PATH as string;
+import prisma from '@/lib/prisma'
+import { User } from '@prisma/client'
 
 function compareUsers(userA: User, userB: User) {
     if (userA.score > userB.score) return -1;
@@ -17,12 +17,22 @@ export async function POST(request: Request, { params }: { params: { user: strin
     console.log(`${params.user} wants to change their score by: ${data.score}`);
     
     try {
-        let leaderboard: User[] = await JSON.parse(readFileSync(dataPath, 'utf-8', ));
-        leaderboard.forEach((element) => {
-            element.name === params.user[0] ? element.score + data.score >= 0 ? element.score += data.score : 1 : 1;
+        let leaderboard: User[] = await prisma.user.findMany();
+        const updateUser = await prisma.user.update({
+            where: {
+                name: params.user[0],
+                score: {
+                    gte: -data.score,
+                },
+            },
+            data: {
+                score: {
+                    increment: data.score,
+                },
+            },
         });
+        leaderboard = await prisma.user.findMany();
         leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
-        writeFileSync(dataPath, JSON.stringify(leaderboard));
 
         return NextResponse.json(leaderboard.map(({id, ...keepAttrs}) => keepAttrs));
     } catch (err) {
@@ -37,10 +47,10 @@ export async function GET(request: Request, { params }: { params: { user: string
 
     console.log('Leaderboard request');
     try {
-        const users: User[] = await JSON.parse(readFileSync(dataPath, 'utf-8'));
-        var leaderboard = users.map(({id: _, ...keepAttrs}) => keepAttrs);
+        let leaderboard: User[] = await prisma.user.findMany();
+        leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
         
-        return NextResponse.json(leaderboard);
+        return NextResponse.json(leaderboard.map(({id, ...keepAttrs}) => keepAttrs));
     } catch (err) {
         console.error(err);
     }

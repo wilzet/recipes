@@ -19,7 +19,10 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
         <link rel="manifest" href="/favicon/manifest.json" />
       </head>
-      <body>{children}</body>
+      <body>
+        <h1>Our Recipes</h1>
+        {children}
+      </body>
     </html>
   )
 }

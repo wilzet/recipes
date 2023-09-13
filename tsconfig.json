@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/data/*": ["./data/*"],
+      "@/lib/*": ["./lib/*"],
       "@/types/*": ["./src/types/*"],
       "@/components/*": ["./src/components/*"],
       "@/css": ["./src/css/*"],

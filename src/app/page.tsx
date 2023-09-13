@@ -1,4 +1,5 @@
 'use client'
+import { redirect } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
@@ -6,40 +7,40 @@ import '@/css/index.css';
 
 const defaultWelcome = 'Please select a user';
 
-export default function Home() {
+export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
   const [welcomeMessage, setWelcomeMessage] = useState(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
 
   useEffect(() => {
-    const setUpLeaderboard = async () => {
+    const asyncCall = async () => {
       await fetchLeaderboard();
-    };
+    }
 
-    setUpLeaderboard();
-  }, [])
+    asyncCall();
+  }, []);
 
   const fetchLeaderboard = async () => {
-    const lBoard = await fetch('api/leaderboard')
+    const response = await fetch('api/leaderboard')
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (lBoard.error) {
+    if (response.error) {
       setLeaderboard([]);
-      return;
+    } else {
+      setLeaderboard(response.leaderboard);
     }
-
-    setLeaderboard(lBoard);
   }
 
   const fetchUser = async (username: string) => {
-    await fetchLeaderboard();
+    const response = await fetch(`api/users/${username}`)
+      .then(res => res.json())
+      .catch(e => console.log(e));
 
-    const user = leaderboard.find((element) => element.name === username);
-    if (user) 
+    if (!response.error) 
     {
-      setWelcomeMessage(`Logged in as ${user.name}!`);
-      setSelectedUser(user);
+      setWelcomeMessage(`Logged in as ${response.user.name}!`);
+      setSelectedUser(response.user);
     }
   }
 
@@ -59,13 +60,13 @@ export default function Home() {
       },
       body: JSON.stringify({ score: amount })
     };
-    const lBoard = await fetch(`api/leaderboard/${selectedUser?.name}`, options)
+    const response = await fetch(`api/leaderboard/${selectedUser?.name}`, options)
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (!lBoard.error) {
-      if (selectedUser) selectedUser.score = lBoard.find((element: UserUI) => element.name === selectedUser.name).score;
-      setLeaderboard(lBoard);
+    if (!response.error) {
+      setSelectedUser(response.user);
+      setLeaderboard(response.leaderboard);
     }
   }
 
@@ -86,67 +87,82 @@ export default function Home() {
     );
   }
 
+  const renderUserButton = (user: UserUI, index: number) => {
+    return (
+      <div key={index} className='grid-item'>
+        <Button
+          value={user.name}
+          class={''}
+          active={true}
+          onClick={() => fetchUser(user.name)}
+        />
+      </div>
+    );
+  }
+
+  const createUser = () => {
+    redirect('/newuser');
+  }
+
   return (
     <div className='main'>
-      <h1>Our Recipes</h1>
       <h3>{welcomeMessage}</h3>
-        <div>
-          <Button
-            value={process.env.NEXT_PUBLIC_USER_1}
-            class={''}
-            active={true}
-            onClick={() => fetchUser(process.env.NEXT_PUBLIC_USER_1 as string)}
-          />
-          <Button
-            value={process.env.NEXT_PUBLIC_USER_2}
-            class={''}
-            active={true}
-            onClick={() => fetchUser(process.env.NEXT_PUBLIC_USER_2 as string)}
-          />
-          <Button
-            value={'Guest'}
-            class={'buttonGreen'}
-            active={true}
-            onClick={() => fetchUser("Guest")}
-          />
-          <Button
-            value={'Log Out'}
-            class={'buttonRed'}
-            active={selectedUser ? true : false}
-            onClick={logOut}
-          />
-        </div>
-      {selectedUser && <div>
+      <div className='containerH'>
         <Button
-          value={'+'}
-          class={''}
+          value={'New user'}
+          class={'buttonGreen'}
+          active={true}
+          onClick={() => createUser()}
+        />
+        <Button
+          value={'Log Out'}
+          class={'buttonRed'}
+          active={selectedUser ? true : false}
+          onClick={() => logOut()}
+        />
+      </div>
+      <div className='grid-container'>
+        {!selectedUser && leaderboard.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          } else if (a.name > b.name) {
+            return 1;
+          }
+
+          return 0;
+        }).map((user: UserUI, index: number) => (
+          renderUserButton(user, index)
+        ))}
+      </div>
+      {selectedUser && <div className='containerH'>
+        <Button
+          value={'Make post'}
+          class={'buttonBlue'}
           active={true}
           onClick={() => makePost(1)}
         />
         <Button
-          value={'-'}
-          class={''}
+          value={'Remove post'}
+          class={'buttonRed'}
           active={true}
           onClick={() => makePost(-1)}
         />
       </div>}
-      {leaderboard.length > 0 && <div className='containerH'>
-        <div className='containerV'>
-          <h2>Leaderboard</h2>
-          <table style={{fontSize: 'large'}}>
-            <thead>
-              <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
-                <th>Name</th>
-                <th>Contributions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboard.map((user: UserUI) => (
-                renderUser(user)
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {leaderboard.length > 0 && <div className='containerV'>
+        <h2>Leaderboard</h2>
+        <table style={{fontSize: 'large'}}>
+          <thead>
+            <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
+              <th>Name</th>
+              <th>Contributions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((user: UserUI) => (
+              renderUser(user)
+            ))}
+          </tbody>
+        </table>
       </div>}
     </div>
   );

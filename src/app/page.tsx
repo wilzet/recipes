@@ -20,26 +20,26 @@ export default function Home() {
   }, [])
 
   const fetchLeaderboard = async () => {
-    const lBoard = await fetch('api/leaderboard')
+    const response = await fetch('api/leaderboard')
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (lBoard.error) {
+    if (response.error) {
       setLeaderboard([]);
-      return;
+    } else {
+      setLeaderboard(response.leaderboard);
     }
-
-    setLeaderboard(lBoard);
   }
 
   const fetchUser = async (username: string) => {
-    await fetchLeaderboard();
+    const response = await fetch(`api/users/${username}`)
+      .then(res => res.json())
+      .catch(e => console.log(e));
 
-    const user = leaderboard.find((element) => element.name === username);
-    if (user) 
+    if (!response.error) 
     {
-      setWelcomeMessage(`Logged in as ${user.name}!`);
-      setSelectedUser(user);
+      setWelcomeMessage(`Logged in as ${response.user.name}!`);
+      setSelectedUser(response.user);
     }
   }
 
@@ -59,13 +59,13 @@ export default function Home() {
       },
       body: JSON.stringify({ score: amount })
     };
-    const lBoard = await fetch(`api/leaderboard/${selectedUser?.name}`, options)
+    const response = await fetch(`api/leaderboard/${selectedUser?.name}`, options)
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (!lBoard.error) {
-      if (selectedUser) selectedUser.score = lBoard.find((element: UserUI) => element.name === selectedUser.name).score;
-      setLeaderboard(lBoard);
+    if (!response.error) {
+      setSelectedUser(response.user);
+      setLeaderboard(response.leaderboard);
     }
   }
 

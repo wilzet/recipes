@@ -1,4 +1,5 @@
 'use client'
+import { redirect } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
@@ -6,18 +7,18 @@ import '@/css/index.css';
 
 const defaultWelcome = 'Please select a user';
 
-export default function Home() {
+export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
   const [welcomeMessage, setWelcomeMessage] = useState(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
 
   useEffect(() => {
-    const setUpLeaderboard = async () => {
+    const asyncCall = async () => {
       await fetchLeaderboard();
-    };
+    }
 
-    setUpLeaderboard();
-  }, [])
+    asyncCall();
+  }, []);
 
   const fetchLeaderboard = async () => {
     const response = await fetch('api/leaderboard')
@@ -86,54 +87,63 @@ export default function Home() {
     );
   }
 
+  const renderUserButton = (user: UserUI, index: number) => {
+    return (
+      <div key={index} className='grid-item'>
+        <Button
+          value={user.name}
+          class={''}
+          active={true}
+          onClick={() => fetchUser(user.name)}
+        />
+      </div>
+    );
+  }
+
+  const createUser = () => {
+    redirect('/newuser');
+  }
+
   return (
     <div className='main'>
-      <h1>Our Recipes</h1>
       <h3>{welcomeMessage}</h3>
       <div className='containerH'>
-        <div className='containerH left'>
-          <Button
-            value={process.env.NEXT_PUBLIC_USER_1}
-            class={''}
-            active={true}
-            onClick={() => fetchUser(process.env.NEXT_PUBLIC_USER_1 as string)}
-          />
-        </div>
-        <div className='center'>
-          <Button
-            value={process.env.NEXT_PUBLIC_USER_2}
-            class={''}
-            active={true}
-            onClick={() => fetchUser(process.env.NEXT_PUBLIC_USER_2 as string)}
-          />
-        </div>
-        <div className='containerH right'>
-          <Button
-            value={'Guest'}
-            class={'buttonGreen'}
-            active={true}
-            onClick={() => fetchUser("Guest")}
-          />
-        </div>
-      </div>
-      <div className='containerH'>
+        <Button
+          value={'New user'}
+          class={'buttonGreen'}
+          active={true}
+          onClick={() => createUser()}
+        />
         <Button
           value={'Log Out'}
           class={'buttonRed'}
           active={selectedUser ? true : false}
-          onClick={logOut}
+          onClick={() => logOut()}
         />
+      </div>
+      <div className='grid-container'>
+        {!selectedUser && leaderboard.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          } else if (a.name > b.name) {
+            return 1;
+          }
+
+          return 0;
+        }).map((user: UserUI, index: number) => (
+          renderUserButton(user, index)
+        ))}
       </div>
       {selectedUser && <div className='containerH'>
         <Button
-          value={'+'}
-          class={''}
+          value={'Make post'}
+          class={'buttonBlue'}
           active={true}
           onClick={() => makePost(1)}
         />
         <Button
-          value={'-'}
-          class={''}
+          value={'Remove post'}
+          class={'buttonRed'}
           active={true}
           onClick={() => makePost(-1)}
         />

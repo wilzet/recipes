@@ -42,6 +42,14 @@ button {
             opacity: 0.3;
         }
     }
+
+    .buttonBlue {
+        border-color: var(--color-blue);
+        color: var(--color-blue);
+        &:hover, &:focus:focus-visible, &:disabled {
+            background-color: var(--color-blue);
+        }
+    }
   
     .buttonGreen {
         border-color: var(--color-green);
@@ -69,6 +77,14 @@ button {
         &:disabled {
             pointer-events: none;
             opacity: 0.3;
+        }
+    }
+
+    .buttonBlue {
+        border-color: var(--color-blue);
+        color: var(--color-blue);
+        &:active, &:disabled {
+            background-color: var(--color-blue);
         }
     }
   

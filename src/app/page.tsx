@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
@@ -8,13 +8,20 @@ const defaultWelcome = 'Please select a user';
 
 export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
-  const [welcomeMessage, setWelcomeMessage] = useState(defaultWelcome);
+  const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
-  const { push } = useRouter();
+  const searchParams = useSearchParams();
+  const searchUser = searchParams.get('user');
+  const { push, replace } = useRouter();
 
   useEffect(() => {
     const asyncCall = async () => {
       await fetchLeaderboard();
+
+      if (searchUser) {
+        await fetchUser(searchUser);
+        replace('/');
+      }
     }
 
     asyncCall();

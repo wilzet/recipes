@@ -15,7 +15,7 @@
     --color-red: #8f3c3c;
     --color-pink: #a695b8;
 
-    --border-radius: 12px;
+    --border-radius: 10px;
 }
 
 @media (prefers-color-scheme: light) {

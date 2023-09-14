@@ -8,10 +8,12 @@ export default function TextField(props: any) {
                 id={props.id}
                 type='text'
                 autoComplete='off'
-                name={props.default}
+                value={props.value}
                 placeholder={props.placeholder}
                 className={props.class}
+                maxLength={props.length}
                 style={{width: props.width}}
+                onChange={(e) => props.onChange(e.target.value)}
             >
             </input>
         </label>

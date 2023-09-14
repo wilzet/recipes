@@ -2,7 +2,7 @@ button {
     appearance: none;
     background-color: var(--color-white);
     border: 2px solid var(--color-gray);
-    border-radius: 15px;
+    border-radius: var(--border-radius);
     box-sizing: border-box;
     color: var(--color-gray);
     box-shadow: none;

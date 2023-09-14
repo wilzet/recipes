@@ -1,9 +1,8 @@
 'use client'
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
-import '@/css/index.css';
 
 const defaultWelcome = 'Please select a user';
 
@@ -11,6 +10,7 @@ export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
   const [welcomeMessage, setWelcomeMessage] = useState(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
+  const { push } = useRouter();
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -101,7 +101,7 @@ export default function Page() {
   }
 
   const createUser = () => {
-    redirect('/newuser');
+    push('/new');
   }
 
   return (
@@ -121,8 +121,8 @@ export default function Page() {
           onClick={() => logOut()}
         />
       </div>
-      <div className='grid-container'>
-        {!selectedUser && leaderboard.sort((a, b) => {
+      {leaderboard && <div className='grid-container'>
+        {leaderboard.toSorted((a, b) => {
           if (a.name < b.name) {
             return -1;
           } else if (a.name > b.name) {
@@ -133,7 +133,7 @@ export default function Page() {
         }).map((user: UserUI, index: number) => (
           renderUserButton(user, index)
         ))}
-      </div>
+      </div>}
       {selectedUser && <div className='containerH'>
         <Button
           value={'Make post'}

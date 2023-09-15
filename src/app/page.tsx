@@ -1,8 +1,9 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
+import Grid from '@/components/grid';
 
 const defaultWelcome = 'Please select a user';
 
@@ -10,9 +11,20 @@ export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
   const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
-  const searchParams = useSearchParams();
-  const searchUser = searchParams.get('user');
+  const searchUser = useSearchParams().get('user');
   const { push, replace } = useRouter();
+
+  const users = useMemo(() => {
+    return leaderboard.toSorted((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }, [leaderboard]);
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -32,9 +44,7 @@ export default function Page() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (response.error) {
-      setLeaderboard([]);
-    } else {
+    if (response && !response.error) {
       setLeaderboard(response.leaderboard);
     }
   }
@@ -44,7 +54,7 @@ export default function Page() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (!response.error) 
+    if (response && !response.error) 
     {
       setWelcomeMessage(`Logged in as ${response.user.name}!`);
       setSelectedUser(response.user);
@@ -71,7 +81,7 @@ export default function Page() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (!response.error) {
+    if (response && !response.error) {
       setSelectedUser(response.user);
       setLeaderboard(response.leaderboard);
     }
@@ -99,7 +109,7 @@ export default function Page() {
       <div key={index} className='grid-item'>
         <Button
           value={user.name}
-          class={''}
+          class={'buttonFixedSize'}
           active={true}
           onClick={() => fetchUser(user.name)}
         />
@@ -128,18 +138,12 @@ export default function Page() {
           onClick={() => logOut()}
         />
       </div>
-      {leaderboard && <div className='grid-container'>
-        {leaderboard.toSorted((a, b) => {
-          if (a.name < b.name) {
-            return -1;
-          } else if (a.name > b.name) {
-            return 1;
-          }
-
-          return 0;
-        }).map((user: UserUI, index: number) => (
-          renderUserButton(user, index)
-        ))}
+      {users.length > 0 &&<div className='users-container'>
+        <Grid<UserUI>
+          data={users}
+          element={renderUserButton}
+          active={selectedUser ? false : true}
+        />
       </div>}
       {selectedUser && <div className='containerH'>
         <Button

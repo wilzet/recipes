@@ -1,6 +1,17 @@
 import React from 'react';
 
-export default function TextField(props: any) {
+interface TextFieldComponentProps {
+    id: string,
+    label: string,
+    value: string,
+    placeholder: string,
+    class: string,
+    length: number,
+    width: string,
+    onChange: (e: string) => any,
+}
+
+export default function TextField(props: TextFieldComponentProps) {
     return (
         <label>
             {props.label && <h3 style={{marginBottom: '1px', color: 'var(--color-pink)'}}>{props.label}</h3>}

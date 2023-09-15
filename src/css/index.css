@@ -26,7 +26,7 @@ textarea,
 button,
 select,
 a {
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgb(0, 0, 0, 0);
 }
 
 h1 {
@@ -79,19 +79,41 @@ th, td {
   margin: auto;
 }
 
+.users-container {
+  padding: 10px;
+  display: inline-block;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-clip-margin: -100px;
+}
+
 .grid-container {
   display: inline-grid;
-  grid-template-columns: repeat(3, max-content);
-  gap: 5px;
-  grid-auto-rows: minmax(10px, auto);
-  grid-auto-flow: dense;
-  margin: 0 auto;
-  padding: 12px;
+  grid-template-columns: repeat(3, clamp(80px, 25vw, 220px));
+  grid-gap: 5px;
+  grid-auto-flow: row;
+  margin: 10px 10px;
+  padding: 10px;
+  border: 2px solid var(--color-white);
+  border-radius: var(--border-radius);
+  justify-content: center;
+  align-items: center;
 }
 
 .grid-item {
-  margin: 3px;
-  padding: 2px 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  padding: 0px;
+  width: clamp(60px, calc(25vw - 20px), 200px);
+  height: 50px;
+}
+
+.grid-item > button {
+  padding: 8px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .form-container {

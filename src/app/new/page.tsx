@@ -37,7 +37,7 @@ export default function Page() {
                         label={'Username'}
                         value={username}
                         placeholder={'User'}
-                        className={''}
+                        class={''}
                         length={10}
                         width={'200px'}
                         onChange={setUsername}

@@ -1,4 +1,5 @@
 button {
+    visibility: inherit;
     appearance: none;
     background-color: var(--color-white);
     border: 2px solid var(--color-gray);

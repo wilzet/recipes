@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
+import AnimateHeight from '@/components/animate-height';
 
 const defaultWelcome = 'Please select a user';
 
@@ -13,18 +14,6 @@ export default function Page() {
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const searchUser = useSearchParams().get('user');
   const { push, replace } = useRouter();
-
-  const users = useMemo(() => {
-    return leaderboard.toSorted((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      } else if (a.name > b.name) {
-        return 1;
-      }
-
-      return 0;
-    });
-  }, [leaderboard]);
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -38,6 +27,18 @@ export default function Page() {
 
     asyncCall();
   }, []);
+
+  const users = useMemo(() => {
+    return leaderboard.toSorted((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
     const response = await fetch('api/leaderboard')
@@ -138,13 +139,17 @@ export default function Page() {
           onClick={() => logOut()}
         />
       </div>
-      {users.length > 0 &&<div className='users-container'>
+      {users.length > 0 && <AnimateHeight
+        class={'users-container'}
+        duration={500}
+        heightHook={() => useMemo(() => {return selectedUser ? '0px' : 'max(100px, 60vh)'}, [selectedUser])}
+      >
         <Grid<UserUI>
           data={users}
           element={renderUserButton}
           active={selectedUser ? false : true}
         />
-      </div>}
+      </AnimateHeight>}
       {selectedUser && <div className='containerH'>
         <Button
           value={'Make post'}

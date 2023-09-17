@@ -4,6 +4,9 @@
     --foreground-color: #9b9bc5;
     --background-color: #131016;
 
+    --default-foreground-color: #9b9bc5;
+    --default-background-color: #131016;
+
     --color-black: #000000;
     --color-white: #cccccc;
     --color-gray: #2d2d3d;
@@ -11,6 +14,8 @@
     --color-green: #3c8f3c;
     --color-red: #8f3c3c;
     --color-pink: #a695b8;
+
+    --border-radius: 10px;
 }
 
 @media (prefers-color-scheme: light) {

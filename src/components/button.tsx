@@ -1,6 +1,13 @@
 import React from 'react';
 
-export default function Button(props: any) {
+interface ButtonComponentProps {
+    value: string,
+    active: Boolean,
+    class: string,
+    onClick: () => void,
+}
+
+export default function Button(props: ButtonComponentProps) {
     return (
         <button
             disabled={!props.active}

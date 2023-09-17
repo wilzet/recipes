@@ -1,33 +1,51 @@
 'use client'
-import { redirect } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, useMemo } from 'react';
 import { UserUI } from '@/types/user';
 import Button from '@/components/button';
-import '@/css/index.css';
+import Grid from '@/components/grid';
+import AnimateHeight from '@/components/animate-height';
 
 const defaultWelcome = 'Please select a user';
 
 export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
-  const [welcomeMessage, setWelcomeMessage] = useState(defaultWelcome);
+  const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
+  const searchUser = useSearchParams().get('user');
+  const { push, replace } = useRouter();
 
   useEffect(() => {
     const asyncCall = async () => {
       await fetchLeaderboard();
+
+      if (searchUser) {
+        await fetchUser(searchUser);
+        replace('/');
+      }
     }
 
     asyncCall();
   }, []);
+
+  const users = useMemo(() => {
+    return leaderboard.toSorted((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
     const response = await fetch('api/leaderboard')
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (response.error) {
-      setLeaderboard([]);
-    } else {
+    if (response && !response.error) {
       setLeaderboard(response.leaderboard);
     }
   }
@@ -37,7 +55,7 @@ export default function Page() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (!response.error) 
+    if (response && !response.error) 
     {
       setWelcomeMessage(`Logged in as ${response.user.name}!`);
       setSelectedUser(response.user);
@@ -64,7 +82,7 @@ export default function Page() {
       .then(res => res.json())
       .catch(e => console.log(e));
 
-    if (!response.error) {
+    if (response && !response.error) {
       setSelectedUser(response.user);
       setLeaderboard(response.leaderboard);
     }
@@ -92,7 +110,7 @@ export default function Page() {
       <div key={index} className='grid-item'>
         <Button
           value={user.name}
-          class={''}
+          class={'buttonFixedSize'}
           active={true}
           onClick={() => fetchUser(user.name)}
         />
@@ -101,7 +119,7 @@ export default function Page() {
   }
 
   const createUser = () => {
-    redirect('/newuser');
+    push('/new');
   }
 
   return (
@@ -121,19 +139,17 @@ export default function Page() {
           onClick={() => logOut()}
         />
       </div>
-      <div className='grid-container'>
-        {!selectedUser && leaderboard.sort((a, b) => {
-          if (a.name < b.name) {
-            return -1;
-          } else if (a.name > b.name) {
-            return 1;
-          }
-
-          return 0;
-        }).map((user: UserUI, index: number) => (
-          renderUserButton(user, index)
-        ))}
-      </div>
+      {users.length > 0 && <AnimateHeight
+        class={'users-container'}
+        duration={500}
+        heightHook={() => useMemo(() => {return selectedUser ? '0px' : 'max(100px, 60vh)'}, [selectedUser])}
+      >
+        <Grid<UserUI>
+          data={users}
+          element={renderUserButton}
+          active={selectedUser ? false : true}
+        />
+      </AnimateHeight>}
       {selectedUser && <div className='containerH'>
         <Button
           value={'Make post'}

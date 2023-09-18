@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import '@/css/index.css'
 
 export const metadata: Metadata = {
   title: 'Recipes',

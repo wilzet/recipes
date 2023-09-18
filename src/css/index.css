@@ -1,5 +1,4 @@
 @import 'globals.css';
-@import 'input.css';
 @import 'buttons.css';
 
 /* DEBUG &::after {
@@ -26,7 +25,7 @@ textarea,
 button,
 select,
 a {
-    -webkit-tap-highlight-color: rgb(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
 }
 
 h1 {
@@ -41,23 +40,7 @@ h1 {
   font-weight: bold;
   text-align: center;
   padding: 10px 20px;
-  border-radius: var(--border-radius);
-}
-
-h2 {
-  color: var(--foreground-color);
-  font-weight: bold;
-  text-align: center;
-  padding: 8px 16px;
-  margin: 10px 0;
-}
-
-h3 {
-  color: var(--foreground-color);
-  font-weight: bold;
-  text-align: center;
-  padding: 6px 12px;
-  margin: 10px 0;
+  border-radius: 12px;
 }
 
 table {
@@ -79,50 +62,19 @@ th, td {
   margin: auto;
 }
 
-.users-container {
-  margin: 10px;
-  padding: 0px;
-  border: 2px solid var(--color-white);
-  border-radius: var(--border-radius);
-  display: inline-block;
-  overflow-y: auto;
-}
-
 .grid-container {
   display: inline-grid;
-  grid-template-columns: repeat(3, min(300px, 22vw));
-  grid-gap: 5px;
-  grid-auto-flow: row;
-  margin: 5px;
-  padding: 5px;
-  justify-content: center;
-  align-items: center;
+  grid-template-columns: repeat(2, max-content);
+  gap: 5px;
+  grid-auto-rows: minmax(10px, auto);
+  grid-auto-flow: dense;
+  margin: 0 auto;
+  padding: 12px;
 }
 
 .grid-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px;
-  padding: 0px;
-  width: min(300px, 22vw) - 5px;
-  height: 50px;
-}
-
-.grid-item > button {
-  padding: 6px 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.form-container {
-  background-color: var(--color-gray);
-  text-align: center;
-  margin: 5px;
-  padding: 10px;
-  border-radius: var(--border-radius);
-  border: 2px solid var(--color-white);
-  box-shadow: 0px 15px 20px var(--color-black);
+  margin: 3px;
+  padding: 2px 2px;
 }
 
 .containerH, .containerV {

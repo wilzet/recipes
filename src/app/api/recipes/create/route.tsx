@@ -3,13 +3,13 @@ import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 import compareUsers from '@/lib/leaderboard';
 
-export async function POST(request: Request, { params }: { params: { user: string } }) {
+export async function POST(request: Request) {
     const data = await request.json();
-    console.log(`${params.user} wants to change their score by: ${data.score}`);
+    console.log(`${data.name} wants to change their score by: ${data.score}`);
     try {
         const updateUser = await prisma.user.update({
             where: {
-                name: params.user,
+                name: data.name,
                 score: {
                     gte: -data.score,
                 },

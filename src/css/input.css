@@ -28,7 +28,3 @@ input[type="text"] {
         border: 5px solid var(--color-pink);
     }
 }
-
-label {
-    pointer-events: none;
-}

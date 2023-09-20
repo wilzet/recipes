@@ -16,7 +16,6 @@ export default function AnimateHeight(props: AnimateHeightComponentProps) {
 
         if (element) {
             setVisibilityType(element.style.visibility);
-            console.log(visibilityType);
 
             element.addEventListener('transitionend', (e) => {
                 if (e.propertyName === 'max-height') {

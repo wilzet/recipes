@@ -20,7 +20,7 @@ export default function RootLayout({
         <link rel="manifest" href="/favicon/manifest.json" />
       </head>
       <body>
-        <h1>Our Recipes</h1>
+        <h1>Meal-accounting-tool</h1>
         {children}
       </body>
     </html>

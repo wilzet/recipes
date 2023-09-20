@@ -69,16 +69,16 @@ export default function Page() {
   }
 
   const makePost = async (amount: number) => {
-    if (selectedUser && selectedUser.score + amount < 0) return;
+    if (!selectedUser || selectedUser.score + amount < 0) return;
 
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ score: amount })
+      body: JSON.stringify({ name: selectedUser.name, score: amount })
     };
-    const response = await fetch(`api/leaderboard/${selectedUser?.name}`, options)
+    const response = await fetch(`api/recipes/create`, options)
       .then(res => res.json())
       .catch(e => console.log(e));
 

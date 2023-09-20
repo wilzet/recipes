@@ -13,7 +13,7 @@ interface TextFieldComponentProps {
 
 export default function TextField(props: TextFieldComponentProps) {
     return (
-        <label>
+        <div>
             {props.label && <h3 style={{marginBottom: '1px', color: 'var(--color-pink)'}}>{props.label}</h3>}
             <input
                 id={props.id}
@@ -27,6 +27,6 @@ export default function TextField(props: TextFieldComponentProps) {
                 onChange={(e) => props.onChange(e.target.value)}
             >
             </input>
-        </label>
+        </div>
     );
 }

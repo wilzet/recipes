@@ -89,16 +89,9 @@ export default function Page() {
   }
 
   const renderUser = (user: UserUI) => {
-    if (selectedUser && selectedUser.name === user.name) {
-      return (
-        <tr key={user.name} style={{backgroundColor: '#2d2d3d'}}>
-          <td>{user.name}</td>
-          <td>{user.score}</td>
-        </tr>
-      );
-    }
+    const color = selectedUser && selectedUser.name === user.name ? 'var(--color-gray)' : 'inherit';
     return (
-      <tr key={user.name}>
+      <tr key={user.name} style={{backgroundColor: color}}>
         <td>{user.name}</td>
         <td>{user.score}</td>
       </tr>

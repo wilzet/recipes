@@ -31,7 +31,7 @@ export default function Page() {
             {statusMessage && <h2>{statusMessage}</h2>}
             <div className='containerH'>
                 <div className='form-container' style={{width: 'fit-content'}}>
-                    <h2 style={{fontSize: '30px', color: 'var(--default-foreground-color)'}}>Create a new user</h2>
+                    <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>Create a new user</h2>
                     <TextField
                         id={'username'}
                         label={'Username'}
@@ -42,9 +42,7 @@ export default function Page() {
                         width={'200px'}
                         onChange={setUsername}
                     />
-                    <br/>
-                    <br/>
-                    <div className='containerH'>
+                    <div className='containerH' style={{marginTop: '20px'}}>
                         <Button
                             value={'Back'}
                             class={'buttonBlue'}

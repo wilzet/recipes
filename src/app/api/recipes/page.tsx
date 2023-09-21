@@ -9,5 +9,5 @@ export default function Redirect() {
         push('/');
     }, []);
 
-    return <p>Not implemented yet...</p>
+    return <p>Not implemented</p>
 }

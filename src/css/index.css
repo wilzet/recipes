@@ -32,40 +32,15 @@ h1 {
   display: flex;
   justify-content: center;
   font-size: 2.5rem;
-  color: #ffffff;
-  background-color: var(--color-mainblue);
+  color: var(--color-blue);
+  text-shadow: 0px 2px 5px var(--color-black);
+  background-color: var(--color-gray);
   letter-spacing: 3px;
+  text-transform: uppercase;
   font-weight: bold;
   text-align: center;
   padding: 10px 20px;
-  border-radius: var(--border-radius);
-
-  &::selection {
-    color: var(--color-mainblue);
-    background-color: #ffffff;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-}
-
-h2 {
-  color: var(--foreground-color);
-  font-weight: bold;
-  text-align: center;
-  padding: 8px 16px;
-  margin: 10px 0;
-}
-
-h3 {
-  color: var(--foreground-color);
-  font-weight: bold;
-  text-align: center;
-  padding: 6px 12px;
-  margin: 10px 0;
+  border-radius: 12px;
 }
 
 table {
@@ -89,40 +64,17 @@ th, td {
 
 .grid-container {
   display: inline-grid;
-  grid-template-columns: repeat(3, min(300px, 24vw));
-  grid-gap: 5px;
-  grid-auto-flow: row;
-  margin: 5px;
-  padding: 5px;
-  justify-content: center;
-  align-items: center;
+  grid-template-columns: repeat(2, max-content);
+  gap: 5px;
+  grid-auto-rows: minmax(10px, auto);
+  grid-auto-flow: dense;
+  margin: 0 auto;
+  padding: 12px;
 }
 
 .grid-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px;
-  padding: 0px;
-  width: min(300px, 24vw) - 5px;
-  height: 50px;
-}
-
-.grid-item > button {
-  padding: 4px 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.form-container {
-  color: var(--default-background-color);
-  background-color: var(--default-foreground-color);
-  text-align: center;
-  margin: 5px;
-  padding: 10px;
-  border-radius: var(--border-radius);
-  border: 2px solid var(--color-white);
-  box-shadow: 0px 15px 20px var(--color-black);
+  margin: 3px;
+  padding: 2px 2px;
 }
 
 .containerH, .containerV {
@@ -154,14 +106,4 @@ th, td {
 
 .center {
   display: inline-flex;
-}
-
-@media (prefers-color-scheme: light) {
-  .users-container {
-    border-color: var(--color-gray);
-  }
-
-  .form-container {
-    border-color: var(--color-gray);
-  }
 }

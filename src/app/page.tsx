@@ -51,16 +51,16 @@ export default function Page() {
   }
 
   const makePost = async (amount: number) => {
-    if (!selectedUser || selectedUser.score + amount < 0) return;
+    if (selectedUser && selectedUser.score + amount < 0) return;
 
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name: selectedUser.name, score: amount })
+      body: JSON.stringify({ score: amount })
     };
-    const response = await fetch(`api/recipes/create`, options)
+    const response = await fetch(`api/leaderboard/${selectedUser?.name}`, options)
       .then(res => res.json())
       .catch(e => console.log(e));
 
@@ -71,9 +71,16 @@ export default function Page() {
   }
 
   const renderUser = (user: UserUI) => {
-    const color = selectedUser && selectedUser.name === user.name ? 'var(--color-gray)' : 'inherit';
+    if (selectedUser && selectedUser.name === user.name) {
+      return (
+        <tr key={user.name} style={{backgroundColor: '#2d2d3d'}}>
+          <td>{user.name}</td>
+          <td>{user.score}</td>
+        </tr>
+      );
+    }
     return (
-      <tr key={user.name} style={{backgroundColor: color}}>
+      <tr key={user.name}>
         <td>{user.name}</td>
         <td>{user.score}</td>
       </tr>

@@ -47,5 +47,6 @@ model Comment {
 model Link {
   id      Int      @id @default(autoincrement())
   created DateTime @default(now())
+  url     String   @unique
   posts   Post[]
 }

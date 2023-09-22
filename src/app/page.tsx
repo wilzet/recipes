@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserUI } from '@/types/user';
+import { PostReq, PostRes } from '@/types/post-types';
 import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
@@ -72,20 +73,26 @@ export default function Page() {
   const makePost = async (amount: number) => {
     if (!selectedUser || selectedUser.score + amount < 0) return;
 
+    const body: PostReq = {
+      title: 'test',
+      url: 'http://localhost:3000',
+      author: selectedUser.name,
+    }
+
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name: selectedUser.name, score: amount })
+      body: JSON.stringify(body)
     };
-    const response = await fetch(`api/recipes/create`, options)
+    const response: PostRes = await fetch(`api/recipes/create`, options)
       .then(res => res.json())
       .catch(e => console.log(e));
 
     if (response && !response.error) {
       setSelectedUser(response.user);
-      setLeaderboard(response.leaderboard);
+      setLeaderboard(response.leaderboard ?? []);
     }
   }
 

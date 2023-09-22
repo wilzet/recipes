@@ -1,23 +1,48 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { UserUI } from '@/types/user';
+import { PostReq, PostRes } from '@/lib/types/post-types';
 import { compareUsers } from '@/lib/leaderboard';
 
 export async function POST(request: Request) {
-    const data = await request.json();
-    console.log(`${data.name} wants to change their score by: ${data.score}`);
+    const data: PostReq = await request.json();
+    console.log(data);
     try {
+        // const author = await prisma.user.findUnique({
+        //     where: {
+        //         name: data.author,
+        //     }
+        // });
+        // if (!author) return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
+
+        // const createPost: Prisma.PostCreateInput = {
+        //     title: data.title ?? data.url,
+        //     author: {
+        //         connect: {
+        //             id: author.id,
+        //         }
+        //     },
+        //     url: {
+        //         connectOrCreate: {
+        //             where: {
+        //                 url: data.url,
+        //             },
+        //             create: {
+        //                 url: data.url
+        //             }
+        //         }
+        //     }
+        // }
+
         const updateUser: UserUI = await prisma.user.update({
             where: {
-                name: data.name,
-                score: {
-                    gte: -data.score,
-                },
+                name: data.author,
             },
             data: {
-                score: {
-                    increment: data.score,
-                },
+                posts: {
+                    
+                }
             },
             select: {
                 name: true,
@@ -31,7 +56,12 @@ export async function POST(request: Request) {
         });
         leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
 
-        return NextResponse.json({user: updateUser, leaderboard: leaderboard.map(({id, ...keepAttrs}) => keepAttrs)});
+        return NextResponse.json({ user: updateUser, leaderboard: leaderboard.map((user) => {
+            return {
+                name: user.name,
+                score: user.posts.length,
+            } as UserUI;
+        }) } as PostRes);
     } catch (err) {
         console.error(err);
     }

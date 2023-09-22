@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'
-import { User } from '@prisma/client'
-import compareUsers from '@/lib/leaderboard';
+import prisma from '@/lib/prisma';
+import { UserUI } from '@/types/user';
+import { compareUsers } from '@/lib/leaderboard';
 
 export async function POST(request: Request) {
     const data = await request.json();
     console.log(`${data.name} wants to change their score by: ${data.score}`);
     try {
-        const updateUser = await prisma.user.update({
+        const updateUser: UserUI = await prisma.user.update({
             where: {
                 name: data.name,
                 score: {
@@ -24,7 +24,11 @@ export async function POST(request: Request) {
                 score: true,
             },
         });
-        let leaderboard: User[] = await prisma.user.findMany();
+        let leaderboard = await prisma.user.findMany({
+            include: {
+                posts: true,
+            },
+        });
         leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
 
         return NextResponse.json({user: updateUser, leaderboard: leaderboard.map(({id, ...keepAttrs}) => keepAttrs)});

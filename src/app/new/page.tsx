@@ -20,7 +20,7 @@ export default function Page() {
             .catch(e => console.log(e));
     
         if (!response.error) {
-            push(`/?user=${response.user.name}`);
+            push(`/?user=${response.username}`);
         } else {
             setStatusMessage('Error. Perhaps choose another username...')
         }

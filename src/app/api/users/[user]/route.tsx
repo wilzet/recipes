@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
+import { UserUI } from '@/types/user'
 import prisma from '@/lib/prisma';
 
 export async function GET(request: Request, { params }: { params: { user: string } }) {
-    console.log(`${params.user} wants to log in`);
     try {
         const user = await prisma.user.findUniqueOrThrow({
             where: {
@@ -10,30 +10,35 @@ export async function GET(request: Request, { params }: { params: { user: string
             },
             select: {
                 name: true,
-                score: true,
+                posts: true,
             },
         });
         
-        return NextResponse.json({ user: user });
-    } catch (err) {
+        const retUser: UserUI = {
+            name: user.name,
+            score: user.posts.length,
+        };
+
+        return NextResponse.json({ user: retUser });
+    } catch (err: any) {
         console.error(err);
+        if (err.code === 'P2025') {
+            return NextResponse.json({ error: 'No user found' }, { status: 400 });
+        }
     }
 
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
 }
 
 export async function POST(request: Request, { params }: { params: { user: string } }) {
-    console.log(`User: ${params.user}, wants to be created`);
-
     try {
-        if (!params.user.match(/^[0-9A-Za-z]+$/) || params.user.length > 12) return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
+        if (!params.user.match(/^[0-9A-Za-z]+$/) || params.user.length > 10) return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
 
         const user = await prisma.user.upsert({
             where: {
                 name: params.user,
             },
-            update: {
-            },
+            update: {},
             create: {
                 name: params.user,
             },
@@ -42,7 +47,7 @@ export async function POST(request: Request, { params }: { params: { user: strin
             },
         });
 
-        return NextResponse.json({ user: user });
+        return NextResponse.json({ username: user.name });
     } catch (err) {
         console.error(err);
     }

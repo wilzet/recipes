@@ -16,7 +16,7 @@ button {
     min-height: 50px;
     min-width: 0px;
     outline: none;
-    padding: 16px 24px;
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);

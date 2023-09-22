@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserUI } from '@/types/user';
+import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
@@ -29,7 +30,7 @@ export default function Page() {
   }, []);
 
   const users = useMemo(() => {
-    return leaderboard.toSorted((a, b) => {
+    return leaderboard.length > 0 ? leaderboard.toSorted((a, b) => {
       if (a.name < b.name) {
         return -1;
       } else if (a.name > b.name) {
@@ -37,7 +38,7 @@ export default function Page() {
       }
 
       return 0;
-    });
+    }) : [];
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
@@ -88,16 +89,6 @@ export default function Page() {
     }
   }
 
-  const renderUser = (user: UserUI) => {
-    const color = selectedUser && selectedUser.name === user.name ? 'var(--color-gray)' : 'inherit';
-    return (
-      <tr key={user.name} style={{backgroundColor: color}}>
-        <td>{user.name}</td>
-        <td>{user.score}</td>
-      </tr>
-    );
-  }
-
   const renderUserButton = (user: UserUI, index: number) => {
     return (
       <div key={index} className='grid-item'>
@@ -117,21 +108,23 @@ export default function Page() {
 
   return (
     <div className='main'>
-      <h3>{welcomeMessage}</h3>
       <div className='containerH'>
-        <Button
-          value={'New user'}
-          class={'buttonGreen'}
-          active={true}
-          onClick={() => createUser()}
-        />
-        <Button
-          value={'Log Out'}
-          class={'buttonRed'}
-          active={selectedUser ? true : false}
-          onClick={() => logOut()}
-        />
+        <div className='containerH left'>
+          <Button
+            value={'New user'}
+            class={'buttonGreen'}
+            active={selectedUser ? false : true}
+            onClick={() => createUser()}
+          />
+          <Button
+            value={'Log Out'}
+            class={'buttonRed'}
+            active={selectedUser ? true : false}
+            onClick={() => logOut()}
+          />
+        </div>
       </div>
+      <h3 className='containerH'>{welcomeMessage}</h3>
       {users.length > 0 && <AnimateHeight
         class={'users-container'}
         duration={500}
@@ -157,22 +150,10 @@ export default function Page() {
           onClick={() => makePost(-1)}
         />
       </div>}
-      {leaderboard.length > 0 && <div className='containerV'>
-        <h2>Leaderboard</h2>
-        <table style={{fontSize: 'large'}}>
-          <thead>
-            <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
-              <th>Name</th>
-              <th>Contributions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboard.map((user: UserUI) => (
-              renderUser(user)
-            ))}
-          </tbody>
-        </table>
-      </div>}
+      <Leaderboard
+        selectedUserName={selectedUser?.name}
+        leaderboard={leaderboard}
+      />
     </div>
   );
 }

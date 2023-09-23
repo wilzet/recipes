@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/button';
 import TextField from '@/components/text-field';
+import apiRequest from '@/lib/api-request';
+import { UserResponse } from '@/lib/types/user';
 
 export default function Page() {
     const [username, setUsername] = useState<string>('');
@@ -15,12 +17,11 @@ export default function Page() {
         const options = {
             method: 'POST'
         };
-        const response = await fetch(`api/users/${username}`, options)
-            .then(res => res.json())
+        const response = await apiRequest<UserResponse>(`api/users/${username}`, options)
             .catch(e => console.log(e));
     
-        if (!response.error) {
-            push(`/?user=${response.username}`);
+        if (response && !response.error) {
+            push(`/?user=${response.user?.name}`);
         } else {
             setStatusMessage('Error. Perhaps choose another username...')
         }

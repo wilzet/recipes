@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { UserUI } from '@/types/user';
-import { PostReq, PostRes } from '@/lib/types/post-types';
-import { compareUsers } from '@/lib/leaderboard';
+import { PostRequest, PostResponse } from '@/lib/types/post';
+import { compareUsers, toUserUI } from '@/lib/leaderboard';
 
 export async function POST(request: Request) {
-    const data: PostReq = await request.json();
+    const data: PostRequest = await request.json();
     console.log(data);
     try {
         // const author = await prisma.user.findUnique({
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         //         name: data.author,
         //     }
         // });
-        // if (!author) return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
+        // if (!author) return NextResponse.json({ error: 'Bad Request' } as PostResponse, { status: 400 });
 
         // const createPost: Prisma.PostCreateInput = {
         //     title: data.title ?? data.url,
@@ -56,17 +56,12 @@ export async function POST(request: Request) {
         });
         leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
 
-        return NextResponse.json({ user: updateUser, leaderboard: leaderboard.map((user) => {
-            return {
-                name: user.name,
-                score: user.posts.length,
-            } as UserUI;
-        }) } as PostRes);
+        return NextResponse.json({ user: updateUser, leaderboard: leaderboard.map(u => toUserUI(u)) } as PostResponse);
     } catch (err) {
         console.error(err);
     }
 
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' } as PostResponse, { status: 500 });
 }
 
 /*curl -v -X POST http://localhost:3000/api/leaderboard/Erika -H "Content-Type: application/json" -d "{\"score\":1000000}"*/

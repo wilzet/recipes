@@ -1,12 +1,12 @@
 import { UserUI } from '@/types/user';
 
-export type PostReq = {
+export type PostRequest = {
     title?: string,
     url: string,
     author: string,
 }
 
-export type PostRes = {
+export type PostResponse = {
     user?: UserUI,
     leaderboard?: UserUI[],
     error?: string,

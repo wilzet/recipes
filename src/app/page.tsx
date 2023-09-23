@@ -1,12 +1,14 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
-import { UserUI } from '@/types/user';
-import { PostReq, PostRes } from '@/types/post-types';
+import { UserResponse, UserUI } from '@/types/user';
+import { PostRequest, PostResponse } from '@/types/post';
+import apiRequest from '@/lib/api-request';
 import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
+import { LeaderboardResponse } from '@/lib/types/leaderboard';
 
 const defaultWelcome = 'Please select a user';
 
@@ -43,23 +45,21 @@ export default function Page() {
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await fetch('api/leaderboard')
-      .then(res => res.json())
+    const response = await apiRequest<LeaderboardResponse>('api/leaderboard')
       .catch(e => console.log(e));
 
     if (response && !response.error) {
-      setLeaderboard(response.leaderboard);
+      setLeaderboard(response.leaderboard ?? []);
     }
   }
 
   const fetchUser = async (username: string) => {
-    const response = await fetch(`api/users/${username}`)
-      .then(res => res.json())
+    const response = await apiRequest<UserResponse>(`api/users/${username}`)
       .catch(e => console.log(e));
 
     if (response && !response.error) 
     {
-      setWelcomeMessage(`Logged in as ${response.user.name}!`);
+      setWelcomeMessage(`Logged in as ${response.user?.name}!`);
       setSelectedUser(response.user);
     }
   }
@@ -73,7 +73,7 @@ export default function Page() {
   const makePost = async (amount: number) => {
     if (!selectedUser || selectedUser.score + amount < 0) return;
 
-    const body: PostReq = {
+    const body: PostRequest = {
       title: 'test',
       url: 'http://localhost:3000',
       author: selectedUser.name,
@@ -86,8 +86,7 @@ export default function Page() {
       },
       body: JSON.stringify(body)
     };
-    const response: PostRes = await fetch(`api/recipes/create`, options)
-      .then(res => res.json())
+    const response = await apiRequest<PostResponse>('api/recipes/create', options)
       .catch(e => console.log(e));
 
     if (response && !response.error) {

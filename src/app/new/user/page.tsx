@@ -1,10 +1,11 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { UserResponse } from '@/lib/types/user';
+import AppSettings from '@/lib/appsettings';
+import apiRequest from '@/lib/api-request';
 import Button from '@/components/button';
 import TextField from '@/components/text-field';
-import apiRequest from '@/lib/api-request';
-import { UserResponse } from '@/lib/types/user';
 
 export default function Page() {
     const [username, setUsername] = useState<string>('');
@@ -12,12 +13,15 @@ export default function Page() {
     const { push } = useRouter();
 
     const createUser = async () => {
-        if (username === '') return;
+        if (username === '') {
+            setStatusMessage('Type a username...')
+            return;
+        }
 
         const options = {
             method: 'POST'
         };
-        const response = await apiRequest<UserResponse>(`api/users/${username}`, options)
+        const response = await apiRequest<UserResponse>(`/api/users/${username}`, options)
             .catch(e => console.log(e));
     
         if (response && !response.error) {
@@ -39,7 +43,7 @@ export default function Page() {
                         value={username}
                         placeholder={'User'}
                         class={''}
-                        length={10}
+                        length={AppSettings.USERNAME_MAX_LENGTH}
                         width={'200px'}
                         onChange={setUsername}
                     />

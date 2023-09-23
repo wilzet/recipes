@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { UserResponse } from '@/types/user'
 import { toUserUI } from '@/lib/leaderboard';
 import prisma from '@/lib/prisma';
+import AppSettings from '@/lib/appsettings';
 
 export async function GET(request: Request, { params }: { params: { user: string } }) {
     try {
@@ -27,7 +28,7 @@ export async function GET(request: Request, { params }: { params: { user: string
 
 export async function POST(request: Request, { params }: { params: { user: string } }) {
     try {
-        if (!params.user.match(/^[0-9A-Za-z]+$/) || params.user.length > 10) return NextResponse.json({ error: 'Invalid name' } as UserResponse, { status: 400 });
+        if (!params.user.match(/^[0-9A-Za-z]+$/) || params.user.length > AppSettings.USERNAME_MAX_LENGTH) return NextResponse.json({ error: 'Invalid name' } as UserResponse, { status: 400 });
 
         const user = await prisma.user.upsert({
             where: {

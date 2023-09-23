@@ -3,12 +3,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
 import { PostRequest, PostResponse } from '@/types/post';
+import { LeaderboardResponse } from '@/lib/types/leaderboard';
 import apiRequest from '@/lib/api-request';
 import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
-import { LeaderboardResponse } from '@/lib/types/leaderboard';
 
 const defaultWelcome = 'Please select a user';
 
@@ -45,7 +45,7 @@ export default function Page() {
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await apiRequest<LeaderboardResponse>('api/leaderboard')
+    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard')
       .catch(e => console.log(e));
 
     if (response && !response.error) {
@@ -54,7 +54,7 @@ export default function Page() {
   }
 
   const fetchUser = async (username: string) => {
-    const response = await apiRequest<UserResponse>(`api/users/${username}`)
+    const response = await apiRequest<UserResponse>(`/api/users/${username}`)
       .catch(e => console.log(e));
 
     if (response && !response.error) 
@@ -86,7 +86,7 @@ export default function Page() {
       },
       body: JSON.stringify(body)
     };
-    const response = await apiRequest<PostResponse>('api/recipes/create', options)
+    const response = await apiRequest<PostResponse>('/api/recipes/create', options)
       .catch(e => console.log(e));
 
     if (response && !response.error) {
@@ -109,7 +109,7 @@ export default function Page() {
   }
 
   const createUser = () => {
-    push('/new');
+    push('/new/user');
   }
 
   return (

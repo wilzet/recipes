@@ -14,7 +14,6 @@ model User {
   id       Int       @id @default(autoincrement())
   created  DateTime  @default(now())
   name     String    @unique
-  score    Int       @default(0)
   posts    Post[]    
   comments Comment[] 
 }

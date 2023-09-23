@@ -1,67 +1,52 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
-import { UserUI } from '@/types/user';
 import { PostRequest, PostResponse } from '@/lib/types/post';
-import { compareUsers, toUserUI } from '@/lib/leaderboard';
+import { getUserUILeaderboard, toUserUI } from '@/lib/leaderboard';
 
 export async function POST(request: Request) {
     const data: PostRequest = await request.json();
     console.log(data);
     try {
-        // const author = await prisma.user.findUnique({
-        //     where: {
-        //         name: data.author,
-        //     }
-        // });
-        // if (!author) return NextResponse.json({ error: 'Bad Request' } as PostResponse, { status: 400 });
-
-        // const createPost: Prisma.PostCreateInput = {
-        //     title: data.title ?? data.url,
-        //     author: {
-        //         connect: {
-        //             id: author.id,
-        //         }
-        //     },
-        //     url: {
-        //         connectOrCreate: {
-        //             where: {
-        //                 url: data.url,
-        //             },
-        //             create: {
-        //                 url: data.url
-        //             }
-        //         }
-        //     }
-        // }
-
-        const updateUser: UserUI = await prisma.user.update({
-            where: {
-                name: data.author,
-            },
+        const post = await prisma.post.create({
             data: {
-                posts: {
-                    
-                }
+                title: data.title ?? data.url,
+                author: {
+                    connect: {
+                        name: data.author,
+                    },
+                },
+                url: {
+                    connectOrCreate: {
+                        where: {
+                            url: data.url,
+                        },
+                        create: {
+                            url: data.url,
+                        },
+                    },
+                },
             },
-            select: {
-                name: true,
-                score: true,
-            },
-        });
-        let leaderboard = await prisma.user.findMany({
             include: {
-                posts: true,
+                author: {
+                    include: {
+                        posts: true,
+                    },
+                },
             },
         });
-        leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
 
-        return NextResponse.json({ user: updateUser, leaderboard: leaderboard.map(u => toUserUI(u)) } as PostResponse);
-    } catch (err) {
+        const user = toUserUI(post.author);
+        const leaderboard = await getUserUILeaderboard();
+
+        return NextResponse.json({ user: user, leaderboard: leaderboard } as PostResponse);
+    } catch (err: any) {
         console.error(err);
+        if (err.code === 'P2025') {
+            return NextResponse.json({ error: 'No user found' } as PostResponse, { status: 400 });
+        }
     }
 
     return NextResponse.json({ error: 'Internal Server Error' } as PostResponse, { status: 500 });
 }
 
-/*curl -v -X POST http://localhost:3000/api/leaderboard/Erika -H "Content-Type: application/json" -d "{\"score\":1000000}"*/
+/*curl -v -X POST http://localhost:3000/api/recipes/create -H "Content-Type: application/json" -d "{\"url\":\"0.0.0.0\",\"author\":\"aaaaa\"}"*/

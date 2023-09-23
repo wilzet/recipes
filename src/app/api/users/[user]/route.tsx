@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { UserUI, UserResponse } from '@/types/user'
+import { UserResponse } from '@/types/user'
+import { toUserUI } from '@/lib/leaderboard';
 import prisma from '@/lib/prisma';
 
 export async function GET(request: Request, { params }: { params: { user: string } }) {
@@ -8,18 +9,12 @@ export async function GET(request: Request, { params }: { params: { user: string
             where: {
                 name: params.user,
             },
-            select: {
-                name: true,
+            include: {
                 posts: true,
             },
         });
-        
-        const retUser: UserUI = {
-            name: user.name,
-            score: user.posts.length,
-        };
 
-        return NextResponse.json({ user: retUser } as UserResponse);
+        return NextResponse.json({ user: toUserUI(user) } as UserResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {
@@ -42,18 +37,12 @@ export async function POST(request: Request, { params }: { params: { user: strin
             create: {
                 name: params.user,
             },
-            select: {
-                name: true,
+            include: {
                 posts: true,
-            }
+            },
         });
 
-        const retUser: UserUI = {
-            name: user.name,
-            score: user.posts.length,
-        };
-
-        return NextResponse.json({ user: retUser } as UserResponse);
+        return NextResponse.json({ user: toUserUI(user) } as UserResponse);
     } catch (err) {
         console.error(err);
     }

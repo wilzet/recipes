@@ -70,8 +70,8 @@ export default function Page() {
     await fetchLeaderboard();
   }
 
-  const makePost = async (amount: number) => {
-    if (!selectedUser || selectedUser.score + amount < 0) return;
+  const makePost = async () => {
+    if (!selectedUser) return;
 
     const body: PostRequest = {
       title: 'test',
@@ -147,13 +147,7 @@ export default function Page() {
           value={'Make post'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => makePost(1)}
-        />
-        <Button
-          value={'Remove post'}
-          class={'buttonRed'}
-          active={true}
-          onClick={() => makePost(-1)}
+          onClick={() => makePost()}
         />
       </div>}
       <Leaderboard

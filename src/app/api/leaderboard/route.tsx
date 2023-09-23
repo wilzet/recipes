@@ -1,18 +1,12 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
 import { LeaderboardResponse } from '@/lib/types/leaderboard';
-import { compareUsers, toUserUI } from '@/lib/leaderboard';
+import { getUserUILeaderboard } from '@/lib/leaderboard';
 
 export async function GET() {
     try {
-        let leaderboard = await prisma.user.findMany({
-            include: {
-                posts: true,
-            },
-        });
-        leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
+        const leaderboard = await getUserUILeaderboard();
 
-        return NextResponse.json({ leaderboard: leaderboard.map(u => toUserUI(u)) } as LeaderboardResponse);
+        return NextResponse.json({ leaderboard: leaderboard } as LeaderboardResponse);
     } catch (err) {
         console.error(err);
     }

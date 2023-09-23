@@ -1,5 +1,6 @@
+import prisma from '@/lib/prisma';
 import { UserWithPosts } from '@/types/userPosts';
-import { UserUI } from './types/user';
+import { UserUI } from '@/types/user';
 
 export function compareUsers(userA: UserWithPosts, userB: UserWithPosts) {
 
@@ -14,4 +15,19 @@ export function toUserUI(user: UserWithPosts) {
         name: user.name,
         score: user.posts.length,
     } as UserUI;
+}
+
+export async function getFullLeaderboard() {
+    const leaderboard = await prisma.user.findMany({
+        include: {
+            posts: true,
+        },
+    });
+
+    return leaderboard.sort((a, b) => compareUsers(a, b));
+}
+
+export async function getUserUILeaderboard() {
+    const leaderboard = await getFullLeaderboard();
+    return leaderboard.map(u => toUserUI(u));
 }

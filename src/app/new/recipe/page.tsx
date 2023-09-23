@@ -8,13 +8,14 @@ import AppSettings from '@/lib/appsettings';
 import apiRequest from '@/lib/api-request';
 import Button from '@/components/button';
 import TextField from '@/components/text-field';
+import DateField from '@/components/date-field';
 
 export default function Page() {
     const [selectedUser, setSelectedUser] = useState<UserUI>();
     const [statusMessage, setStatusMessage] = useState<string | null>();
     const [title, setTitle] = useState<string>('');
     const [url, setUrl] = useState<string>('');
-    const [date, setDate] = useState<Date>();
+    const [date, setDate] = useState<Date>(new Date());
     const searchUser = useSearchParams().get('user');
     const { push, replace } = useRouter();
 
@@ -39,7 +40,10 @@ export default function Page() {
     }
 
     const createPost = async () => {
-        if (!selectedUser || url === '' || !date) return;
+        if (!selectedUser || url === '' || !date) {
+            setStatusMessage('Empty fields...');
+            return;
+        }
 
         let body: PostRequest = {
           url: url,
@@ -64,10 +68,18 @@ export default function Page() {
           .catch(e => console.log(e));
 
         if (response && !response.error) {
-            push(`/?user=${response.user?.name}`);
+            push(`/?user=${selectedUser.name}`);
         } else {
             setStatusMessage('Error while posting...')
         }
+    }
+
+    const formatDate = (date: Date) => {
+        const year = date.getFullYear().toString().padStart(4, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+
+        return year+'-'+month+'-'+day;
     }
 
     return (
@@ -83,7 +95,7 @@ export default function Page() {
                         placeholder={'https://...'}
                         class={''}
                         width={'60vw'}
-                        onChange={setUrl}
+                        onChange={(e) => setUrl(e)}
                     />
                     <TextField
                         id={'title'}
@@ -93,9 +105,15 @@ export default function Page() {
                         class={''}
                         length={AppSettings.POSTTITLE_MAX_LENGTH}
                         width={'60vw'}
-                        onChange={setTitle}
+                        onChange={(e) => setTitle(e)}
                     />
-                    <input type='date' onChange={e => setDate(new Date(e.target.value))} style={{marginTop: '20px'}}/>
+                    <DateField
+                        id={'date'}
+                        label={'Date'}
+                        value={formatDate(date)}
+                        class={''}
+                        onChange={(e) => setDate(new Date(e))}
+                    />
                     <div className='containerH' style={{marginTop: '20px'}}>
                         <Button
                             value={'Back'}

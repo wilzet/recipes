@@ -29,7 +29,6 @@
   }
   
   .grid-item > button {
-    font-size: 14px;
     padding: 4px 10px;
     overflow: hidden;
     text-overflow: ellipsis;

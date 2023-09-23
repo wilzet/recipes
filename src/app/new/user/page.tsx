@@ -45,7 +45,7 @@ export default function Page() {
                         class={''}
                         length={AppSettings.USERNAME_MAX_LENGTH}
                         width={'200px'}
-                        onChange={setUsername}
+                        onChange={(e) => setUsername(e)}
                     />
                     <div className='containerH' style={{marginTop: '20px'}}>
                         <Button

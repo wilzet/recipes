@@ -14,7 +14,7 @@
 } */
 
 body {
-  font: 14px var(--font-mono);
+  font: 1rem var(--font-mono);
   font-weight: 400;
   margin: 20px;
   color: var(--foreground-color);

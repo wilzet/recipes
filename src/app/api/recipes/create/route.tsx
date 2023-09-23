@@ -7,13 +7,13 @@ import AppSettings from '@/lib/appsettings';
 export async function POST(request: Request) {
     const data: PostRequest = await request.json();
 
-    if (data.title) {
-        if (data.title.replace(/[^A-Za-z0-9 ]/, '') === '' || data.title.length -1 > AppSettings.POSTTITLE_MAX_LENGTH) {
-            return NextResponse.json({ error: 'Title bad' } as PostResponse, { status: 400 });
-        }
-    }
-
     try {
+        if (data.title) {
+            if (!data.title.match(/^[0-9A-Za-z ]+$/) || data.title.length -1 > AppSettings.POSTTITLE_MAX_LENGTH) {
+                return NextResponse.json({ error: 'Title bad' } as PostResponse, { status: 400 });
+            }
+        }
+
         const post = await prisma.post.create({
             data: {
                 title: data.title ?? data.url,

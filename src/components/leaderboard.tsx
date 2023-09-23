@@ -7,10 +7,10 @@ interface LeaderboardComponentProps {
 }
 
 export default function Leaderboard(props: LeaderboardComponentProps) {
-    const renderUser = (user: UserUI) => {
+    const renderUser = (user: UserUI, index: number) => {
         const color = props.selectedUserName === user.name ? 'var(--color-gray)' : 'inherit';
         return (
-            <tr key={user.name} style={{backgroundColor: color}}>
+            <tr key={index} style={{backgroundColor: color}}>
                 <td>{user.name}</td>
                 <td>{user.score}</td>
             </tr>
@@ -29,7 +29,7 @@ export default function Leaderboard(props: LeaderboardComponentProps) {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.leaderboard.map((user) => renderUser(user))}
+                        {props.leaderboard.map((user, index) => renderUser(user, index))}
                     </tbody>
                 </table>
             </div>}

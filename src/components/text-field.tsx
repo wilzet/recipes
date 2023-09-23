@@ -6,7 +6,7 @@ interface TextFieldComponentProps {
     value: string,
     placeholder: string,
     class: string,
-    length: number,
+    length?: number,
     width: string,
     onChange: (e: string) => any,
 }
@@ -22,7 +22,7 @@ export default function TextField(props: TextFieldComponentProps) {
                 value={props.value}
                 placeholder={props.placeholder}
                 className={props.class}
-                maxLength={props.length}
+                maxLength={props.length ?? -1}
                 style={{width: props.width}}
                 onChange={(e) => props.onChange(e.target.value)}
             >

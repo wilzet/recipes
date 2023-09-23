@@ -4,10 +4,10 @@ export type PostRequest = {
     title?: string,
     url: string,
     author: string,
+    date: Date,
 }
 
 export type PostResponse = {
     user?: UserUI,
-    leaderboard?: UserUI[],
     error?: string,
 }

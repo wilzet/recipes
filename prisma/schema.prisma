@@ -22,6 +22,7 @@ model Post {
   id       Int       @id @default(autoincrement())
   created  DateTime  @default(now())
   updated  DateTime  @default(now())
+  date     DateTime
   title    String?
   url      Link      @relation(fields: [urlId], references: [id])
   urlId    Int

@@ -2,7 +2,6 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
-import { PostRequest, PostResponse } from '@/types/post';
 import { LeaderboardResponse } from '@/lib/types/leaderboard';
 import apiRequest from '@/lib/api-request';
 import Leaderboard from '@/components/leaderboard';
@@ -70,31 +69,6 @@ export default function Page() {
     await fetchLeaderboard();
   }
 
-  const makePost = async () => {
-    if (!selectedUser) return;
-
-    const body: PostRequest = {
-      title: 'test',
-      url: 'http://localhost:3000',
-      author: selectedUser.name,
-    }
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
-    const response = await apiRequest<PostResponse>('/api/recipes/create', options)
-      .catch(e => console.log(e));
-
-    if (response && !response.error) {
-      setSelectedUser(response.user);
-      setLeaderboard(response.leaderboard ?? []);
-    }
-  }
-
   const renderUserButton = (user: UserUI, index: number) => {
     return (
       <div key={index} className='grid-item'>
@@ -110,6 +84,10 @@ export default function Page() {
 
   const createUser = () => {
     push('/new/user');
+  }
+
+  const createPost = () => {
+    push(`/new/recipe/?user=${selectedUser?.name}`)
   }
 
   return (
@@ -144,10 +122,22 @@ export default function Page() {
       </AnimateHeight>}
       {selectedUser && <div className='containerH'>
         <Button
+          value={'Calendar'}
+          class={'buttonBlue'}
+          active={false}
+          onClick={() => {}}
+        />
+        <Button
           value={'Make post'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => makePost()}
+          onClick={() => createPost()}
+        />
+        <Button
+          value={'View profile'}
+          class={'buttonBlue'}
+          active={false}
+          onClick={() => {}}
         />
       </div>}
       <Leaderboard

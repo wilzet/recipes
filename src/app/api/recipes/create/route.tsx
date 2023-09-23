@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
 import { PostRequest, PostResponse } from '@/lib/types/post';
-import { getUserUILeaderboard, toUserUI } from '@/lib/leaderboard';
+import { toUserUI } from '@/lib/leaderboard';
+import prisma from '@/lib/prisma';
+import AppSettings from '@/lib/appsettings';
 
 export async function POST(request: Request) {
     const data: PostRequest = await request.json();
-    console.log(data);
+
+    if (data.title) {
+        if (data.title.replace(/[^A-Za-z0-9 ]/, '') === '' || data.title.length -1 > AppSettings.POSTTITLE_MAX_LENGTH) {
+            return NextResponse.json({ error: 'Title bad' } as PostResponse, { status: 400 });
+        }
+    }
+
     try {
         const post = await prisma.post.create({
             data: {
@@ -25,6 +32,7 @@ export async function POST(request: Request) {
                         },
                     },
                 },
+                date: data.date,
             },
             include: {
                 author: {
@@ -36,13 +44,12 @@ export async function POST(request: Request) {
         });
 
         const user = toUserUI(post.author);
-        const leaderboard = await getUserUILeaderboard();
 
-        return NextResponse.json({ user: user, leaderboard: leaderboard } as PostResponse);
+        return NextResponse.json({ user: user } as PostResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {
-            return NextResponse.json({ error: 'No user found' } as PostResponse, { status: 400 });
+            return NextResponse.json({ error: 'No author found' } as PostResponse, { status: 400 });
         }
     }
 

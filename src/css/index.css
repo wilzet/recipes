@@ -50,6 +50,7 @@ h1 {
 @media only screen and (max-width: 600px) {
   h1 {
     font-size: 1.5rem;
+    padding: 5px 10px;
   }
 }
 
@@ -120,6 +121,7 @@ th, td {
 }
 
 .grid-item > button {
+  font-size: 14px;
   padding: 4px 10px;
   overflow: hidden;
   text-overflow: ellipsis;

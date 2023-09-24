@@ -84,7 +84,6 @@ export default function Page() {
 
     return (
         <div className='main'>
-            {statusMessage && <h2>{statusMessage}</h2>}
             <div className='containerH'>
                 <div className='form-container' style={{width: 'fit-content'}}>
                     <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>Post a new recipe</h2>
@@ -94,7 +93,7 @@ export default function Page() {
                         value={url}
                         placeholder={'https://...'}
                         class={''}
-                        width={'60vw'}
+                        width={'min(1000px, 60vw)'}
                         onChange={(e) => setUrl(e)}
                     />
                     <TextField
@@ -104,7 +103,7 @@ export default function Page() {
                         placeholder={'Optional'}
                         class={''}
                         length={AppSettings.POSTTITLE_MAX_LENGTH}
-                        width={'60vw'}
+                        width={'min(1000px, 60vw)'}
                         onChange={(e) => setTitle(e)}
                     />
                     <DateField
@@ -130,6 +129,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            {statusMessage && <h2>{statusMessage}</h2>}
         </div>
     );
 }

@@ -33,7 +33,6 @@ export default function Page() {
 
     return (
         <div className='main'>
-            {statusMessage && <h2>{statusMessage}</h2>}
             <div className='containerH'>
                 <div className='form-container' style={{width: 'fit-content'}}>
                     <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>Create a new user</h2>
@@ -63,6 +62,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            {statusMessage && <h2>{statusMessage}</h2>}
         </div>
     );
 }

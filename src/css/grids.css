@@ -24,3 +24,27 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.calendar-grid-container {
+    background-color: var(--default-background-color);
+    border-radius: var(--border-radius);
+    display: inline-grid;
+    grid-template-columns: repeat(7, min(200px, 12vw));
+    grid-gap: 0px;
+    grid-auto-flow: row;
+    margin: 5px;
+    padding: 5px;
+}
+
+.calendar-grid-item {
+    background-color: var(--default-foreground-color);
+    color: var(--color-gray);
+    border-radius: var(--border-radius);
+    word-break: break-all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    padding: 0px;
+    width: min(200px, 12vw) - 5px;
+}

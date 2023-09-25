@@ -3,7 +3,6 @@ import React from 'react';
 interface GridComponentProps<Type> {
     class: string,
     data: Type[],
-    active: Boolean,
     element: (v: Type, i: number) => JSX.Element,
 }
 

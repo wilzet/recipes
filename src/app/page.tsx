@@ -116,7 +116,6 @@ export default function Page() {
           class='users-grid-container'
           data={users}
           element={renderUserButton}
-          active={selectedUser ? false : true}
         />
       </AnimateHeight>}
       {selectedUser && <div className='containerH'>

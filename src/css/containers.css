@@ -17,6 +17,11 @@
   border: 2px solid var(--color-white);
   box-shadow: 0px 15px 20px var(--color-black);
 }
+
+.calendar-container {
+  border-radius: var(--border-radius);
+  border: 2px solid var(--color-white);
+}
   
 .containerH, .containerV {
   position: relative;
@@ -55,6 +60,10 @@
   }
 
   .form-container {
+    border-color: var(--color-gray);
+  }
+
+  .calendar-container {
     border-color: var(--color-gray);
   }
 }

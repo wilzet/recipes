@@ -1,13 +1,13 @@
 import { UserUI } from '@/types/user';
 
-export type PostRequest = {
+export type RecipePostRequest = {
     title?: string,
     url: string,
     author: string,
     date: Date,
 }
 
-export type PostResponse = {
+export type RecipePostResponse = {
     user?: UserUI,
     error?: string,
 }

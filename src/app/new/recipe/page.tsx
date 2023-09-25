@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { UserResponse } from '@/lib/types/user';
-import { PostRequest, PostResponse } from '@/types/post';
+import { RecipePostRequest, RecipePostResponse } from '@/lib/types/recipe-post';
 import { UserUI } from '@/lib/types/user';
 import AppSettings from '@/lib/appsettings';
 import apiRequest from '@/lib/api-request';
@@ -50,7 +50,7 @@ export default function Page() {
             return;
         }
 
-        let body: PostRequest = {
+        let body: RecipePostRequest = {
           url: url,
           author: selectedUser.name,
           date: date,
@@ -69,7 +69,7 @@ export default function Page() {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<PostResponse>('/api/recipes/create', options)
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/create', options)
           .catch(e => console.log(e));
 
         if (response && !response.error) {

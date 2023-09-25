@@ -57,7 +57,7 @@ export default function Page() {
                             value={'Submit'}
                             class={'buttonGreen'}
                             active={true}
-                            onClick={() => createUser()}
+                            onClick={createUser}
                         />
                     </div>
                 </div>

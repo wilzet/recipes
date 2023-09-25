@@ -99,7 +99,7 @@ export default function Page() {
                         placeholder={'https://...'}
                         class={''}
                         width={'min(1000px, 60vw)'}
-                        onChange={(e) => setUrl(e)}
+                        onChange={setUrl}
                     />
                     <TextField
                         id={'title'}
@@ -109,7 +109,7 @@ export default function Page() {
                         class={''}
                         length={AppSettings.POSTTITLE_MAX_LENGTH}
                         width={'min(1000px, 60vw)'}
-                        onChange={(e) => setTitle(e)}
+                        onChange={setTitle}
                     />
                     <DateField
                         id={'date'}
@@ -129,7 +129,7 @@ export default function Page() {
                             value={'Submit'}
                             class={'buttonGreen'}
                             active={true}
-                            onClick={() => createPost()}
+                            onClick={createPost}
                         />
                     </div>
                 </div>

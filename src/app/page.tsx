@@ -97,13 +97,13 @@ export default function Page() {
           value={'New user'}
           class={'buttonGreen'}
           active={selectedUser ? false : true}
-          onClick={() => createUser()}
+          onClick={createUser}
         />
         <Button
           value={'Log Out'}
           class={'buttonRed'}
           active={selectedUser ? true : false}
-          onClick={() => logOut()}
+          onClick={logOut}
         />
       </div>
       <h3>{welcomeMessage}</h3>
@@ -130,7 +130,7 @@ export default function Page() {
           value={'Make post'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => createPost()}
+          onClick={createPost}
         />
         <Button
           value={'View profile'}

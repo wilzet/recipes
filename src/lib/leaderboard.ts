@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { UserWithPosts } from '@/types/userPosts';
+import { UserWithPosts } from '@/types/user';
 import { UserUI } from '@/types/user';
 
 export function compareUsers(userA: UserWithPosts, userB: UserWithPosts) {

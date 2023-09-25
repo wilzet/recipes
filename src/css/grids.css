@@ -1,0 +1,26 @@
+.users-grid-container {
+    display: inline-grid;
+    grid-template-columns: repeat(3, min(300px, 24vw));
+    grid-gap: 5px;
+    grid-auto-flow: row;
+    margin: 5px;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.users-grid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    padding: 0px;
+    width: min(300px, 24vw) - 5px;
+    height: 50px;
+}
+
+.users-grid-item > button {
+    padding: 4px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

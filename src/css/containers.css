@@ -5,83 +5,56 @@
     border-radius: var(--border-radius);
     display: inline-block;
     overflow-y: auto;
-  }
+}
   
-  .grid-container {
-    display: inline-grid;
-    grid-template-columns: repeat(3, min(300px, 24vw));
-    grid-gap: 5px;
-    grid-auto-flow: row;
-    margin: 5px;
-    padding: 5px;
-    justify-content: center;
-    align-items: center;
-  }
+.form-container {
+  color: var(--default-background-color);
+  background-color: var(--default-foreground-color);
+  text-align: center;
+  margin: 5px;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--color-white);
+  box-shadow: 0px 15px 20px var(--color-black);
+}
   
-  .grid-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5px;
-    padding: 0px;
-    width: min(300px, 24vw) - 5px;
-    height: 50px;
-  }
+.containerH, .containerV {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
   
-  .grid-item > button {
-    padding: 4px 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.containerH {
+  flex-direction: row;
+}
+
+.containerV {
+  flex-direction: column;
+}
+
+.left {
+  justify-content: right;  
+}
+
+.right {
+  justify-content: left;
+}
+
+.center {
+  display: inline-flex;
+}
+
+@media (prefers-color-scheme: light) {
+  .users-container {
+    border-color: var(--color-gray);
   }
-  
+
   .form-container {
-    color: var(--default-background-color);
-    background-color: var(--default-foreground-color);
-    text-align: center;
-    margin: 5px;
-    padding: 10px;
-    border-radius: var(--border-radius);
-    border: 2px solid var(--color-white);
-    box-shadow: 0px 15px 20px var(--color-black);
+    border-color: var(--color-gray);
   }
-  
-  .containerH, .containerV {
-    position: relative;
-    display: flex;
-    flex-grow: 1;
-    flex-basis: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-  }
-  
-  .containerH {
-    flex-direction: row;
-  }
-  
-  .containerV {
-    flex-direction: column;
-  }
-  
-  .left {
-    justify-content: right;  
-  }
-  
-  .right {
-    justify-content: left;
-  }
-  
-  .center {
-    display: inline-flex;
-  }
-  
-  @media (prefers-color-scheme: light) {
-    .users-container {
-      border-color: var(--color-gray);
-    }
-  
-    .form-container {
-      border-color: var(--color-gray);
-    }
-  }
+}

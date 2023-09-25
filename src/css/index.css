@@ -41,7 +41,7 @@ h1 {
   text-align: center;
   padding: 10px 20px;
   border-radius: var(--border-radius);
-
+  min-width: fit-content;
   &::selection {
     color: var(--color-mainblue);
     background-color: #ffffff;

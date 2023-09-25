@@ -17,6 +17,7 @@ export default function Page() {
     const [url, setUrl] = useState<string>('');
     const [date, setDate] = useState<Date>(new Date());
     const searchUser = useSearchParams().get('user');
+    const searchDate = useSearchParams().get('date');
     const { push, replace } = useRouter();
 
     useEffect(() => {
@@ -26,6 +27,10 @@ export default function Page() {
                 replace('/new/recipe');
             } else if (!selectedUser) {
                 push('/');
+            }
+
+            if (searchDate) {
+                setDate(new Date(searchDate));
             }
         }
 

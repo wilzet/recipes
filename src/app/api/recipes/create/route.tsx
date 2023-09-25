@@ -1,38 +1,59 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'
-import { User } from '@prisma/client'
-import compareUsers from '@/lib/leaderboard';
+import { PostRequest, PostResponse } from '@/lib/types/post';
+import { toUserUI } from '@/lib/leaderboard';
+import prisma from '@/lib/prisma';
+import AppSettings from '@/lib/appsettings';
 
 export async function POST(request: Request) {
-    const data = await request.json();
-    console.log(`${data.name} wants to change their score by: ${data.score}`);
+    const data: PostRequest = await request.json();
+
     try {
-        const updateUser = await prisma.user.update({
-            where: {
-                name: data.name,
-                score: {
-                    gte: -data.score,
-                },
-            },
+        if (data.title) {
+            if (!data.title.match(/^[0-9A-Za-z ]+$/) || data.title.length -1 > AppSettings.POSTTITLE_MAX_LENGTH) {
+                return NextResponse.json({ error: 'Title bad' } as PostResponse, { status: 400 });
+            }
+        }
+
+        const post = await prisma.post.create({
             data: {
-                score: {
-                    increment: data.score,
+                title: data.title ?? data.url,
+                author: {
+                    connect: {
+                        name: data.author,
+                    },
                 },
+                url: {
+                    connectOrCreate: {
+                        where: {
+                            url: data.url,
+                        },
+                        create: {
+                            url: data.url,
+                        },
+                    },
+                },
+                date: data.date,
             },
-            select: {
-                name: true,
-                score: true,
+            include: {
+                author: {
+                    include: {
+                        posts: true,
+                    },
+                },
             },
         });
-        let leaderboard: User[] = await prisma.user.findMany();
-        leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
 
-        return NextResponse.json({user: updateUser, leaderboard: leaderboard.map(({id, ...keepAttrs}) => keepAttrs)});
-    } catch (err) {
+        const user = toUserUI(post.author);
+
+        return NextResponse.json({ user: user } as PostResponse);
+    } catch (err: any) {
         console.error(err);
+        if (err.code === 'P2025') {
+            return NextResponse.json({ error: 'No author found' } as PostResponse, { status: 400 });
+        }
     }
 
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' } as PostResponse, { status: 500 });
 }
 
-/*curl -v -X POST http://localhost:3000/api/leaderboard/Erika -H "Content-Type: application/json" -d "{\"score\":1000000}"*/
+/*curl -v -X POST http://localhost:3000/api/recipes/create -H "Content-Type: application/json" -d "{\"url\":\"0.0.0.0\",\"author\":\"aaaaa\"}"*/

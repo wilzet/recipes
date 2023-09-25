@@ -9,12 +9,12 @@ input[type="text"] {
     box-shadow: none;
     cursor: text;
     display: inline-block;
-    font-size: 20px;
+    font: 1rem var(--font-mono);
     font-weight: 600;
     line-height: normal;
     margin: 5px;
     min-height: 60px;
-    min-width: 0px;
+    min-width: 150px;
     outline: none;
     padding: 5px 5px;
     text-align: center;
@@ -27,4 +27,41 @@ input[type="text"] {
     &:hover:not(:focus) {
         border: 5px solid var(--color-pink);
     }
+}
+
+input[type="date"] {
+    appearance: none;
+    inset: 0;
+    background: var(--color-white) url(/calendar_icon.svg) 95% 50% no-repeat;
+    border: 2px solid var(--color-gray);
+    border-radius: var(--border-radius);
+    pointer-events: all;
+    box-sizing: border-box;
+    color: var(--color-gray);
+    box-shadow: none;
+    font: 1rem var(--font-mono);
+    font-weight: 400;
+    line-height: normal;
+    padding: 5px 5px;
+    margin: 5px;
+    min-height: 50px;
+    min-width: 150px;
+    outline: none;
+    text-align: left;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(.23, 1, 0.32, 1);
+    touch-action: manipulation;
+    &:focus {
+        border-color: var(--color-blue);
+    }
+    &:hover:not(:focus) {
+        border-color: var(--color-pink);
+    }
+    &::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+}
 }

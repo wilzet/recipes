@@ -12,28 +12,41 @@ datasource db {
 
 model User {
   id       Int       @id @default(autoincrement())
+  created  DateTime  @default(now())
   name     String    @unique
-  score    Int       @default(0)
   posts    Post[]    
   comments Comment[] 
 }
 
 model Post {
   id       Int       @id @default(autoincrement())
+  created  DateTime  @default(now())
+  updated  DateTime  @default(now())
+  date     DateTime
   title    String?
-  url      String
-  rating   String
+  url      Link      @relation(fields: [urlId], references: [id])
+  urlId    Int
   author   User      @relation(fields: [authorId], references: [id])
   authorId Int
   comments Comment[] 
 }
 
 model Comment {
-  id       Int     @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
+  created  DateTime @default(now())
+  updated  DateTime @default(now())
   title    String?
-  content  String
-  author   User    @relation(fields: [authorId], references: [id])
+  content  String?
+  rating   String
+  author   User     @relation(fields: [authorId], references: [id])
   authorId Int
-  post     Post    @relation(fields: [postId], references: [id])
+  post     Post     @relation(fields: [postId], references: [id])
   postId   Int
+}
+
+model Link {
+  id      Int      @id @default(autoincrement())
+  created DateTime @default(now())
+  url     String   @unique
+  posts   Post[]
 }

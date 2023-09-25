@@ -1,18 +1,15 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import { User } from '@prisma/client';
-import compareUsers from '@/lib/leaderboard';
+import { LeaderboardResponse } from '@/lib/types/leaderboard';
+import { getUserUILeaderboard } from '@/lib/leaderboard';
 
 export async function GET() {
-    console.log('Leaderboard request');
     try {
-        let leaderboard: User[] = await prisma.user.findMany();
-        leaderboard = leaderboard.sort((a, b) => compareUsers(a, b));
-        
-        return NextResponse.json({ leaderboard: leaderboard.map(({id, ...keepAttrs}) => keepAttrs) });
+        const leaderboard = await getUserUILeaderboard();
+
+        return NextResponse.json({ leaderboard: leaderboard } as LeaderboardResponse);
     } catch (err) {
         console.error(err);
     }
 
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' } as LeaderboardResponse, { status: 500 });
 }

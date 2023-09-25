@@ -1,6 +1,9 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { UserResponse } from '@/lib/types/user';
+import AppSettings from '@/lib/appsettings';
+import apiRequest from '@/lib/api-request';
 import Button from '@/components/button';
 import TextField from '@/components/text-field';
 
@@ -10,17 +13,19 @@ export default function Page() {
     const { push } = useRouter();
 
     const createUser = async () => {
-        if (username === '') return;
+        if (username === '') {
+            setStatusMessage('Type a username...')
+            return;
+        }
 
         const options = {
             method: 'POST'
         };
-        const response = await fetch(`api/users/${username}`, options)
-            .then(res => res.json())
+        const response = await apiRequest<UserResponse>(`/api/users/${username}`, options)
             .catch(e => console.log(e));
     
-        if (!response.error) {
-            push(`/?user=${response.user.name}`);
+        if (response && !response.error) {
+            push(`/?user=${response.user?.name}`);
         } else {
             setStatusMessage('Error. Perhaps choose another username...')
         }
@@ -28,7 +33,6 @@ export default function Page() {
 
     return (
         <div className='main'>
-            {statusMessage && <h2>{statusMessage}</h2>}
             <div className='containerH'>
                 <div className='form-container' style={{width: 'fit-content'}}>
                     <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>Create a new user</h2>
@@ -38,9 +42,9 @@ export default function Page() {
                         value={username}
                         placeholder={'User'}
                         class={''}
-                        length={10}
+                        length={AppSettings.USERNAME_MAX_LENGTH}
                         width={'200px'}
-                        onChange={setUsername}
+                        onChange={(e) => setUsername(e)}
                     />
                     <div className='containerH' style={{marginTop: '20px'}}>
                         <Button
@@ -58,6 +62,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            {statusMessage && <h2>{statusMessage}</h2>}
         </div>
     );
 }

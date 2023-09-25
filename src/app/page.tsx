@@ -1,7 +1,10 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
-import { UserUI } from '@/types/user';
+import { UserResponse, UserUI } from '@/types/user';
+import { LeaderboardResponse } from '@/lib/types/leaderboard';
+import apiRequest from '@/lib/api-request';
+import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
@@ -29,7 +32,7 @@ export default function Page() {
   }, []);
 
   const users = useMemo(() => {
-    return leaderboard.toSorted((a, b) => {
+    return leaderboard.length > 0 ? leaderboard.toSorted((a, b) => {
       if (a.name < b.name) {
         return -1;
       } else if (a.name > b.name) {
@@ -37,27 +40,25 @@ export default function Page() {
       }
 
       return 0;
-    });
+    }) : [];
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await fetch('api/leaderboard')
-      .then(res => res.json())
+    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard')
       .catch(e => console.log(e));
 
     if (response && !response.error) {
-      setLeaderboard(response.leaderboard);
+      setLeaderboard(response.leaderboard ?? []);
     }
   }
 
   const fetchUser = async (username: string) => {
-    const response = await fetch(`api/users/${username}`)
-      .then(res => res.json())
+    const response = await apiRequest<UserResponse>(`/api/users/${username}`)
       .catch(e => console.log(e));
 
     if (response && !response.error) 
     {
-      setWelcomeMessage(`Logged in as ${response.user.name}!`);
+      setWelcomeMessage(`Logged in as ${response.user?.name}!`);
       setSelectedUser(response.user);
     }
   }
@@ -66,36 +67,6 @@ export default function Page() {
     setWelcomeMessage(defaultWelcome);
     setSelectedUser(null);
     await fetchLeaderboard();
-  }
-
-  const makePost = async (amount: number) => {
-    if (!selectedUser || selectedUser.score + amount < 0) return;
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: selectedUser.name, score: amount })
-    };
-    const response = await fetch(`api/recipes/create`, options)
-      .then(res => res.json())
-      .catch(e => console.log(e));
-
-    if (response && !response.error) {
-      setSelectedUser(response.user);
-      setLeaderboard(response.leaderboard);
-    }
-  }
-
-  const renderUser = (user: UserUI) => {
-    const color = selectedUser && selectedUser.name === user.name ? 'var(--color-gray)' : 'inherit';
-    return (
-      <tr key={user.name} style={{backgroundColor: color}}>
-        <td>{user.name}</td>
-        <td>{user.score}</td>
-      </tr>
-    );
   }
 
   const renderUserButton = (user: UserUI, index: number) => {
@@ -112,26 +83,32 @@ export default function Page() {
   }
 
   const createUser = () => {
-    push('/new');
+    push('/new/user');
+  }
+
+  const createPost = () => {
+    push(`/new/recipe/?user=${selectedUser?.name}`)
   }
 
   return (
     <div className='main'>
-      <h3>{welcomeMessage}</h3>
       <div className='containerH'>
-        <Button
-          value={'New user'}
-          class={'buttonGreen'}
-          active={true}
-          onClick={() => createUser()}
-        />
-        <Button
-          value={'Log Out'}
-          class={'buttonRed'}
-          active={selectedUser ? true : false}
-          onClick={() => logOut()}
-        />
+        <div className='containerH left'>
+          <Button
+            value={'New user'}
+            class={'buttonGreen'}
+            active={selectedUser ? false : true}
+            onClick={() => createUser()}
+          />
+          <Button
+            value={'Log Out'}
+            class={'buttonRed'}
+            active={selectedUser ? true : false}
+            onClick={() => logOut()}
+          />
+        </div>
       </div>
+      <h3 className='containerH'>{welcomeMessage}</h3>
       {users.length > 0 && <AnimateHeight
         class={'users-container'}
         duration={500}
@@ -145,34 +122,28 @@ export default function Page() {
       </AnimateHeight>}
       {selectedUser && <div className='containerH'>
         <Button
+          value={'Calendar'}
+          class={'buttonBlue'}
+          active={false}
+          onClick={() => {}}
+        />
+        <Button
           value={'Make post'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => makePost(1)}
+          onClick={() => createPost()}
         />
         <Button
-          value={'Remove post'}
-          class={'buttonRed'}
-          active={true}
-          onClick={() => makePost(-1)}
+          value={'View profile'}
+          class={'buttonBlue'}
+          active={false}
+          onClick={() => {}}
         />
       </div>}
-      {leaderboard.length > 0 && <div className='containerV'>
-        <h2>Leaderboard</h2>
-        <table style={{fontSize: 'large'}}>
-          <thead>
-            <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
-              <th>Name</th>
-              <th>Contributions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboard.map((user: UserUI) => (
-              renderUser(user)
-            ))}
-          </tbody>
-        </table>
-      </div>}
+      <Leaderboard
+        selectedUserName={selectedUser?.name}
+        leaderboard={leaderboard}
+      />
     </div>
   );
 }

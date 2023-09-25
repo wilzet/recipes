@@ -1,51 +1,52 @@
 import { NextResponse } from 'next/server';
+import { UserResponse } from '@/types/user'
+import { toUserUI } from '@/lib/leaderboard';
 import prisma from '@/lib/prisma';
+import AppSettings from '@/lib/appsettings';
 
 export async function GET(request: Request, { params }: { params: { user: string } }) {
-    console.log(`${params.user} wants to log in`);
     try {
         const user = await prisma.user.findUniqueOrThrow({
             where: {
                 name: params.user,
             },
-            select: {
-                name: true,
-                score: true,
+            include: {
+                posts: true,
             },
         });
-        
-        return NextResponse.json({ user: user });
-    } catch (err) {
+
+        return NextResponse.json({ user: toUserUI(user) } as UserResponse);
+    } catch (err: any) {
         console.error(err);
+        if (err.code === 'P2025') {
+            return NextResponse.json({ error: 'No user found' } as UserResponse, { status: 400 });
+        }
     }
 
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' } as UserResponse, { status: 500 });
 }
 
 export async function POST(request: Request, { params }: { params: { user: string } }) {
-    console.log(`User: ${params.user}, wants to be created`);
-
     try {
-        if (!params.user.match(/^[0-9A-Za-z]+$/) || params.user.length > 12) return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
+        if (!params.user.match(/^[0-9A-Za-z]+$/) || params.user.length > AppSettings.USERNAME_MAX_LENGTH) return NextResponse.json({ error: 'Invalid name' } as UserResponse, { status: 400 });
 
         const user = await prisma.user.upsert({
             where: {
                 name: params.user,
             },
-            update: {
-            },
+            update: {},
             create: {
                 name: params.user,
             },
-            select: {
-                name: true,
+            include: {
+                posts: true,
             },
         });
 
-        return NextResponse.json({ user: user });
+        return NextResponse.json({ user: toUserUI(user) } as UserResponse);
     } catch (err) {
         console.error(err);
     }
 
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' } as UserResponse, { status: 500 });
 }

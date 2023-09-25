@@ -49,7 +49,8 @@ export default function Page() {
             setStatusMessage('Empty fields...');
             return;
         }
-
+        
+        date.setUTCHours(0, 0, 0, 0);
         let body: RecipePostRequest = {
           url: url,
           author: selectedUser.name,

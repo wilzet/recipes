@@ -40,7 +40,6 @@
     background-color: var(--default-foreground-color);
     color: var(--color-gray);
     border-radius: var(--border-radius);
-    word-break: break-all;
     display: flex;
     justify-content: center;
     align-items: center;

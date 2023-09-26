@@ -7,7 +7,7 @@ import apiRequest from '@/lib/api-request';
 
 
 interface CalendarComponentProps {
-
+    selectedUsername: string,
 }
 
 const monthNames = [
@@ -92,9 +92,6 @@ export default function Calendar(props: CalendarComponentProps) {
         const response = await apiRequest<RecipeAllResponse>('/api/recipes/interval', options)
             .catch(e => console.log(e));
 
-        console.log(startdate, enddate)
-        console.log(response?.posts);
-
         if (response && !response.error) {
             const postsWithDates = response.posts?.map(val => {
                 val.date = new Date(val.date);
@@ -118,8 +115,8 @@ export default function Calendar(props: CalendarComponentProps) {
 
     const renderDayName = (name: string, index: number) => {
         return (
-          <div key={index} className='calendar-grid-item'>
-            <p style={{ fontWeight: 700 }}>
+          <div key={index} className='calendar-grid-item' style={{ backgroundColor: 'var(--color-white)' }}>
+            <p style={{ fontWeight: 700,  margin: '0 auto', padding: '5px', }}>
                 {name}
             </p>
           </div>
@@ -133,14 +130,15 @@ export default function Calendar(props: CalendarComponentProps) {
             return dayIndex === index;
         }) : undefined;
         return (
-            <div key={index} className='calendar-grid-item' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1', gridColumnStart: offset }}>
-                <p style={{ padding: '1px 4px', margin: '0px', textAlign: 'left', verticalAlign: 'top', fontWeight: 400 }}>
+            <div key={index} className='calendar-grid-item containerV' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1', gridColumnStart: offset }}>
+                <div className='calendar-grid-item-daybox-number'>
                     {day}
-                </p>
-                {dayRecipes && <div className='containerV'>
+                </div>
+                {dayRecipes && <div className='containerV' style={{ width: '100%', display: 'inline-block', overflowY: 'auto', marginTop: '2px' }}>
+                    <div className='calendar-grid-item-daybox' style={{ height: '0px' }}/>
                     {dayRecipes.map((val, index) => {
                         return (
-                            <div key={index} style={{ width: '50%', height: '10%', backgroundColor: 'var(--color-pink)', borderRadius: 'var(--border-radius)', padding: '4px 4px 0px 4px', margin: '2px', textAlign: 'left'}}/>
+                            <div key={index} className='calendar-grid-item-daybox' style={{ backgroundColor: val.authorName === props.selectedUsername ? 'var(--color-lightblue)' : 'var(--color-pink)' }}/>
                         );
                     })}
                 </div>}

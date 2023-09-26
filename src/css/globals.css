@@ -19,6 +19,7 @@
     --color-pink: #7e49b6;
 
     --border-radius: 10px;
+    --border-radius-calendar: 3px;
 }
 
 @media (prefers-color-scheme: light) {

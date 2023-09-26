@@ -15,7 +15,7 @@
     align-items: center;
     margin: 5px;
     padding: 0px;
-    width: min(300px, 24vw) - 5px;
+    width: min(295px, calc(24vw - 5px));
     height: 50px;
 }
 
@@ -39,11 +39,31 @@
 .calendar-grid-item {
     background-color: var(--default-foreground-color);
     color: var(--color-gray);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-calendar);
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2px;
     padding: 0px;
-    width: min(200px, 12vw) - 5px;
+    width: min(195px, calc(12vw - 5px));
+}
+
+.calendar-grid-item-daybox {
+    width: 60%;
+    height: 25%;
+    border-radius: var(--border-radius-calendar);
+    padding: 0px;
+    margin: 0px 0px 5% 30%;
+}
+
+.calendar-grid-item-daybox-number {
+    background-color: var(--color-white);
+    border-top-left-radius: var(--border-radius-calendar);
+    border-top-right-radius: var(--border-radius-calendar);
+    padding: 1px 4px;
+    margin: 0px;
+    text-align: 'left';
+    vertical-align: 'top';
+    font-size: '1rem';
+    font-weight: 400;
 }

@@ -4,6 +4,7 @@ import { RecipeAllRequest, RecipeAllResponse } from '@/lib/types/recipe-all';
 import Grid from '@/components/grid';
 import Button from '@/components/button';
 import apiRequest from '@/lib/api-request';
+import AppSettings from '@/lib/appsettings';
 
 
 interface CalendarComponentProps {
@@ -72,6 +73,13 @@ export default function Calendar(props: CalendarComponentProps) {
         asyncCall();
     }, [month]);
 
+    const specialDay = (day: number) => {
+        const specialDates = process.env.NEXT_PUBLIC_SPECIAL_DATES?.split(" ");
+        const date = (month.getMonth() + 1).toString().padStart(2, "0") + day.toString().padStart(2, "0");
+        console.log(specialDates?.includes(date))
+        return specialDates?.includes(date) ?? false;
+    }
+
     const getRecipes = async () => {
         const year = month.getFullYear();
         const startdate = new Date(year, month.getMonth(), 1);
@@ -114,8 +122,10 @@ export default function Calendar(props: CalendarComponentProps) {
     }
 
     const renderDayName = (name: string, index: number) => {
+        const backColor = index > 4 ? 'var(--color-blue)' : 'var(--color-white)';
+        const color = index > 4 ? 'var(--color-white)' : 'var(--color-gray)';
         return (
-          <div key={index} className='calendar-grid-item' style={{ backgroundColor: 'var(--color-white)' }}>
+          <div key={index} className='calendar-grid-item' style={{ color: color, backgroundColor: backColor }}>
             <p style={{ fontWeight: 700,  margin: '0 auto', padding: '5px', }}>
                 {name}
             </p>
@@ -124,6 +134,16 @@ export default function Calendar(props: CalendarComponentProps) {
     }
 
     const renderDay = (day: number, index: number) => {
+        let backColor = 'var(--color-white)';
+        let color = 'var(--color-gray)';
+        if (specialDay(day)) {
+            backColor = 'var(--color-pink)';
+            color = 'var(--color-white)';
+        } else if ((index + firstDayOffset - 1) % 7 > 4) {
+            backColor = 'var(--color-blue)';
+            color = 'var(--color-white)';
+        }
+        
         const offset = index == 0 ? firstDayOffset : undefined;
         const dayRecipes = recipes ? recipes.filter(v => {
             const dayIndex = v.date.getDate() - 1;
@@ -131,7 +151,7 @@ export default function Calendar(props: CalendarComponentProps) {
         }) : undefined;
         return (
             <div key={index} className='calendar-grid-item containerV' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1', gridColumnStart: offset }}>
-                <div className='calendar-grid-item-daybox-number'>
+                <div className='calendar-grid-item-daybox-number' style={{ color: color, backgroundColor: backColor }}>
                     {day}
                 </div>
                 {dayRecipes && <div className='containerV' style={{ width: '100%', display: 'inline-block', overflowY: 'auto', marginTop: '2px' }}>

@@ -29,7 +29,7 @@
     background-color: var(--default-background-color);
     border-radius: var(--border-radius);
     display: inline-grid;
-    grid-template-columns: repeat(7, min(200px, 12vw));
+    grid-template-columns: repeat(7, min(100px, 12vw));
     grid-gap: 0px;
     grid-auto-flow: row;
     margin: 5px;
@@ -45,7 +45,7 @@
     align-items: center;
     margin: 2px;
     padding: 0px;
-    width: min(195px, calc(12vw - 5px));
+    width: min(95px, calc(12vw - 5px));
 }
 
 .calendar-grid-item-daybox {
@@ -57,7 +57,6 @@
 }
 
 .calendar-grid-item-daybox-number {
-    background-color: var(--color-white);
     border-top-left-radius: var(--border-radius-calendar);
     border-top-right-radius: var(--border-radius-calendar);
     padding: 1px 4px;

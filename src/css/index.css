@@ -41,6 +41,8 @@ h1 {
   font-weight: bold;
   text-align: center;
   padding: 10px 20px;
+  margin-top: 0px;
+  margin-bottom: 10px;
   border-radius: var(--border-radius);
   min-width: fit-content;
   &::selection {

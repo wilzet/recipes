@@ -74,10 +74,9 @@ export default function Calendar(props: CalendarComponentProps) {
     }, [month]);
 
     const specialDay = (day: number) => {
-        const specialDates = process.env.NEXT_PUBLIC_SPECIAL_DATES?.split(" ");
+        const specialDates = AppSettings.SPECIAL_DATES;
         const date = (month.getMonth() + 1).toString().padStart(2, "0") + day.toString().padStart(2, "0");
-        console.log(specialDates?.includes(date))
-        return specialDates?.includes(date) ?? false;
+        return specialDates.includes(date);
     }
 
     const getRecipes = async () => {

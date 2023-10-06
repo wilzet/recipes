@@ -43,7 +43,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2px;
+    margin: 0 auto;
     padding: 0px;
     width: min(95px, calc(12vw - 5px));
 }
@@ -61,8 +61,8 @@
     border-top-right-radius: var(--border-radius-calendar);
     padding: 1px 4px;
     margin: 0px;
-    text-align: 'left';
-    vertical-align: 'top';
-    font-size: '1rem';
+    text-align: left;
+    vertical-align: top;
+    font-size: 1rem;
     font-weight: 400;
 }

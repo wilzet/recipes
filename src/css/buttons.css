@@ -26,6 +26,17 @@ button {
     z-index: auto;
 }
 
+.calendar-grid-container > button {
+    background-color: rgb(0, 0, 0, 0);
+    display: inline-flex;
+    min-height: 0px;
+    text-align: left;
+    border-width: 0px;
+    margin: 2px;
+    padding: 0px;
+    border-radius: var(--border-radius-calendar);
+}       
+
 @media (hover: hover) {
     button {
         will-change: transform;
@@ -42,7 +53,16 @@ button {
         }
         &:disabled {
             pointer-events: none;
-            opacity: 0.3;
+            filter: brightness(50%)
+        }
+    }
+
+    .calendar-grid-container > button {
+        &:hover, &:focus:focus-visible {
+            filter: brightness(120%);
+        }
+        &:active {
+            filter: brightness(80%)
         }
     }
 
@@ -80,6 +100,12 @@ button {
         &:disabled {
             pointer-events: none;
             opacity: 0.3;
+        }
+    }
+
+    .calendar-grid-container > button {
+        &:active {
+            filter: brightness(80%)
         }
     }
 

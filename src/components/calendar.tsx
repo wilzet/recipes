@@ -149,19 +149,21 @@ export default function Calendar(props: CalendarComponentProps) {
             return dayIndex === index;
         }) : undefined;
         return (
-            <div key={index} className='calendar-grid-item containerV' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1', gridColumnStart: offset }}>
-                <div className='calendar-grid-item-daybox-number' style={{ color: color, backgroundColor: backColor }}>
-                    {day}
+            <button style={{ aspectRatio: '1', gridColumnStart: offset }}>
+                <div key={index} className='calendar-grid-item containerV' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1' }}>
+                    <div className='calendar-grid-item-daybox-number' style={{ color: color, backgroundColor: backColor }}>
+                        {day}
+                    </div>
+                    {dayRecipes && dayRecipes.length > 0 && <div className='containerV' style={{ width: '100%', display: 'inline-block', overflowY: 'auto', marginTop: '2px' }}>
+                        <div className='calendar-grid-item-daybox' style={{ height: '0px' }}/>
+                        {dayRecipes.map((val, index) => {
+                            return (
+                                <div key={index} className='calendar-grid-item-daybox' style={{ backgroundColor: val.authorName === props.selectedUsername ? 'var(--color-lightblue)' : 'var(--color-pink)' }}/>
+                            );
+                        })}
+                    </div>}
                 </div>
-                {dayRecipes && <div className='containerV' style={{ width: '100%', display: 'inline-block', overflowY: 'auto', marginTop: '2px' }}>
-                    <div className='calendar-grid-item-daybox' style={{ height: '0px' }}/>
-                    {dayRecipes.map((val, index) => {
-                        return (
-                            <div key={index} className='calendar-grid-item-daybox' style={{ backgroundColor: val.authorName === props.selectedUsername ? 'var(--color-lightblue)' : 'var(--color-pink)' }}/>
-                        );
-                    })}
-                </div>}
-            </div>
+            </button>
         );
     }
 

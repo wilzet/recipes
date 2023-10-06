@@ -17,7 +17,7 @@
 body {
   font: 1rem var(--font-mono);
   font-weight: 400;
-  margin: 20px;
+  margin: 10px 20px;
   color: var(--foreground-color);
   background-color: var(--background-color);
   white-space: pre-wrap;

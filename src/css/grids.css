@@ -29,7 +29,7 @@
     background-color: var(--default-background-color);
     border-radius: var(--border-radius);
     display: inline-grid;
-    grid-template-columns: repeat(7, min(100px, 12vw));
+    grid-template-columns: repeat(7, min(120px, 12vw));
     grid-gap: 0px;
     grid-auto-flow: row;
     margin: 5px;
@@ -45,7 +45,7 @@
     align-items: center;
     margin: 0 auto;
     padding: 0px;
-    width: min(95px, calc(12vw - 5px));
+    width: min(115px, calc(12vw - 5px));
 }
 
 .calendar-grid-item-daybox {

@@ -9,6 +9,9 @@
 
     --color-mainblue: #0088ff;
 
+    --color-glass-transparent: #ffffff1c;
+    --glass-blur: 5px;
+
     --color-black: #000000;
     --color-white: #cccccc;
     --color-gray: #2d2d3d;

@@ -8,6 +8,8 @@ import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
+import UserForm from '@/components/user-form';
+import PostForm from '@/components/post-form';
 
 const defaultWelcome = 'Please select a user';
 
@@ -15,6 +17,9 @@ export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>();
   const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
+  const [userForm, setUserForm] = useState<boolean>(false);
+  const [postForm, setPostForm] = useState<boolean>(false);
+
   const searchUser = useSearchParams().get('user');
   const { push, replace } = useRouter();
 
@@ -56,11 +61,15 @@ export default function Page() {
     const response = await apiRequest<UserResponse>(`/api/users/${username}`)
       .catch(e => console.log(e));
 
-    if (response && !response.error) 
+    if (response && response.user && !response.error)
     {
-      setWelcomeMessage(`Logged in as ${response.user?.name}!`);
-      setSelectedUser(response.user);
+      setUser(response.user);
     }
+  }
+
+  const setUser = (user: UserUI) => {
+    setWelcomeMessage(`Logged in as ${user?.name}!`);
+    setSelectedUser(user);
   }
 
   const logOut = async () => {
@@ -82,12 +91,12 @@ export default function Page() {
     );
   }
 
-  const createUser = () => {
-    push('/new/user');
-  }
-
-  const createPost = () => {
-    push(`/new/recipe/?user=${selectedUser?.name}`)
+  const closeUserForm = (user: UserUI | undefined) => {
+    setUserForm(false);
+    if (user)
+    {
+      setUser(user);
+    }
   }
 
   return (
@@ -97,7 +106,7 @@ export default function Page() {
           value={'New user'}
           class={'buttonGreen'}
           active={selectedUser ? false : true}
-          onClick={createUser}
+          onClick={() => setUserForm(true)}
         />
         <Button
           value={'Log Out'}
@@ -129,7 +138,7 @@ export default function Page() {
           value={'Make post'}
           class={'buttonBlue'}
           active={true}
-          onClick={createPost}
+          onClick={() => setPostForm(true)}
         />
         <Button
           value={'View profile'}
@@ -142,6 +151,16 @@ export default function Page() {
         selectedUserName={selectedUser?.name}
         leaderboard={leaderboard}
       />
+
+      <UserForm
+        active={userForm}
+        callback={closeUserForm}
+      />
+      {selectedUser && <PostForm
+        active={postForm}
+        user={selectedUser}
+        callback={() => setPostForm(false)}
+      />}
     </div>
   );
 }

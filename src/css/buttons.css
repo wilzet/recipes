@@ -53,7 +53,7 @@ button {
         }
         &:disabled {
             pointer-events: none;
-            filter: brightness(50%)
+            filter: brightness(50%);
         }
     }
 
@@ -62,7 +62,7 @@ button {
             filter: brightness(120%);
         }
         &:active {
-            filter: brightness(80%)
+            filter: brightness(80%);
         }
     }
 
@@ -99,13 +99,13 @@ button {
         }
         &:disabled {
             pointer-events: none;
-            opacity: 0.3;
+            filter: brightness(50%);
         }
     }
 
     .calendar-grid-container > button {
         &:active {
-            filter: brightness(80%)
+            filter: brightness(80%);
         }
     }
 

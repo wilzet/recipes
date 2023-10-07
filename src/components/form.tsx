@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@/components/button';
 
 interface FormComponentProps {
@@ -11,12 +11,20 @@ interface FormComponentProps {
 }
 
 export default function Form(props: FormComponentProps) {
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "scroll"
+        };
+    }, []);
+
     return props.active ? (
-        <div className='main'>
-            <div className='containerH'>
+        <div className='overlay-form'>
+            <div className='overlay-form-inner'>
                 <div className='form-container' style={{width: 'fit-content'}}>
-                    <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>{props.title}</h2>
-                    {props.statusMessage && <h2>{props.statusMessage}</h2>}
+                    <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>
+                        {props.title}
+                    </h2>
                     {props.children}
                     <div className='containerH' style={{marginTop: '20px'}}>
                         <Button
@@ -33,6 +41,9 @@ export default function Form(props: FormComponentProps) {
                         />
                     </div>
                 </div>
+                {props.statusMessage && <h2 style={{color: 'var(--color-red)', paddingBottom: '0px'}}>
+                    {props.statusMessage}
+                </h2>}
             </div>
         </div>
     ) : "";

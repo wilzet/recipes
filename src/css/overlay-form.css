@@ -1,0 +1,21 @@
+.overlay-form {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-glass-transparent);
+    backdrop-filter: blur(var(--glass-blur)) !important;
+    z-index: 10;
+}
+
+.overlay-form-inner {
+    position: relative;
+    display: flex;
+    top: 50vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

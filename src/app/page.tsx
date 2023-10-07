@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
 import { LeaderboardResponse } from '@/lib/types/leaderboard';
 import apiRequest from '@/lib/api-request';
+import Main from '@/components/main';
 import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
@@ -100,8 +101,13 @@ export default function Page() {
     }
   }
 
+  const closePostForm = async () => {
+    await fetchLeaderboard();
+    setPostForm(false);
+  }
+
   return (
-    <div className='main' id='main'>
+    <Main>
       <div className='containerH left'>
         <Button
           value={'New user'}
@@ -161,9 +167,9 @@ export default function Page() {
       <Modal active={postForm}>
         <PostForm
           user={selectedUser}
-          callback={() => setPostForm(false)}
+          callback={closePostForm}
         />
       </Modal>
-    </div>
+    </Main>
   );
 }

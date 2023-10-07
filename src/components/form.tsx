@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import Button from '@/components/button';
 
 interface FormComponentProps {
@@ -6,10 +6,9 @@ interface FormComponentProps {
     statusMessage: string | null
     submit: () => any,
     callback: () => any,
-    children: string | JSX.Element | JSX.Element[],
 }
 
-export default function Form(props: FormComponentProps) {
+export default function Form(props: PropsWithChildren<FormComponentProps>) {
     return (
         <div className='overlay-form'>
             <div className='overlay-form-inner'>

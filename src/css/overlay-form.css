@@ -4,21 +4,20 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 10;
 }
 
 .ReactModal__Overlay {
-    background-color: var(--color-glass-transparent);
-    backdrop-filter: blur(0px);
+    z-index: 10;
+    backdrop-filter: blur(0px) brightness(100%);
     transition: backdrop-filter var(--modal-timeout-ms)
 }
 
 .ReactModal__Overlay--after-open {
-    backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur)) brightness(50%);
 }
 
 .ReactModal__Overlay--before-close {
-    backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px) brightness(100%);
 }
 
 .overlay-form-inner {

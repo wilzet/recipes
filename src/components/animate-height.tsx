@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, PropsWithChildren } from "react";
 
 interface AnimateHeightComponentProps {
     class: string,
     duration: number,
     hide?: Boolean,
     heightHook: () => string,
-    children: string | JSX.Element | JSX.Element[],
 }
 
-export default function AnimateHeight(props: AnimateHeightComponentProps) {
+export default function AnimateHeight(props: PropsWithChildren<AnimateHeightComponentProps>) {
     const [visibilityType, setVisibilityType] = useState<string>('visible');
 
     useEffect(() => {

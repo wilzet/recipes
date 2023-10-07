@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, PropsWithChildren } from 'react';
 import ReactModal from 'react-modal';
 ReactModal.setAppElement('#main');
 
 interface ModalComponentProps {
     active: boolean,
-    children: string | JSX.Element | JSX.Element[],
 }
 
-export default function Modal(props: ModalComponentProps) {
+export default function Modal(props: PropsWithChildren<ModalComponentProps>) {
     useEffect(() => {
         if (props.active) document.body.style.overflow = "hidden";
         return () => {

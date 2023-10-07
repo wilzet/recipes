@@ -93,10 +93,11 @@ export default function Page() {
     );
   }
 
-  const closeUserForm = (user: UserUI | undefined) => {
+  const closeUserForm = async (user: UserUI | undefined) => {
     setUserForm(false);
     if (user)
     {
+      await fetchLeaderboard();
       setUser(user);
     }
   }

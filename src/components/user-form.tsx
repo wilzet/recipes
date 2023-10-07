@@ -6,7 +6,6 @@ import Form from "@/components/form";
 import TextField from "@/components/text-field";
 
 interface UserFormComponentProps {
-    active: boolean,
     callback: (user: UserUI | undefined) => any,
 }
 
@@ -43,11 +42,10 @@ export default function UserForm(props: UserFormComponentProps) {
         props.callback(user);
     }
 
-    return props.active ? (
+    return (
         <Form
             title={'Create a new user'}
             statusMessage={statusMessage}
-            active={props.active}
             submit={createUser}
             callback={() => close(undefined)}
         >
@@ -62,5 +60,5 @@ export default function UserForm(props: UserFormComponentProps) {
                 onChange={(e) => setUsername(e)}
             />
         </Form>
-    ) : "";
+    );
 }

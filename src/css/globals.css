@@ -12,6 +12,8 @@
     --color-glass-transparent: #ffffff1c;
     --glass-blur: 5px;
 
+    --modal-timeout-ms: 300ms;
+
     --color-black: #000000;
     --color-white: #cccccc;
     --color-gray: #2d2d3d;

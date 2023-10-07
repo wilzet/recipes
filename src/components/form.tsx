@@ -1,24 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from '@/components/button';
 
 interface FormComponentProps {
     title: string,
     statusMessage: string | null
-    active: boolean,
     submit: () => any,
     callback: () => any,
     children: string | JSX.Element | JSX.Element[],
 }
 
 export default function Form(props: FormComponentProps) {
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "scroll"
-        };
-    }, []);
-
-    return props.active ? (
+    return (
         <div className='overlay-form'>
             <div className='overlay-form-inner'>
                 <div className='form-container' style={{width: 'fit-content'}}>
@@ -46,5 +38,5 @@ export default function Form(props: FormComponentProps) {
                 </h2>}
             </div>
         </div>
-    ) : "";
+    );
 }

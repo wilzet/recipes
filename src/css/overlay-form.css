@@ -1,21 +1,34 @@
 .overlay-form {
-    position: fixed;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: var(--color-glass-transparent);
-    backdrop-filter: blur(var(--glass-blur)) !important;
     z-index: 10;
+}
+
+.ReactModal__Overlay {
+    background-color: var(--color-glass-transparent);
+    backdrop-filter: blur(0px);
+    transition: backdrop-filter var(--modal-timeout-ms)
+}
+
+.ReactModal__Overlay--after-open {
+    backdrop-filter: blur(var(--glass-blur));
+}
+
+.ReactModal__Overlay--before-close {
+    backdrop-filter: blur(0px);
 }
 
 .overlay-form-inner {
     position: relative;
     display: flex;
-    top: 50vh;
+    top: clamp(0%, calc(50% - 250px), 250px);
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 30px;
 }

@@ -8,13 +8,14 @@ import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
+import Modal from '@/components/modal';
 import UserForm from '@/components/user-form';
 import PostForm from '@/components/post-form';
 
 const defaultWelcome = 'Please select a user';
 
 export default function Page() {
-  const [selectedUser, setSelectedUser] = useState<UserUI | null>();
+  const [selectedUser, setSelectedUser] = useState<UserUI | null>(null);
   const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const [userForm, setUserForm] = useState<boolean>(false);
@@ -100,7 +101,7 @@ export default function Page() {
   }
 
   return (
-    <div className='main'>
+    <div className='main' id='main'>
       <div className='containerH left'>
         <Button
           value={'New user'}
@@ -131,8 +132,8 @@ export default function Page() {
         <Button
           value={'Calendar'}
           class={'buttonBlue'}
-          active={false}
-          onClick={() => {}}
+          active={true}
+          onClick={() => push('/calendar')}
         />
         <Button
           value={'Make post'}
@@ -152,15 +153,17 @@ export default function Page() {
         leaderboard={leaderboard}
       />
 
-      <UserForm
-        active={userForm}
-        callback={closeUserForm}
-      />
-      {selectedUser && <PostForm
-        active={postForm}
-        user={selectedUser}
-        callback={() => setPostForm(false)}
-      />}
+      <Modal active={userForm}>
+        <UserForm
+          callback={closeUserForm}
+        />
+      </Modal>
+      <Modal active={postForm}>
+        <PostForm
+          user={selectedUser}
+          callback={() => setPostForm(false)}
+        />
+      </Modal>
     </div>
   );
 }

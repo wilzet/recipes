@@ -8,8 +8,7 @@ import TextField from "@/components/text-field";
 import DateField from "@/components/date-field";
 
 interface PostFormComponentProps {
-    active: boolean,
-    user: UserUI,
+    user: UserUI | null,
     date?: Date,
     callback: () => any,
 }
@@ -32,7 +31,7 @@ export default function PostForm(props: PostFormComponentProps) {
     }
 
     const createPost = async () => {
-        if (url === '' || !date) {
+        if (!props.user || url === '' || !date) {
             setStatusMessage('Empty fields...');
             return;
         }
@@ -78,11 +77,10 @@ export default function PostForm(props: PostFormComponentProps) {
         props.callback();
     }
 
-    return props.active ? (
+    return (
         <Form
             title={'Post a new recipe'}
             statusMessage={statusMessage}
-            active={props.active}
             submit={createPost}
             callback={() => close()}
         >
@@ -113,5 +111,5 @@ export default function PostForm(props: PostFormComponentProps) {
                 onChange={(e) => setDate(new Date(e))}
             />
         </Form>
-    ) : "";
+    );
 }

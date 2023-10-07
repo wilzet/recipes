@@ -33,7 +33,7 @@
     grid-gap: 0px;
     grid-auto-flow: row;
     margin: 5px;
-    padding: 5px;
+    padding: 2px;
 }
 
 .calendar-grid-item {

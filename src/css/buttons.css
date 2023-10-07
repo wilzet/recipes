@@ -48,6 +48,7 @@ button {
             transform: translateY(-2px);
         }
         &:active, &:disabled {
+            z-index: 0;
             box-shadow: none;
             transform: translateY(0px);
         }

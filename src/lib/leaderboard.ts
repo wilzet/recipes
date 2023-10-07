@@ -3,7 +3,6 @@ import { UserWithPosts } from '@/types/user';
 import { UserUI } from '@/types/user';
 
 export function compareUsers(userA: UserWithPosts, userB: UserWithPosts) {
-
     if (userA.posts.length > userB.posts.length) return -1;
     else if (userA.posts.length < userB.posts.length) return 1; 
 

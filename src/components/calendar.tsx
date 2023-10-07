@@ -1,11 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { PostUI } from '@/lib/types/post';
-import { RecipeAllRequest, RecipeAllResponse } from '@/lib/types/recipe-all';
+import { PostUI } from '@/types/post';
+import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
+import apiRequest from '@/lib/api-request';
 import Grid from '@/components/grid';
 import Button from '@/components/button';
-import apiRequest from '@/lib/api-request';
-import AppSettings from '@/lib/appsettings';
-
+import CalendarDay from '@/components/calendar-day';
 
 interface CalendarComponentProps {
     selectedUsername: string,
@@ -73,12 +72,6 @@ export default function Calendar(props: CalendarComponentProps) {
         asyncCall();
     }, [month]);
 
-    const specialDay = (day: number) => {
-        const specialDates = AppSettings.SPECIAL_DATES;
-        const date = (month.getMonth() + 1).toString().padStart(2, "0") + day.toString().padStart(2, "0");
-        return specialDates.includes(date);
-    }
-
     const getRecipes = async () => {
         const year = month.getFullYear();
         const startdate = new Date(year, month.getMonth(), 1);
@@ -108,15 +101,10 @@ export default function Calendar(props: CalendarComponentProps) {
         }
     }
 
-    const prevMonth = () => {
+    const changeMonth = (change: number) => {
+        setRecipes(undefined);
         const date = new Date(month);
-        date.setUTCMonth(date.getMonth() - 1);
-        setMonth(date);
-    }
-
-    const nextMonth = () => {
-        const date = new Date(month);
-        date.setUTCMonth(date.getMonth() + 1);
+        date.setUTCMonth(date.getMonth() + change);
         setMonth(date);
     }
 
@@ -133,37 +121,20 @@ export default function Calendar(props: CalendarComponentProps) {
     }
 
     const renderDay = (day: number, index: number) => {
-        let backColor = 'var(--color-white)';
-        let color = 'var(--color-gray)';
-        if (specialDay(day)) {
-            backColor = 'var(--color-pink)';
-            color = 'var(--color-white)';
-        } else if ((index + firstDayOffset - 1) % 7 > 4) {
-            backColor = 'var(--color-blue)';
-            color = 'var(--color-white)';
-        }
-        
-        const offset = index == 0 ? firstDayOffset : undefined;
-        const dayRecipes = recipes ? recipes.filter(v => {
-            const dayIndex = v.date.getDate() - 1;
-            return dayIndex === index;
-        }) : undefined;
+        const dayRecipes = recipes?.filter(val => {
+            return val.date.getDate() === day;
+        });
         return (
-            <button style={{ aspectRatio: '1', gridColumnStart: offset }}>
-                <div key={index} className='calendar-grid-item containerV' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1' }}>
-                    <div className='calendar-grid-item-daybox-number' style={{ color: color, backgroundColor: backColor }}>
-                        {day}
-                    </div>
-                    {dayRecipes && dayRecipes.length > 0 && <div className='containerV' style={{ width: '100%', display: 'inline-block', overflowY: 'auto', marginTop: '2px' }}>
-                        <div className='calendar-grid-item-daybox' style={{ height: '0px' }}/>
-                        {dayRecipes.map((val, index) => {
-                            return (
-                                <div key={index} className='calendar-grid-item-daybox' style={{ backgroundColor: val.authorName === props.selectedUsername ? 'var(--color-lightblue)' : 'var(--color-pink)' }}/>
-                            );
-                        })}
-                    </div>}
-                </div>
-            </button>
+            <CalendarDay
+                key={index.toString()}
+                username={props.selectedUsername}
+                day={day}
+                month={month.getMonth()}
+                year={month.getFullYear()}
+                weekend={(index + firstDayOffset - 1) % 7 > 4}
+                offset={index == 0 ? firstDayOffset : undefined}
+                recipes={dayRecipes}
+            />
         );
     }
 
@@ -174,14 +145,14 @@ export default function Calendar(props: CalendarComponentProps) {
                     value={'Previous'}
                     active={true}
                     class={'buttonBlue containerH'}
-                    onClick={prevMonth}
+                    onClick={() => changeMonth(-1)}
                 />
                 <h2>{getNameOfMonth(month)}｜{month.getFullYear()}</h2>
                 <Button
                     value={'Next'}
                     active={true}
                     class={'buttonBlue containerH'}
-                    onClick={nextMonth}
+                    onClick={() => changeMonth(1)}
                 />
             </div>
 

@@ -5,6 +5,8 @@ export type PostWithLinkAndAuthor = {
     title: string | null,
     url: Link,
     author: User,
+    created: Date,
+    updated: Date,
 }
 
 export interface PostUI {
@@ -12,4 +14,6 @@ export interface PostUI {
     title?: string,
     url: string,
     authorName: string,
+    createDate: Date,
+    updateDate: Date,
 }

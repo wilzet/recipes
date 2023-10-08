@@ -8,7 +8,9 @@ const toPostUI = (post: PostWithLinkAndAuthor) => {
         date: post.date,
         title: post.title,
         url: post.url.url,
-        authorName: post.author.name
+        authorName: post.author.name,
+        createDate: post.created,
+        updateDate: post.updated,
     } as PostUI;
 }
 
@@ -29,7 +31,7 @@ export async function POST(request: Request) {
             }
         });
 
-        const postsUI = posts.map((post, index) => toPostUI(post));
+        const postsUI = posts.map(post => toPostUI(post));
 
         return NextResponse.json({ posts: postsUI } as RecipeAllResponse);
     } catch (err: any) {

@@ -82,7 +82,7 @@ export default function PostForm(props: PostFormComponentProps) {
             title={'Post a new recipe'}
             statusMessage={statusMessage}
             submit={createPost}
-            callback={() => close()}
+            callback={close}
         >
             <TextField
                 id={'url'}

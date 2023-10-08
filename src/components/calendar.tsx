@@ -5,6 +5,8 @@ import apiRequest from '@/lib/api-request';
 import Grid from '@/components/grid';
 import Button from '@/components/button';
 import CalendarDay from '@/components/calendar-day';
+import Modal from '@/components/modal';
+import PostDisplay from '@/components/post-display';
 
 interface CalendarComponentProps {
     selectedUsername: string,
@@ -55,6 +57,8 @@ const daysInMonth = (date: Date) => {
 export default function Calendar(props: CalendarComponentProps) {
     const [month, setMonth] = useState<Date>(getCurrentMonth());
     const [recipes, setRecipes] = useState<PostUI[]>();
+    const [dayRecipes, setDayRecipes] = useState<PostUI[]>();
+    const [showRecipes, setShowRecipes] = useState<boolean>(false);
     
     const days = useMemo(() => {
         return Array.from({length: daysInMonth(month)}, (_, i) => i + 1)
@@ -95,6 +99,8 @@ export default function Calendar(props: CalendarComponentProps) {
         if (response && !response.error) {
             const postsWithDates = response.posts?.map(val => {
                 val.date = new Date(val.date);
+                val.createDate = new Date(val.createDate);
+                val.updateDate = new Date(val.updateDate);
                 return val;
             });
             setRecipes(postsWithDates);
@@ -121,12 +127,13 @@ export default function Calendar(props: CalendarComponentProps) {
     }
 
     const renderDay = (day: number, index: number) => {
-        const dayRecipes = recipes?.filter(val => {
+        let dayRecipes = recipes?.filter(val => {
             return val.date.getDate() === day;
         });
+        dayRecipes = dayRecipes ? dayRecipes.length > 0 ? dayRecipes : undefined : dayRecipes;
         return (
             <CalendarDay
-                key={index.toString()}
+                key={index}
                 username={props.selectedUsername}
                 day={day}
                 month={month.getMonth()}
@@ -134,8 +141,16 @@ export default function Calendar(props: CalendarComponentProps) {
                 weekend={(index + firstDayOffset - 1) % 7 > 4}
                 offset={index == 0 ? firstDayOffset : undefined}
                 recipes={dayRecipes}
+                callback={showDayRecipes}
             />
         );
+    }
+
+    const showDayRecipes = (data: PostUI[] | undefined) => {
+        if (!data) return;
+
+        setShowRecipes(true);
+        setDayRecipes(data);
     }
 
     return (
@@ -167,6 +182,19 @@ export default function Calendar(props: CalendarComponentProps) {
                 data={days}
                 element={renderDay}
             />
+
+            <Modal active={showRecipes}>
+                <Button
+                    value={'Close'}
+                    active={true}
+                    class={'buttonRed'}
+                    onClick={() => setShowRecipes(false)}
+                />
+
+                {dayRecipes?.map((val, index) => {
+                    return <PostDisplay key={index} post={val}/>;
+                })}
+            </Modal>
         </div>
     );
 }

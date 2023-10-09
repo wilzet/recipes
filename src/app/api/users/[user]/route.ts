@@ -19,6 +19,7 @@ export async function GET(request: Request, { params }: { params: { user: string
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {
+            console.error('Cannot find user: ' + params.user)
             return NextResponse.json({ error: 'No user found' } as UserResponse, { status: 400 });
         }
     }

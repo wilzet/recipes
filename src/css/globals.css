@@ -9,6 +9,10 @@
 
     --color-mainblue: #0088ff;
 
+    --glass-blur: 7px;
+
+    --modal-timeout-ms: 300ms;
+
     --color-black: #000000;
     --color-white: #cccccc;
     --color-gray: #2d2d3d;
@@ -19,6 +23,7 @@
     --color-pink: #7e49b6;
 
     --border-radius: 10px;
+    --border-radius-calendar: 3px;
 }
 
 @media (prefers-color-scheme: light) {

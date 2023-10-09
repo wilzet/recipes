@@ -1,13 +1,19 @@
-import { UserUI } from '@/types/user';
+import { User, Link } from '@prisma/client';
 
-export type PostRequest = {
-    title?: string,
-    url: string,
-    author: string,
+export type PostWithLinkAndAuthor = {
     date: Date,
+    title: string | null,
+    url: Link,
+    author: User,
+    created: Date,
+    updated: Date,
 }
 
-export type PostResponse = {
-    user?: UserUI,
-    error?: string,
+export interface PostUI {
+    date: Date,
+    title?: string,
+    url: string,
+    authorName: string,
+    createDate: Date,
+    updateDate: Date,
 }

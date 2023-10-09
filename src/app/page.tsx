@@ -4,17 +4,24 @@ import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
 import { LeaderboardResponse } from '@/lib/types/leaderboard';
 import apiRequest from '@/lib/api-request';
+import Main from '@/components/main';
 import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
 import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
+import Modal from '@/components/modal';
+import UserForm from '@/components/user-form';
+import PostForm from '@/components/post-form';
 
 const defaultWelcome = 'Please select a user';
 
 export default function Page() {
-  const [selectedUser, setSelectedUser] = useState<UserUI | null>();
+  const [selectedUser, setSelectedUser] = useState<UserUI | null>(null);
   const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
+  const [userForm, setUserForm] = useState<boolean>(false);
+  const [postForm, setPostForm] = useState<boolean>(false);
+
   const searchUser = useSearchParams().get('user');
   const { push, replace } = useRouter();
 
@@ -56,11 +63,15 @@ export default function Page() {
     const response = await apiRequest<UserResponse>(`/api/users/${username}`)
       .catch(e => console.log(e));
 
-    if (response && !response.error) 
+    if (response && response.user && !response.error)
     {
-      setWelcomeMessage(`Logged in as ${response.user?.name}!`);
-      setSelectedUser(response.user);
+      setUser(response.user);
     }
+  }
+
+  const setUser = (user: UserUI) => {
+    setWelcomeMessage(`Logged in as ${user?.name}!`);
+    setSelectedUser(user);
   }
 
   const logOut = async () => {
@@ -71,7 +82,7 @@ export default function Page() {
 
   const renderUserButton = (user: UserUI, index: number) => {
     return (
-      <div key={index} className='grid-item'>
+      <div key={index} className='users-grid-item'>
         <Button
           value={user.name}
           class={'buttonFixedSize'}
@@ -82,56 +93,60 @@ export default function Page() {
     );
   }
 
-  const createUser = () => {
-    push('/new/user');
+  const closeUserForm = async (user: UserUI | undefined) => {
+    setUserForm(false);
+    if (user)
+    {
+      await fetchLeaderboard();
+      setUser(user);
+    }
   }
 
-  const createPost = () => {
-    push(`/new/recipe/?user=${selectedUser?.name}`)
+  const closePostForm = async () => {
+    await fetchLeaderboard();
+    setPostForm(false);
   }
 
   return (
-    <div className='main'>
-      <div className='containerH'>
-        <div className='containerH left'>
-          <Button
-            value={'New user'}
-            class={'buttonGreen'}
-            active={selectedUser ? false : true}
-            onClick={() => createUser()}
-          />
-          <Button
-            value={'Log Out'}
-            class={'buttonRed'}
-            active={selectedUser ? true : false}
-            onClick={() => logOut()}
-          />
-        </div>
+    <Main>
+      <div className='containerH left'>
+        <Button
+          value={'New user'}
+          class={'buttonGreen'}
+          active={selectedUser ? false : true}
+          onClick={() => setUserForm(true)}
+        />
+        <Button
+          value={'Log Out'}
+          class={'buttonRed'}
+          active={selectedUser ? true : false}
+          onClick={logOut}
+        />
       </div>
-      <h3 className='containerH'>{welcomeMessage}</h3>
+      <h3>{welcomeMessage}</h3>
       {users.length > 0 && <AnimateHeight
         class={'users-container'}
         duration={500}
         heightHook={() => useMemo(() => {return selectedUser ? '0px' : 'max(100px, 60vh)'}, [selectedUser])}
       >
         <Grid<UserUI>
+          class='users-grid-container'
           data={users}
           element={renderUserButton}
-          active={selectedUser ? false : true}
         />
       </AnimateHeight>}
       {selectedUser && <div className='containerH'>
         <Button
           value={'Calendar'}
           class={'buttonBlue'}
-          active={false}
-          onClick={() => {}}
+          active={true}
+          onClick={() => push(`/calendar/?user=${selectedUser.name}`)}
         />
         <Button
           value={'Make post'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => createPost()}
+          onClick={() => setPostForm(true)}
         />
         <Button
           value={'View profile'}
@@ -144,6 +159,18 @@ export default function Page() {
         selectedUserName={selectedUser?.name}
         leaderboard={leaderboard}
       />
-    </div>
+
+      <Modal active={userForm}>
+        <UserForm
+          callback={closeUserForm}
+        />
+      </Modal>
+      <Modal active={postForm}>
+        <PostForm
+          user={selectedUser}
+          callback={closePostForm}
+        />
+      </Modal>
+    </Main>
   );
 }

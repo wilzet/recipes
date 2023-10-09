@@ -14,7 +14,7 @@ interface TextFieldComponentProps {
 export default function TextField(props: TextFieldComponentProps) {
     return (
         <div>
-            {props.label && <h3 style={{marginBottom: '1px', color: 'var(--color-pink)'}}>{props.label}</h3>}
+            {props.label && <h3 style={{paddingTop: '6px', marginBottom: '2px', color: 'var(--color-pink)'}}>{props.label}</h3>}
             <input
                 id={props.id}
                 type='text'

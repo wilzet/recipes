@@ -9,7 +9,7 @@ import Modal from '@/components/modal';
 import PostDisplay from '@/components/post-display';
 
 interface CalendarComponentProps {
-    selectedUsername: string,
+    selectedUsername?: string,
 }
 
 const monthNames = [
@@ -189,6 +189,7 @@ export default function Calendar(props: CalendarComponentProps) {
                     active={true}
                     class={'buttonRed'}
                     onClick={() => setShowRecipes(false)}
+                    style={{ position: 'fixed', bottom: 'min(10vh, 20vw)', right: 'min(20vh, 10vw)', zIndex: 100 }}
                 />
 
                 {dayRecipes?.map((val, index) => {

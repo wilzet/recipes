@@ -4,7 +4,7 @@ import AppSettings from "@/lib/appsettings";
 
 interface CalendarDayComponentProps {
     key: string | number,
-    username: string,
+    username?: string,
     day: number,
     month: number,
     year: number,

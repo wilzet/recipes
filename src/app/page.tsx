@@ -140,7 +140,7 @@ export default function Page() {
           value={'Calendar'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => push('/calendar')}
+          onClick={() => push(`/calendar/?user=${selectedUser.name}`)}
         />
         <Button
           value={'Make post'}

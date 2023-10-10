@@ -45,13 +45,7 @@ button {
     height: calc(100% + 4px);
     background-image: url(/edit_icon.svg);
     background-repeat: no-repeat;
-    background-position: 96% 50%;
-    filter: none;
-    will-change: filter;
-    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-    &:hover, &:focus:focus-visible, &:active, &:disabled {
-        filter: invert(1);
-    }
+    background-position: 95% 50%;
 }
 
 @media (hover: hover) {

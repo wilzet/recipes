@@ -1,43 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PostUI } from '@/types/post';
-import Button from './button';
+import { UserUI } from '@/types/user';
+import Button from '@/components/button';
+import Modal from '@/components/modal';
+import PostForm from '@/components/post-form';
 
 interface PostDisplayComponentProps {
-    key: string | number,
     selectedUser?: string,
-    post: PostUI,
+    date?: Date,
+    posts: PostUI[] | undefined,
+    update: () => any,
+    callback: () => any,
 }
 
 export default function PostDisplay(props: PostDisplayComponentProps) {
-    return (
-        <div className='containerV' style={{ overflow: 'hidden', marginBottom: '20px', textAlign: 'center', wordBreak: 'break-word' }}>
-            {props.post.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
-                {props.post.title}
-            </h2>}
-            <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
-                <a href={props.post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
-                    {props.post.url}
-                </a>
-            </h3>
-            <div className='containerH' style={{ textAlign: 'left' }}>
-                {props.selectedUser === props.post.authorName && <Button
-                    value={'Edit'}
-                    active={true}
-                    class={''}
-                    style={{
-                        padding: '5px',
-                        paddingRight: '25px',
-                        paddingLeft: '5px',
-                        minHeight: '0px',
-                    }}
-                    onClick={() => console.log("!")}
-                >
-                    <div className='edit-icon'/>
-                </Button>}
-                Created by {props.post.authorName}<br/>
-                on {props.post.createDate.toDateString()}<br/>
-                (Updated on {props.post.updateDate.toDateString()})
+    const [postForm, setPostForm] = useState<boolean>(false);
+    const [editForm, setEditForm] = useState<boolean>(false);
+    const [postIndex, setPostIndex] = useState<number>(0);
+
+    const renderPostDisplay = (key: number, post: PostUI) => {
+        return (
+            <div key={key} className='containerV' style={{ overflow: 'hidden', marginBottom: '20px', textAlign: 'center', wordBreak: 'break-word' }}>
+                {post.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
+                    {post.title}
+                </h2>}
+                <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
+                    <a href={post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
+                        {post.url}
+                    </a>
+                </h3>
+                <div className='containerH' style={{ textAlign: 'left' }}>
+                    {props.selectedUser === post.authorName && <Button
+                        value={'Edit'}
+                        active={true}
+                        class={''}
+                        style={{
+                            padding: '5px',
+                            paddingRight: '25px',
+                            paddingLeft: '5px',
+                            marginRight: '20px',
+                            minHeight: '0px',
+                            position: 'relative',
+                        }}
+                        onClick={() => openEditForm(key)}
+                    >
+                        <div className='edit-icon'/>
+                    </Button>}
+                    Created by {post.authorName}<br/>
+                    on {post.createDate.toDateString()}<br/>
+                    (Updated on {post.updateDate.toDateString()})
+                </div>
             </div>
+        );
+    }
+
+    const openEditForm = (index: number) => {
+        setEditForm(true);
+        setPostIndex(index);
+    }
+
+    const closePostForm = async () => {
+        setPostForm(false);
+        await props.update();
+    }
+
+    const closeEditForm = async () => {
+        setEditForm(false);
+        await props.update();
+    }
+
+    return (
+        <div id='posts-display'>
+            <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 10vw)', zIndex: 100 }}>
+                {props.selectedUser && <Button
+                    value={'Make post'}
+                    class={'buttonBlue'}
+                    active={true}
+                    onClick={() => setPostForm(true)}
+                />}
+                <Button
+                    value={'Close'}
+                    active={true}
+                    class={'buttonRed'}
+                    onClick={props.callback}
+                />
+            </div>
+
+            {props.posts?.map((val, index) => {
+                return renderPostDisplay(index, val);
+            })}
+
+            <Modal active={postForm} parent='posts-display'>
+                <PostForm
+                    user={{ name: props.selectedUser, score: 0} as UserUI}
+                    date={props.posts ? props.posts[0].date : props.date ?? new Date()}
+                    callback={closePostForm}
+                />
+            </Modal>
+
+            <Modal active={editForm} parent='posts-display'>
+                <PostForm
+                    user={{ name: props.selectedUser, score: 0} as UserUI}
+                    post={props.posts ? props.posts[postIndex] : undefined}
+                    edit={true}
+                    callback={closeEditForm}
+                />
+            </Modal>
         </div>
     );
 }

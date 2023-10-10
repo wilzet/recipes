@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { UserUI } from "@/lib/types/user";
-import { RecipePostRequest, RecipePostResponse } from "@/lib/types/recipe-post";
+import { UserUI } from "@/types/user";
+import { RecipePostRequest, RecipePostResponse } from "@/types/recipe-post";
 import AppSettings from "@/lib/appsettings";
 import apiRequest from "@/lib/api-request";
 import Form from "@/components/form";
 import TextField from "@/components/text-field";
 import DateField from "@/components/date-field";
+import { PostUI } from "@/types/post";
+import Button from "@/components/button";
 
 interface PostFormComponentProps {
     user: UserUI | null,
     date?: Date,
+    post?: PostUI,
+    edit?: boolean,
     callback: () => any,
 }
 
 export default function PostForm(props: PostFormComponentProps) {
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
-    const [title, setTitle] = useState<string>('');
+    const [title, setTitle] = useState<string>();
     const [url, setUrl] = useState<string>('');
     const [date, setDate] = useState<Date>(new Date());
 
     useEffect(() => {
         setDate(props.date ?? new Date());
-    }, [props.date])
+
+        if (props.post) {
+            setTitle(props.post.title);
+            setUrl(props.post.url);
+            setDate(props.post.date);
+        }
+    }, [props.date, props.post])
 
     const reset = () => {
         setStatusMessage(null);
@@ -31,12 +41,16 @@ export default function PostForm(props: PostFormComponentProps) {
     }
 
     const createPost = async () => {
-        if (!props.user || url === '' || !date) {
+        if (!props.user) {
+            setStatusMessage('No author detected...');
+            return;
+        }
+
+        if (url === '' || !date) {
             setStatusMessage('Empty fields...');
             return;
         }
         
-        date.setUTCHours(0, 0, 0, 0);
         let body: RecipePostRequest = {
           url: url,
           author: props.user.name,
@@ -64,6 +78,14 @@ export default function PostForm(props: PostFormComponentProps) {
         }
     }
 
+    const updatePost = async () => {
+        return;
+    }
+
+    const removePost = async () => {
+        return;
+    }
+
     const formatDate = (date: Date) => {
         const year = date.getFullYear().toString().padStart(4, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -81,7 +103,7 @@ export default function PostForm(props: PostFormComponentProps) {
         <Form
             title={'Post a new recipe'}
             statusMessage={statusMessage}
-            submit={createPost}
+            submit={props.edit ? updatePost : createPost}
             callback={close}
         >
             <TextField
@@ -96,7 +118,7 @@ export default function PostForm(props: PostFormComponentProps) {
             <TextField
                 id={'title'}
                 label={'Title'}
-                value={title}
+                value={title ?? ''}
                 placeholder={'Optional'}
                 class={''}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
@@ -108,8 +130,16 @@ export default function PostForm(props: PostFormComponentProps) {
                 label={'Date'}
                 value={formatDate(date)}
                 class={''}
-                onChange={(e) => setDate(new Date(e))}
+                onChange={(e) => {const date = new Date(e); date.setUTCHours(0, 0, 0, 0); setDate(new Date(e))}}
             />
+            {props.edit && <div className='containerH left' style={{ marginRight: '10%' }}>
+                <Button
+                    value={'Delete'}
+                    active={true}
+                    class={'buttonRed'}
+                    onClick={removePost}
+                />
+            </div>}
         </Form>
     );
 }

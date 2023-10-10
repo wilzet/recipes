@@ -11,7 +11,7 @@ interface CalendarDayComponentProps {
     weekend: boolean,
     offset: number | undefined,
     recipes: PostUI[] | undefined,
-    callback: (data: PostUI[] | undefined) => any,
+    callback: (data: PostUI[] | undefined, day: number) => any,
 }
 
 export default function CalendarDay(props: CalendarDayComponentProps) {
@@ -37,7 +37,7 @@ export default function CalendarDay(props: CalendarDayComponentProps) {
     }
 
     return (
-        <button style={{ aspectRatio: '1', gridColumnStart: props.offset }} onClick={() => props.callback(props.recipes)}>
+        <button style={{ aspectRatio: '1', gridColumnStart: props.offset }} onClick={() => props.callback(props.recipes, props.day)}>
             <div className='calendar-grid-item containerV' style={{ justifyContent: 'normal', alignItems: 'normal', aspectRatio: '1' }}>
                 <div className='calendar-grid-item-daybox-number' style={{ color: color, backgroundColor: backgroundColor }}>
                     {props.day}

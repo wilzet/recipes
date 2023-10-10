@@ -193,7 +193,7 @@ export default function Calendar(props: CalendarComponentProps) {
                 />
 
                 {dayRecipes?.map((val, index) => {
-                    return <PostDisplay key={index} post={val}/>;
+                    return <PostDisplay key={index} selectedUser={props.selectedUsername} post={val}/>;
                 })}
             </Modal>
         </div>

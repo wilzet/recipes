@@ -26,8 +26,8 @@
 }
 
 .calendar-grid-container {
-    background-color: var(--default-background-color);
-    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    border-radius: var(--border-radius-calendar);
     display: inline-grid;
     grid-template-columns: repeat(7, min(120px, 12vw));
     grid-gap: 0px;
@@ -65,4 +65,10 @@
     vertical-align: top;
     font-size: 1rem;
     font-weight: 400;
+}
+
+@media (prefers-color-scheme: light) {
+    .calendar-grid-item {
+        background-color: var(--color-lightgray);
+    }
 }

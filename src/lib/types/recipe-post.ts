@@ -1,6 +1,7 @@
 import { UserUI } from '@/types/user';
 
 export type RecipePostRequest = {
+    id?: number,
     title?: string,
     url: string,
     author: string,

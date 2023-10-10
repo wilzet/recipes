@@ -8,6 +8,7 @@ import TextField from "@/components/text-field";
 import DateField from "@/components/date-field";
 import { PostUI } from "@/types/post";
 import Button from "@/components/button";
+import Modal from "@/components/modal";
 
 interface PostFormComponentProps {
     user: UserUI | null,
@@ -22,6 +23,7 @@ export default function PostForm(props: PostFormComponentProps) {
     const [title, setTitle] = useState<string>();
     const [url, setUrl] = useState<string>('');
     const [date, setDate] = useState<Date>(new Date());
+    const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
 
     useEffect(() => {
         setDate(props.date ?? new Date());
@@ -79,11 +81,72 @@ export default function PostForm(props: PostFormComponentProps) {
     }
 
     const updatePost = async () => {
-        return;
+        if (!props.user) {
+            setStatusMessage('No author detected...');
+            return;
+        }
+
+        if (url === '' || !date) {
+            setStatusMessage('Empty fields...');
+            return;
+        }
+        
+        let body: RecipePostRequest = {
+            id: props.post?.id,
+            url: url,
+            author: props.user.name,
+            date: date,
+        }
+
+        if (title !== '') {
+            body = { title: title, ...body };
+        }
+
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        };
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/update', options)
+          .catch(e => console.log(e));
+
+        if (response && !response.error) {
+            close();
+        } else {
+            setStatusMessage('Error while updating...')
+        }
     }
 
     const removePost = async () => {
-        return;
+        if (!props.user) {
+            setStatusMessage('No author detected...');
+            return;
+        }
+        
+        let body: RecipePostRequest = {
+            id: props.post?.id,
+            url: url,
+            author: props.user.name,
+            date: date,
+        }
+
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        };
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/delete', options)
+          .catch(e => console.log(e));
+
+        if (response && !response.error) {
+            close();
+        } else {
+            setStatusMessage('Error while deleting...')
+        }
     }
 
     const formatDate = (date: Date) => {
@@ -101,6 +164,7 @@ export default function PostForm(props: PostFormComponentProps) {
 
     return (
         <Form
+            id={date.toString()}
             title={'Post a new recipe'}
             statusMessage={statusMessage}
             submit={props.edit ? updatePost : createPost}
@@ -137,8 +201,29 @@ export default function PostForm(props: PostFormComponentProps) {
                     value={'Delete'}
                     active={true}
                     class={'buttonRed'}
-                    onClick={removePost}
+                    onClick={() => setShowConfirmDialog(true)}
                 />
+                <Modal active={showConfirmDialog} parent={date.toString()}>
+                    <div className='containerV'>
+                        <div className='containerH'>
+                            Do you want to remove this post?
+                        </div>
+                        <div className='containerH'>
+                            <Button
+                                value={'No'}
+                                class={'buttonBlue'}
+                                active={true}
+                                onClick={() => setShowConfirmDialog(false)}
+                            />
+                            <Button
+                                value={'Yes'}
+                                class={'buttonRed'}
+                                active={true}
+                                onClick={async () => {await removePost(); setShowConfirmDialog(false)}}
+                            />
+                        </div>
+                    </div>
+                </Modal>
             </div>}
         </Form>
     );

@@ -1,6 +1,7 @@
 import { User, Link } from '@prisma/client';
 
 export type PostWithLinkAndAuthor = {
+    id: number,
     date: Date,
     title: string | null,
     url: Link,
@@ -10,6 +11,7 @@ export type PostWithLinkAndAuthor = {
 }
 
 export interface PostUI {
+    id: number,
     date: Date,
     title?: string,
     url: string,

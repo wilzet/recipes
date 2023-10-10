@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 
 const toPostUI = (post: PostWithLinkAndAuthor) => {
     return {
+        id: post.id,
         date: post.date,
         title: post.title,
         url: post.url.url,

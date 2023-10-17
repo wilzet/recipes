@@ -21,13 +21,15 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
     const renderPostDisplay = (key: number, post: PostUI) => {
         return (
             <div key={key} className='containerV' style={{ overflow: 'hidden', marginBottom: '20px', textAlign: 'center', wordBreak: 'break-word' }}>
-                {post.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
+                {post.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'inherit' }}>
                     {post.title}
                 </h2>}
                 <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
-                    <a href={post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
+                    {post.url.includes('://') ? <a href={post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
                         {post.url}
-                    </a>
+                    </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)' }}>
+                        {post.url}
+                    </p>}
                 </h3>
                 <div className='containerH' style={{ textAlign: 'left' }}>
                     {props.selectedUser === post.authorName && <Button

@@ -19,7 +19,7 @@ export default function Page() {
 
     return (
         <div className='main' id='main'>
-            <div className='containerH left'>
+            <div className='containerH left' style={{ marginBottom: '5px' }}>
                 <Button
                     value={'Home'}
                     class={'buttonGreen'}

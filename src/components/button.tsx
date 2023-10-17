@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 interface ButtonComponentProps {
     value: string,
@@ -8,7 +8,7 @@ interface ButtonComponentProps {
     onClick: () => void,
 }
 
-export default function Button(props: ButtonComponentProps) {
+export default function Button(props: PropsWithChildren<ButtonComponentProps>) {
     return (
         <button
             disabled={!props.active}
@@ -17,6 +17,7 @@ export default function Button(props: ButtonComponentProps) {
             style={props.style}
         >
             {props.value}
+            {props.children}
         </button>
     );
 }

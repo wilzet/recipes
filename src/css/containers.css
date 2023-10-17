@@ -18,7 +18,7 @@
   box-shadow: 0px 15px 20px var(--color-black);
 }
 
-.calendar-container {
+.calendar-header-container {
   border-radius: var(--border-radius);
   border: 2px solid var(--color-white);
 }
@@ -63,7 +63,7 @@
     border-color: var(--color-gray);
   }
 
-  .calendar-container {
+  .calendar-header-container {
     border-color: var(--color-gray);
   }
 }

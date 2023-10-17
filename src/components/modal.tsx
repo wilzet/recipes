@@ -4,13 +4,15 @@ ReactModal.setAppElement('#main');
 
 interface ModalComponentProps {
     active: boolean,
+    parent?: string,
 }
 
 export default function Modal(props: PropsWithChildren<ModalComponentProps>) {
     useEffect(() => {
-        if (props.active) document.body.style.overflow = "hidden";
+        const element = props.parent ? document.getElementById(props.parent) ?? document.body : document.body;
+        if (props.active) element.style.overflow = "hidden";
         return () => {
-            document.body.style.overflow = "scroll"
+            element.style.overflow = "scroll"
         };
     }, [props.active]);
 

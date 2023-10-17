@@ -56,10 +56,19 @@ const daysInMonth = (date: Date) => {
 
 export default function Calendar(props: CalendarComponentProps) {
     const [month, setMonth] = useState<Date>(getCurrentMonth());
+    const [dayNumber, setDayNumber] = useState<number>();
     const [recipes, setRecipes] = useState<PostUI[]>();
-    const [dayRecipes, setDayRecipes] = useState<PostUI[]>();
     const [showRecipes, setShowRecipes] = useState<boolean>(false);
     
+    const dayRecipes = useMemo(() => {
+        let data = recipes?.filter(val => {
+            return val.date.getDate() === dayNumber;
+        });
+        data = data ? data.length > 0 ? data : undefined : data;
+
+        return data;
+    }, [recipes, dayNumber])
+
     const days = useMemo(() => {
         return Array.from({length: daysInMonth(month)}, (_, i) => i + 1)
     }, [month]);
@@ -146,16 +155,16 @@ export default function Calendar(props: CalendarComponentProps) {
         );
     }
 
-    const showDayRecipes = (data: PostUI[] | undefined) => {
-        if (!data) return;
+    const showDayRecipes = (data: PostUI[] | undefined, day: number) => {
+        if (!props.selectedUsername && !data) return;
 
         setShowRecipes(true);
-        setDayRecipes(data);
+        setDayNumber(day);
     }
 
     return (
         <div className='containerV'>
-            <div className='containerH calendar-container' style={{padding: '0px 6px'}}>
+            <div className='containerH calendar-header-container' style={{padding: '0px 6px'}}>
                 <Button
                     value={'Previous'}
                     active={true}
@@ -184,17 +193,13 @@ export default function Calendar(props: CalendarComponentProps) {
             />
 
             <Modal active={showRecipes}>
-                <Button
-                    value={'Close'}
-                    active={true}
-                    class={'buttonRed'}
-                    onClick={() => setShowRecipes(false)}
-                    style={{ position: 'fixed', bottom: 'min(10vh, 20vw)', right: 'min(20vh, 10vw)', zIndex: 100 }}
+                <PostDisplay
+                    selectedUser={props.selectedUsername}
+                    date={new Date(month.getFullYear(), month.getMonth(), dayNumber)}
+                    posts={dayRecipes}
+                    update={getRecipes}
+                    callback={() => setShowRecipes(false)}
                 />
-
-                {dayRecipes?.map((val, index) => {
-                    return <PostDisplay key={index} post={val}/>;
-                })}
             </Modal>
         </div>
     );

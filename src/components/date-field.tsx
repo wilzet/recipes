@@ -17,6 +17,7 @@ export default function DateField(props: DateFieldComponentProps) {
                 type='date'
                 value={props.value}
                 className={props.class}
+                style={{ textAlign: 'left' }}
                 onChange={(e) => props.onChange(e.target.value)}
             >
             </input>

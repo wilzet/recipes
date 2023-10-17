@@ -1,8 +1,18 @@
 # <img align="left" width="100" height="100" src="./public/favicon/android-chrome-512x512.png"> Meal-accounting-tool
 A simple local web app for recipes and meal planning. 
 
-## Needed to run (This is not up to date):
-* Make sure `Node.js` is installed (run `npm --version`).
-* Add a `.env(.local)`-file with variables from `.env.example`.
-* Create the directory `data` under the root directory and add a `data/users.json` file, which is a list of `User` objects. Make sure two users share `name:` with the corresponding `.env(.local)` variables.
-* Run `npm run build` and then `npm run start`, or simply run `npm run dev` for a development server with automatic refresh on change.
+## History
+### 230903
+Idea conceived and began working on the project.
+- Simple prototype using external read/write
+
+### 230908
+Migrated the project to this current repository.
+- Proper database using Prisma
+- Important core features implemented
+  - Users
+  - Posts
+  - Calendar
+
+### 231010(ish)
+Could be considered a pre-alpha state

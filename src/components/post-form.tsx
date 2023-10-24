@@ -70,8 +70,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/create', options)
-          .catch(e => console.log(e));
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/create', options);
 
         if (response && !response.error) {
             close();
@@ -109,8 +108,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/update', options)
-          .catch(e => console.log(e));
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/update', options);
 
         if (response && !response.error) {
             close();
@@ -139,8 +137,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/delete', options)
-          .catch(e => console.log(e));
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/delete', options);
 
         if (response && !response.error) {
             close();

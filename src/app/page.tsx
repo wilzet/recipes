@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
-import { LeaderboardResponse } from '@/lib/types/leaderboard';
+import { LeaderboardResponse } from '@/types/leaderboard';
 import apiRequest from '@/lib/api-request';
 import Main from '@/components/main';
 import Leaderboard from '@/components/leaderboard';
@@ -51,8 +51,7 @@ export default function Page() {
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard')
-      .catch(e => console.log(e));
+    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard');
 
     if (response && !response.error) {
       setLeaderboard(response.leaderboard ?? []);
@@ -60,8 +59,7 @@ export default function Page() {
   }
 
   const fetchUser = async (username: string) => {
-    const response = await apiRequest<UserResponse>(`/api/users/${username}`)
-      .catch(e => console.log(e));
+    const response = await apiRequest<UserResponse>(`/api/users/${username}`);
 
     if (response && response.user && !response.error)
     {

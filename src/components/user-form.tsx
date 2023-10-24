@@ -27,8 +27,7 @@ export default function UserForm(props: UserFormComponentProps) {
         const options = {
             method: 'POST'
         };
-        const response = await apiRequest<UserResponse>(`/api/users/${username}`, options)
-            .catch(e => console.log(e));
+        const response = await apiRequest<UserResponse>(`/api/users/${username}`, options);
     
         if (response && response.user && !response.error) {
             close(response.user);

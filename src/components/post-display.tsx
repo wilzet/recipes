@@ -92,6 +92,8 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 return renderPostDisplay(index, val);
             })}
 
+            {props.posts && props.posts.length > 0 && <div style={{ height: '150px' }}/>}
+
             <Modal active={postForm} parent='posts-display'>
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}

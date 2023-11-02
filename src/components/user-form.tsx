@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserResponse, UserUI } from "@/lib/types/user";
+import { UserResponse, UserUI } from "@/types/user";
 import AppSettings from "@/lib/appsettings";
 import apiRequest from "@/lib/api-request";
 import Form from "@/components/form";

@@ -12,6 +12,7 @@ import AnimateHeight from '@/components/animate-height';
 import Modal from '@/components/modal';
 import UserForm from '@/components/user-form';
 import PostForm from '@/components/post-form';
+import Calendar from '@/components/calendar';
 
 const defaultWelcome = 'Please select a user';
 
@@ -23,7 +24,7 @@ export default function Page() {
   const [postForm, setPostForm] = useState<boolean>(false);
 
   const searchUser = useSearchParams().get('user');
-  const { push, replace } = useRouter();
+  const { replace } = useRouter();
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -108,12 +109,17 @@ export default function Page() {
   return (
     <Main>
       <div className='containerH left'>
-        <Button
+        {selectedUser ? <Button
+          value={'View profile'}
+          class={'buttonBlue'}
+          active={true}
+          onClick={() => {}}
+        /> : <Button
           value={'New user'}
           class={'buttonGreen'}
-          active={selectedUser ? false : true}
+          active={true}
           onClick={() => setUserForm(true)}
-        />
+        />}
         <Button
           value={'Log Out'}
           class={'buttonRed'}
@@ -133,29 +139,13 @@ export default function Page() {
           element={renderUserButton}
         />
       </AnimateHeight>}
-      {selectedUser && <div className='containerH'>
-        <Button
-          value={'Calendar'}
-          class={'buttonBlue'}
-          active={true}
-          onClick={() => push(`/calendar/?user=${selectedUser.name}`)}
-        />
-        <Button
-          value={'Make post'}
-          class={'buttonBlue'}
-          active={true}
-          onClick={() => setPostForm(true)}
-        />
-        <Button
-          value={'View profile'}
-          class={'buttonBlue'}
-          active={false}
-          onClick={() => {}}
-        />
-      </div>}
+
+      <Calendar
+        selectedUsername={selectedUser?.name}
+      />
       <Leaderboard
-        selectedUserName={selectedUser?.name}
-        leaderboard={leaderboard}
+          selectedUserName={selectedUser?.name}
+          leaderboard={leaderboard}
       />
 
       <Modal active={userForm}>

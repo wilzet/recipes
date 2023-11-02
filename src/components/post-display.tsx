@@ -87,10 +87,13 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     onClick={props.callback}
                 />
             </div>
+            <h2 style={{ fontSize: '2rem' }}>{(props.posts ? props.posts[0].date : props.date ?? new Date()).toDateString().slice(0, -5)}</h2>
 
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}
+
+            {props.posts && props.posts.length > 0 && <div style={{ height: '150px' }}/>}
 
             <Modal active={postForm} parent='posts-display'>
                 <PostForm

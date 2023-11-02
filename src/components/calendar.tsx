@@ -102,8 +102,7 @@ export default function Calendar(props: CalendarComponentProps) {
             },
             body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipeAllResponse>('/api/recipes/interval', options)
-            .catch(e => console.log(e));
+        const response = await apiRequest<RecipeAllResponse>('/api/recipes/interval', options);
 
         if (response && !response.error) {
             const postsWithDates = response.posts?.map(val => {

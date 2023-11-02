@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserResponse, UserUI } from "@/lib/types/user";
+import { UserResponse, UserUI } from "@/types/user";
 import AppSettings from "@/lib/appsettings";
 import apiRequest from "@/lib/api-request";
 import Form from "@/components/form";
@@ -27,8 +27,7 @@ export default function UserForm(props: UserFormComponentProps) {
         const options = {
             method: 'POST'
         };
-        const response = await apiRequest<UserResponse>(`/api/users/${username}`, options)
-            .catch(e => console.log(e));
+        const response = await apiRequest<UserResponse>(`/api/users/${username}`, options);
     
         if (response && response.user && !response.error) {
             close(response.user);

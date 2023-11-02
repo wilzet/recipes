@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { RecipePostRequest, RecipePostResponse } from '@/lib/types/recipe-post';
+import { RecipePostRequest, RecipePostResponse } from '@/types/recipe-post';
 import { toUserUI } from '@/lib/leaderboard';
 import prisma from '@/lib/prisma';
 import AppSettings from '@/lib/appsettings';

@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
-import { LeaderboardResponse } from '@/lib/types/leaderboard';
+import { LeaderboardResponse } from '@/types/leaderboard';
 import apiRequest from '@/lib/api-request';
 import Main from '@/components/main';
 import Leaderboard from '@/components/leaderboard';
@@ -12,6 +12,8 @@ import AnimateHeight from '@/components/animate-height';
 import Modal from '@/components/modal';
 import UserForm from '@/components/user-form';
 import PostForm from '@/components/post-form';
+import Calendar from '@/components/calendar';
+import Profile from '@/components/profile';
 
 const defaultWelcome = 'Please select a user';
 
@@ -21,9 +23,10 @@ export default function Page() {
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const [userForm, setUserForm] = useState<boolean>(false);
   const [postForm, setPostForm] = useState<boolean>(false);
+  const [profile, setProfile] = useState<boolean>(false);
 
   const searchUser = useSearchParams().get('user');
-  const { push, replace } = useRouter();
+  const { replace } = useRouter();
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -51,8 +54,7 @@ export default function Page() {
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard')
-      .catch(e => console.log(e));
+    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard');
 
     if (response && !response.error) {
       setLeaderboard(response.leaderboard ?? []);
@@ -60,8 +62,7 @@ export default function Page() {
   }
 
   const fetchUser = async (username: string) => {
-    const response = await apiRequest<UserResponse>(`/api/users/${username}`)
-      .catch(e => console.log(e));
+    const response = await apiRequest<UserResponse>(`/api/users/${username}`);
 
     if (response && response.user && !response.error)
     {
@@ -110,12 +111,17 @@ export default function Page() {
   return (
     <Main>
       <div className='containerH left'>
-        <Button
+        {selectedUser ? <Button
+          value={'View profile'}
+          class={'buttonBlue'}
+          active={true}
+          onClick={() => setProfile(true)}
+        /> : <Button
           value={'New user'}
           class={'buttonGreen'}
-          active={selectedUser ? false : true}
+          active={true}
           onClick={() => setUserForm(true)}
-        />
+        />}
         <Button
           value={'Log Out'}
           class={'buttonRed'}
@@ -135,29 +141,13 @@ export default function Page() {
           element={renderUserButton}
         />
       </AnimateHeight>}
-      {selectedUser && <div className='containerH'>
-        <Button
-          value={'Calendar'}
-          class={'buttonBlue'}
-          active={true}
-          onClick={() => push(`/calendar/?user=${selectedUser.name}`)}
-        />
-        <Button
-          value={'Make post'}
-          class={'buttonBlue'}
-          active={true}
-          onClick={() => setPostForm(true)}
-        />
-        <Button
-          value={'View profile'}
-          class={'buttonBlue'}
-          active={false}
-          onClick={() => {}}
-        />
-      </div>}
+
+      <Calendar
+        selectedUsername={selectedUser?.name}
+      />
       <Leaderboard
-        selectedUserName={selectedUser?.name}
-        leaderboard={leaderboard}
+          selectedUserName={selectedUser?.name}
+          leaderboard={leaderboard}
       />
 
       <Modal active={userForm}>
@@ -169,6 +159,12 @@ export default function Page() {
         <PostForm
           user={selectedUser}
           callback={closePostForm}
+        />
+      </Modal>
+      <Modal active={profile}>
+        <Profile
+          user={selectedUser}
+          callback={() => setProfile(false)}
         />
       </Modal>
     </Main>

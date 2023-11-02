@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { UserUI } from "@/types/user";
+import { PostUI } from "@/types/post";
 import { RecipePostRequest, RecipePostResponse } from "@/types/recipe-post";
 import AppSettings from "@/lib/appsettings";
 import apiRequest from "@/lib/api-request";
 import Form from "@/components/form";
 import TextField from "@/components/text-field";
 import DateField from "@/components/date-field";
-import { PostUI } from "@/types/post";
 import Button from "@/components/button";
 import Modal from "@/components/modal";
 
@@ -70,8 +70,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/create', options)
-          .catch(e => console.log(e));
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/create', options);
 
         if (response && !response.error) {
             close();
@@ -109,8 +108,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/update', options)
-          .catch(e => console.log(e));
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/update', options);
 
         if (response && !response.error) {
             close();
@@ -139,8 +137,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/delete', options)
-          .catch(e => console.log(e));
+        const response = await apiRequest<RecipePostResponse>('/api/recipes/delete', options);
 
         if (response && !response.error) {
             close();

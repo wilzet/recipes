@@ -1,19 +1,7 @@
 import { NextResponse } from 'next/server';
-import { RecipeAllRequest, RecipeAllResponse } from '@/lib/types/recipe-all';
-import { PostWithLinkAndAuthor, PostUI } from '@/types/post';
+import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
+import { toPostUI } from '@/types/post';
 import prisma from '@/lib/prisma';
-
-const toPostUI = (post: PostWithLinkAndAuthor) => {
-    return {
-        id: post.id,
-        date: post.date,
-        title: post.title,
-        url: post.url.url,
-        authorName: post.author.name,
-        createDate: post.created,
-        updateDate: post.updated,
-    } as PostUI;
-}
 
 export async function POST(request: Request) {
     const data: RecipeAllRequest = await request.json();

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { LeaderboardResponse } from '@/lib/types/leaderboard';
+import { LeaderboardResponse } from '@/types/leaderboard';
 import { getUserUILeaderboard } from '@/lib/leaderboard';
 
 export async function GET() {

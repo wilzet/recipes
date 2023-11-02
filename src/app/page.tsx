@@ -13,6 +13,7 @@ import Modal from '@/components/modal';
 import UserForm from '@/components/user-form';
 import PostForm from '@/components/post-form';
 import Calendar from '@/components/calendar';
+import Profile from '@/components/profile';
 
 const defaultWelcome = 'Please select a user';
 
@@ -22,6 +23,7 @@ export default function Page() {
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const [userForm, setUserForm] = useState<boolean>(false);
   const [postForm, setPostForm] = useState<boolean>(false);
+  const [profile, setProfile] = useState<boolean>(false);
 
   const searchUser = useSearchParams().get('user');
   const { replace } = useRouter();
@@ -113,7 +115,7 @@ export default function Page() {
           value={'View profile'}
           class={'buttonBlue'}
           active={true}
-          onClick={() => {}}
+          onClick={() => setProfile(true)}
         /> : <Button
           value={'New user'}
           class={'buttonGreen'}
@@ -157,6 +159,12 @@ export default function Page() {
         <PostForm
           user={selectedUser}
           callback={closePostForm}
+        />
+      </Modal>
+      <Modal active={profile}>
+        <Profile
+          user={selectedUser}
+          callback={() => setProfile(false)}
         />
       </Modal>
     </Main>

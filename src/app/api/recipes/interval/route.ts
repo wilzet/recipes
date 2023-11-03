@@ -13,6 +13,9 @@ export async function POST(request: Request) {
                     gte: data.startdate,
                     lte: data.enddate,
                 },
+                author: {
+                    name: data.author,
+                },
             },
             include: {
                 url: true,

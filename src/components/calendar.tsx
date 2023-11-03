@@ -195,6 +195,7 @@ export default function Calendar(props: CalendarComponentProps) {
                 <PostDisplay
                     selectedUser={props.selectedUsername}
                     date={new Date(month.getFullYear(), month.getMonth(), dayNumber)}
+                    title={true}
                     posts={dayRecipes}
                     update={getRecipes}
                     callback={() => setShowRecipes(false)}

@@ -8,6 +8,7 @@ import PostForm from '@/components/post-form';
 interface PostDisplayComponentProps {
     selectedUser?: string,
     date?: Date,
+    title: boolean,
     posts: PostUI[] | undefined,
     update: () => any,
     callback: () => any,
@@ -87,7 +88,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     onClick={props.callback}
                 />
             </div>
-            <h2 style={{ fontSize: '2rem' }}>{(props.posts ? props.posts[0].date : props.date ?? new Date()).toDateString().slice(0, -5)}</h2>
+            {props.title && <h2 style={{ fontSize: '2rem' }}>{(props.date ?? (props.posts ? props.posts[0].date : new Date())).toDateString().slice(0, -5)}</h2>}
 
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
@@ -98,7 +99,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
             <Modal active={postForm} parent='posts-display'>
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}
-                    date={props.posts ? props.posts[0].date : props.date ?? new Date()}
+                    date={props.date ?? (props.posts ? props.posts[0].date : new Date())}
                     callback={closePostForm}
                 />
             </Modal>

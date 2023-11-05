@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { UserUI } from '@/types/user';
 import { PostUI } from '@/types/post';
 import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
+import { getNameOfMonth, getCurrentMonth,  } from '@/lib/calendar';
 import apiRequest from '@/lib/api-request';
-import PostDisplay from './post-display';
+import PostDisplay from '@/components/post-display';
+import Button from '@/components/button';
 
 interface ProfileComponentProps {
     user: UserUI | null,
@@ -11,6 +13,7 @@ interface ProfileComponentProps {
 }
 
 export default function Profile(props: ProfileComponentProps) {
+    const [month, setMonth] = useState<Date>(getCurrentMonth());
     const [recipes, setRecipes] = useState<PostUI[]>();
     if (!props.user) {
         props.callback();
@@ -23,12 +26,12 @@ export default function Profile(props: ProfileComponentProps) {
         }
 
         asyncCall();
-    }, []);
+    }, [month]);
 
     const getRecipes = async () => {
-        const year = new Date().getFullYear();
-        const startdate = new Date(0, 0, 1);
-        const enddate = new Date(year + 1, 0, 1);
+        const year = month.getFullYear();
+        const startdate = new Date(year, month.getMonth(), 1);
+        const enddate = new Date(year, month.getMonth() + 1, 1);
 
         let body: RecipeAllRequest = {
             startdate: startdate,
@@ -60,12 +63,50 @@ export default function Profile(props: ProfileComponentProps) {
         }
     }
 
+    const changeMonth = (change: number) => {
+        setRecipes(undefined);
+        const date = new Date(month);
+        date.setUTCMonth(date.getMonth() + change);
+        setMonth(date);
+    }
+
     return (
         <div className='containerV'>
             <h1>{props.user.name}</h1>
-            <h2>Score: {props.user.score}</h2>
+            <h2 style={{ color: 'var(--foreground-default-color)' }}>Score: {props.user.score}</h2>
+            {window.innerWidth > 400 ? <div className='containerH calendar-header-container' style={{ padding: '0px 6px', marginBottom: '20px', borderColor: 'var(--color-white)' }}>
+                <Button
+                    value={'Previous'}
+                    active={true}
+                    class={'buttonBlue containerH'}
+                    onClick={() => changeMonth(-1)}
+                />
+                <h2 style={{ color: 'var(--foreground-default-color)' }}>{getNameOfMonth(month)}｜{month.getFullYear()}</h2>
+                <Button
+                    value={'Next'}
+                    active={true}
+                    class={'buttonBlue containerH'}
+                    onClick={() => changeMonth(1)}
+                />
+            </div> : <div className='calendar-header-container' style={{ padding: '0px 6px', marginBottom: '20px', borderColor: 'var(--color-white)' }}>
+                <h2 style={{ color: 'var(--foreground-default-color)', paddingTop: 0, paddingBottom: 0, marginBottom: 0, marginTop: 0 }}>{getNameOfMonth(month)}｜{month.getFullYear()}</h2>
+                <div className='containerH'>
+                    <Button
+                        value={'Previous'}
+                        active={true}
+                        class={'buttonBlue containerH'}
+                        onClick={() => changeMonth(-1)}
+                    />
+                    <Button
+                        value={'Next'}
+                        active={true}
+                        class={'buttonBlue containerH'}
+                        onClick={() => changeMonth(1)}
+                    />
+                </div>
+            </div>}
 
-            <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+            <div style={{ maxHeight: '40vh', overflowY: 'auto' }}>
                 <PostDisplay
                     selectedUser={props.user.name}
                     title={false}

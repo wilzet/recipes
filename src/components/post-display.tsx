@@ -74,7 +74,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
 
     return (
         <div id='posts-display'>
-            <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 10vw)', zIndex: 100 }}>
+            <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 20vw)', zIndex: 100 }}>
                 {props.selectedUser && <Button
                     value={'Make post'}
                     class={'buttonBlue'}
@@ -88,18 +88,17 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     onClick={props.callback}
                 />
             </div>
-            {props.title && <h2 style={{ fontSize: '2rem' }}>{(props.date ?? (props.posts ? props.posts[0].date : new Date())).toDateString().slice(0, -5)}</h2>}
 
+            {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{(props.date ?? (props.posts ? (props.posts.length > 0 ? props.posts[0].date : new Date()) : new Date())).toDateString().slice(0, -5)}</h2>}
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}
-
             {props.posts && props.posts.length > 0 && <div style={{ height: '150px' }}/>}
-
+            
             <Modal active={postForm} parent='posts-display'>
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}
-                    date={props.date ?? (props.posts ? props.posts[0].date : new Date())}
+                    date={props.date ?? (props.posts ? (props.posts.length > 0 ? props.posts[0].date : new Date()) : new Date())}
                     callback={closePostForm}
                 />
             </Modal>

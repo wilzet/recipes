@@ -3,6 +3,7 @@ import { UserUI } from '@/types/user';
 import { PostUI } from '@/types/post';
 import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
 import { getNameOfMonth, getCurrentMonth,  } from '@/lib/calendar';
+import useWindowDimensions from '@/lib/window';
 import apiRequest from '@/lib/api-request';
 import PostDisplay from '@/components/post-display';
 import Button from '@/components/button';
@@ -13,6 +14,7 @@ interface ProfileComponentProps {
 }
 
 export default function Profile(props: ProfileComponentProps) {
+    const { width } = useWindowDimensions();
     const [month, setMonth] = useState<Date>(getCurrentMonth());
     const [recipes, setRecipes] = useState<PostUI[]>();
     if (!props.user) {
@@ -74,7 +76,7 @@ export default function Profile(props: ProfileComponentProps) {
         <div className='containerV'>
             <h1>{props.user.name}</h1>
             <h2 style={{ color: 'var(--foreground-default-color)' }}>Score: {props.user.score}</h2>
-            {window.innerWidth > 400 ? <div className='containerH calendar-header-container' style={{ padding: '0px 6px', marginBottom: '20px', borderColor: 'var(--color-white)' }}>
+            {width > 430 ? <div className='containerH calendar-header-container' style={{ padding: '0px 6px', marginBottom: '20px', borderColor: 'var(--color-white)' }}>
                 <Button
                     value={'Previous'}
                     active={true}
@@ -106,7 +108,7 @@ export default function Profile(props: ProfileComponentProps) {
                 </div>
             </div>}
 
-            <div style={{ maxHeight: '40vh', overflowY: 'auto' }}>
+            <div style={{ maxHeight: 'max(40vh, calc(80vh - 300px))', overflowY: 'auto' }}>
                 <PostDisplay
                     selectedUser={props.user.name}
                     title={false}

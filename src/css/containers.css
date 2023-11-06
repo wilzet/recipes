@@ -1,10 +1,18 @@
 .users-container {
-    margin: 10px;
-    padding: 0px;
-    border: 2px solid var(--color-white);
-    border-radius: var(--border-radius);
-    display: inline-block;
-    overflow-y: auto;
+  margin: 10px;
+  padding: 0px;
+  border: 2px solid var(--color-white);
+  border-radius: var(--border-radius);
+  display: inline-block;
+  overflow-y: auto;
+}
+
+.comment-container {
+  margin-top: 15px !important;
+  padding: 10px 15px;
+  border: 2px solid var(--color-white);
+  border-radius: var(--border-radius);
+  max-width: max-content;
 }
   
 .form-container {

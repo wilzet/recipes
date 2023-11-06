@@ -4,7 +4,7 @@ import { UserUI } from '@/types/user';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
 import PostForm from '@/components/post-form';
-import Comments from './comments';
+import Comments from '@/components/comments';
 
 interface PostDisplayComponentProps {
     selectedUser?: string,

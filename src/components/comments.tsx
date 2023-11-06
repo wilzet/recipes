@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { PostUI } from '@/types/post';
-import { UserUI } from '@/types/user';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
-import PostForm from '@/components/post-form';
 
 interface CommentsComponentProps {
     selectedUser?: string,
@@ -16,7 +14,7 @@ export default function Comments(props: CommentsComponentProps) {
         props.callback();
         return <></>;
     }
-    
+
     const [commentForm, setCommentForm] = useState<boolean>(false);
 
     const closeCommentForm = () => {

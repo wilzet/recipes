@@ -4,6 +4,7 @@ import { UserUI } from '@/types/user';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
 import PostForm from '@/components/post-form';
+import Comments from './comments';
 
 interface PostDisplayComponentProps {
     selectedUser?: string,
@@ -17,6 +18,7 @@ interface PostDisplayComponentProps {
 export default function PostDisplay(props: PostDisplayComponentProps) {
     const [postForm, setPostForm] = useState<boolean>(false);
     const [editForm, setEditForm] = useState<boolean>(false);
+    const [comments, setComments] = useState<boolean>(false);
     const [postIndex, setPostIndex] = useState<number>(0);
 
     const renderPostDisplay = (key: number, post: PostUI) => {
@@ -64,7 +66,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         marginLeft: '20px',
                         position: 'relative',
                     }}
-                    onClick={() => {}}
+                    onClick={() => openComments(key)}
                 >
                     <div className='comment-icon'/>
                 </Button>
@@ -72,18 +74,23 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
         );
     }
 
+    const openComments = (index: number) => {
+        setComments(true);
+        setPostIndex(index);
+    }
+
     const openEditForm = (index: number) => {
         setEditForm(true);
         setPostIndex(index);
     }
 
-    const closePostForm = async () => {
-        setPostForm(false);
+    const closeEditForm = async () => {
+        setEditForm(false);
         await props.update();
     }
 
-    const closeEditForm = async () => {
-        setEditForm(false);
+    const closePostForm = async () => {
+        setPostForm(false);
         await props.update();
     }
 
@@ -124,6 +131,14 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     post={props.posts ? props.posts[postIndex] : undefined}
                     edit={true}
                     callback={closeEditForm}
+                />
+            </Modal>
+
+            <Modal active={comments} parent='posts-display'>
+                <Comments
+                    selectedUser={props.selectedUser}
+                    post={props.posts ? props.posts[postIndex] : undefined}
+                    callback={() => setComments(false)}
                 />
             </Modal>
         </div>

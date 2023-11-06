@@ -10,7 +10,7 @@
     color: var(--default-foreground-color);
     z-index: 10;
     backdrop-filter: blur(0px) brightness(100%);
-    transition: backdrop-filter var(--modal-timeout-ms)
+    transition: backdrop-filter var(--modal-timeout-ms);
 }
 
 .ReactModal__Overlay--after-open {

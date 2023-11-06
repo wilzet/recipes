@@ -14,13 +14,14 @@ interface ProfileComponentProps {
 }
 
 export default function Profile(props: ProfileComponentProps) {
-    const { width } = useWindowDimensions();
-    const [month, setMonth] = useState<Date>(getCurrentMonth());
-    const [recipes, setRecipes] = useState<PostUI[]>();
     if (!props.user) {
         props.callback();
         return <></>;
     }
+    
+    const { width } = useWindowDimensions();
+    const [month, setMonth] = useState<Date>(getCurrentMonth());
+    const [recipes, setRecipes] = useState<PostUI[]>();
 
     useEffect(() => {
         const asyncCall = async () => {
@@ -114,7 +115,7 @@ export default function Profile(props: ProfileComponentProps) {
                     title={false}
                     posts={recipes}
                     update={getRecipes}
-                    callback={() => props.callback()}
+                    callback={props.callback}
                 />
             </div>
         </div>

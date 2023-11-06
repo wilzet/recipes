@@ -39,7 +39,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         class={''}
                         style={{
                             padding: '5px',
-                            paddingRight: '25px',
+                            paddingRight: '27px',
                             paddingLeft: '5px',
                             marginRight: '20px',
                             minHeight: '0px',
@@ -53,6 +53,21 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     on {post.createDate.toDateString()}<br/>
                     (Updated on {post.updateDate.toDateString()})
                 </div>
+                <Button
+                    value={'Comments'}
+                    active={true}
+                    class={'buttonBlue'}
+                    style={{
+                        padding: '5px',
+                        paddingRight: '30px',
+                        paddingLeft: '5px',
+                        marginLeft: '20px',
+                        position: 'relative',
+                    }}
+                    onClick={() => {}}
+                >
+                    <div className='comment-icon'/>
+                </Button>
             </div>
         );
     }
@@ -93,7 +108,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}
-            {props.posts && props.posts.length > 0 && <div style={{ height: '150px' }}/>}
+            {props.posts && props.posts.length > 0 && <div style={{ height: '100px' }}/>}
             
             <Modal active={postForm} parent='posts-display'>
                 <PostForm

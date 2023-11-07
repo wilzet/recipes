@@ -20,7 +20,7 @@ export default function Modal(props: PropsWithChildren<ModalComponentProps>) {
         <ReactModal
             isOpen={props.active}
             style={{ overlay: { backgroundColor: 'rgba(1, 1, 1, 0)', },
-                     content: { backgroundColor: 'rgba(1, 1, 1, 0)', border: 'none' }}}
+                     content: { backgroundColor: 'rgba(1, 1, 1, 0)', border: 'none', inset: '20px' }}}
             closeTimeoutMS={300}
         >
             {props.active && <div id='content'>

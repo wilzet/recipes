@@ -45,6 +45,17 @@ button {
     height: calc(100% + 4px);
     background-image: url(/edit_icon.svg);
     background-repeat: no-repeat;
+    background-position: 90% 50%;
+}
+
+.comment-icon {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-image: url(/comment_icon.svg);
+    background-repeat: no-repeat;
     background-position: 95% 50%;
 }
 

@@ -11,7 +11,6 @@ import Grid from '@/components/grid';
 import AnimateHeight from '@/components/animate-height';
 import Modal from '@/components/modal';
 import UserForm from '@/components/user-form';
-import PostForm from '@/components/post-form';
 import Calendar from '@/components/calendar';
 import Profile from '@/components/profile';
 
@@ -22,7 +21,6 @@ export default function Page() {
   const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const [userForm, setUserForm] = useState<boolean>(false);
-  const [postForm, setPostForm] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
 
   const searchUser = useSearchParams().get('user');
@@ -103,11 +101,6 @@ export default function Page() {
     }
   }
 
-  const closePostForm = async () => {
-    await fetchLeaderboard();
-    setPostForm(false);
-  }
-
   return (
     <Main>
       <div className='containerH left'>
@@ -155,12 +148,7 @@ export default function Page() {
           callback={closeUserForm}
         />
       </Modal>
-      <Modal active={postForm}>
-        <PostForm
-          user={selectedUser}
-          callback={closePostForm}
-        />
-      </Modal>
+
       <Modal active={profile}>
         <Profile
           user={selectedUser}

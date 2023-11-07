@@ -4,10 +4,12 @@ import { UserUI } from '@/types/user';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
 import PostForm from '@/components/post-form';
+import Comments from '@/components/comments';
 
 interface PostDisplayComponentProps {
     selectedUser?: string,
     date?: Date,
+    title: boolean,
     posts: PostUI[] | undefined,
     update: () => any,
     callback: () => any,
@@ -16,6 +18,7 @@ interface PostDisplayComponentProps {
 export default function PostDisplay(props: PostDisplayComponentProps) {
     const [postForm, setPostForm] = useState<boolean>(false);
     const [editForm, setEditForm] = useState<boolean>(false);
+    const [comments, setComments] = useState<boolean>(false);
     const [postIndex, setPostIndex] = useState<number>(0);
 
     const renderPostDisplay = (key: number, post: PostUI) => {
@@ -38,7 +41,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         class={''}
                         style={{
                             padding: '5px',
-                            paddingRight: '25px',
+                            paddingRight: '27px',
                             paddingLeft: '5px',
                             marginRight: '20px',
                             minHeight: '0px',
@@ -52,8 +55,28 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     on {post.createDate.toDateString()}<br/>
                     (Updated on {post.updateDate.toDateString()})
                 </div>
+                <Button
+                    value={'Comments'}
+                    active={true}
+                    class={'buttonBlue'}
+                    style={{
+                        padding: '5px',
+                        paddingRight: '30px',
+                        paddingLeft: '5px',
+                        marginLeft: '20px',
+                        position: 'relative',
+                    }}
+                    onClick={() => openComments(key)}
+                >
+                    <div className='comment-icon'/>
+                </Button>
             </div>
         );
+    }
+
+    const openComments = (index: number) => {
+        setComments(true);
+        setPostIndex(index);
     }
 
     const openEditForm = (index: number) => {
@@ -61,19 +84,19 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
         setPostIndex(index);
     }
 
-    const closePostForm = async () => {
-        setPostForm(false);
-        await props.update();
-    }
-
     const closeEditForm = async () => {
         setEditForm(false);
         await props.update();
     }
 
+    const closePostForm = async () => {
+        setPostForm(false);
+        await props.update();
+    }
+
     return (
         <div id='posts-display'>
-            <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 10vw)', zIndex: 100 }}>
+            <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 20vw)', zIndex: 100 }}>
                 {props.selectedUser && <Button
                     value={'Make post'}
                     class={'buttonBlue'}
@@ -87,18 +110,17 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     onClick={props.callback}
                 />
             </div>
-            <h2 style={{ fontSize: '2rem' }}>{(props.posts ? props.posts[0].date : props.date ?? new Date()).toDateString().slice(0, -5)}</h2>
 
+            {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{(props.date ?? (props.posts ? (props.posts.length > 0 ? props.posts[0].date : new Date()) : new Date())).toDateString().slice(0, -5)}</h2>}
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}
-
-            {props.posts && props.posts.length > 0 && <div style={{ height: '150px' }}/>}
-
+            {props.posts && props.posts.length > 0 && <div style={{ height: '100px' }}/>}
+            
             <Modal active={postForm} parent='posts-display'>
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}
-                    date={props.posts ? props.posts[0].date : props.date ?? new Date()}
+                    date={props.date ?? (props.posts ? (props.posts.length > 0 ? props.posts[0].date : new Date()) : new Date())}
                     callback={closePostForm}
                 />
             </Modal>
@@ -109,6 +131,14 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     post={props.posts ? props.posts[postIndex] : undefined}
                     edit={true}
                     callback={closeEditForm}
+                />
+            </Modal>
+
+            <Modal active={comments} parent='posts-display'>
+                <Comments
+                    selectedUser={props.selectedUser}
+                    post={props.posts ? props.posts[postIndex] : undefined}
+                    callback={() => setComments(false)}
                 />
             </Modal>
         </div>

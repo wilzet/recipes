@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { PostUI } from '@/types/post';
 import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
+import { getNameOfMonth, getCurrentMonth, daysInMonth, dayNames } from '@/lib/calendar';
 import apiRequest from '@/lib/api-request';
 import Grid from '@/components/grid';
 import Button from '@/components/button';
@@ -10,48 +11,6 @@ import PostDisplay from '@/components/post-display';
 
 interface CalendarComponentProps {
     selectedUsername?: string,
-}
-
-const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-];
-
-const dayNames = [
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat",
-    "Sun"
-];
-
-const getNameOfMonth = (date: Date) => {
-    return monthNames[date.getMonth()]
-}
-
-const getCurrentMonth = () => {
-    const date = new Date();
-    date.setUTCDate(1);
-    date.setUTCHours(0, 0, 0, 0);
-    return date;
-}
-
-const daysInMonth = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    return new Date(year, month, 0).getDate();
 }
 
 export default function Calendar(props: CalendarComponentProps) {
@@ -195,6 +154,7 @@ export default function Calendar(props: CalendarComponentProps) {
                 <PostDisplay
                     selectedUser={props.selectedUsername}
                     date={new Date(month.getFullYear(), month.getMonth(), dayNumber)}
+                    title={true}
                     posts={dayRecipes}
                     update={getRecipes}
                     callback={() => setShowRecipes(false)}

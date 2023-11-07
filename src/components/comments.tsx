@@ -141,14 +141,14 @@ export default function Comments(props: CommentsComponentProps) {
 
             <Modal active={commentForm} parent='comments'>
                 <CommentForm
-                    comment={{ id: 0, postID: props.post.id, authorName: props.post.authorName, createDate: new Date(), updateDate: new Date()}}
+                    comment={{ id: 0, postID: props.post.id, authorName: props.selectedUser ?? '', createDate: new Date(), updateDate: new Date()}}
                     callback={closeCommentForm}
                 />
             </Modal>
 
             <Modal active={editForm} parent='comments'>
                 <CommentForm
-                    comment={comments ? comments[commentIndex] : { id: 0, postID: props.post.id, authorName: props.post.authorName, createDate: new Date(), updateDate: new Date()}}
+                    comment={comments ? comments[commentIndex] : { id: 0, postID: props.post.id, authorName: props.selectedUser ?? '', createDate: new Date(), updateDate: new Date()}}
                     edit={true}
                     callback={closeEditForm}
                 />

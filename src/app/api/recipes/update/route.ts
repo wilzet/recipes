@@ -8,13 +8,11 @@ export async function POST(request: Request) {
 
     if (!data.id) return NextResponse.json({ error: 'No post found' } as RecipePostResponse, { status: 400 });
 
-    try {
-        if (data.title) {
-            if (!data.title.match(/^[0-9A-Za-z ]+$/) || data.title.length > AppSettings.POSTTITLE_MAX_LENGTH) {
-                return NextResponse.json({ error: 'Title bad' } as RecipePostResponse, { status: 400 });
-            }
-        }
+    if (data.title && data.title.length > AppSettings.POSTTITLE_MAX_LENGTH) {
+        return NextResponse.json({ error: 'Title bad' } as RecipePostResponse, { status: 400 });
+    }
 
+    try {
         await prisma.post.update({
             where: {
                 id: data.id,

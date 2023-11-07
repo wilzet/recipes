@@ -6,13 +6,11 @@ import AppSettings from '@/lib/appsettings';
 export async function POST(request: Request) {
     const data: CommentRequest = await request.json();
 
-    try {
-        if (data.title) {
-            if (!data.title.match(/^[0-9A-Za-z ]+$/) || data.title.length > AppSettings.POSTTITLE_MAX_LENGTH) {
-                return NextResponse.json({ error: 'Title bad' } as CommentResponse, { status: 400 });
-            }
-        }
+    if (data.title && data.title.length > AppSettings.POSTTITLE_MAX_LENGTH) {
+        return NextResponse.json({ error: 'Title bad' } as CommentResponse, { status: 400 });
+    }
 
+    try {
         await prisma.comment.create({
             data: {
                 title: data.title,

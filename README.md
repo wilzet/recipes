@@ -15,4 +15,10 @@ A simple local web app for recipes and meal planning.
 >   - Calendar
 >
 #### 231010(ish)
-> Could be considered a pre-alpha state
+> Pre-alpha state
+> - New layout
+> - Valuable features
+>   - Comments
+>   - Ratings [WIP]
+#### 2?????
+> Alpha state

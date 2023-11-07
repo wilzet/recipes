@@ -39,7 +39,7 @@ export async function POST(request: Request) {
             },
         });
 
-        return NextResponse.json({});
+        return NextResponse.json({} as RecipePostResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {

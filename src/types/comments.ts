@@ -36,7 +36,12 @@ export interface CommentUI {
 }
 
 export type CommentRequest = {
-    comment: CommentUI,
+    id?: number,
+    postID: number,
+    title?: string,
+    content?: string,
+    rating?: number,
+    authorName: string,
 }
 
 export type CommentResponse = {

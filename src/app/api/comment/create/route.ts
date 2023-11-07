@@ -7,25 +7,25 @@ export async function POST(request: Request) {
     const data: CommentRequest = await request.json();
 
     try {
-        if (data.comment.title) {
-            if (!data.comment.title.match(/^[0-9A-Za-z ]+$/) || data.comment.title.length > AppSettings.POSTTITLE_MAX_LENGTH) {
+        if (data.title) {
+            if (!data.title.match(/^[0-9A-Za-z ]+$/) || data.title.length > AppSettings.POSTTITLE_MAX_LENGTH) {
                 return NextResponse.json({ error: 'Title bad' } as CommentResponse, { status: 400 });
             }
         }
 
-        const comment = await prisma.comment.create({
+        await prisma.comment.create({
             data: {
-                title: data.comment.title,
-                content: data.comment.content,
-                rating: data.comment.rating,
+                title: data.title,
+                content: data.content,
+                rating: data.rating,
                 post: {
                     connect: {
-                        id: data.comment.postID,
+                        id: data.postID,
                     },
                 },
                 author: {
                     connect: {
-                        name: data.comment.authorName,
+                        name: data.authorName,
                     },
                 },
             },
@@ -41,5 +41,3 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ error: 'Internal Server Error' } as CommentResponse, { status: 500 });
 }
-
-/*curl -v -X POST http://localhost:3000/api/recipes/create -H "Content-Type: application/json" -d "{\"url\":\"0.0.0.0\",\"author\":\"aaaaa\"}"*/

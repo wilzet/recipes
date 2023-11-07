@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         });
 
         try {
-            await prisma.link.delete({
+            await prisma.link.deleteMany({
                 where: {
                     id: post?.urlId,
                     posts: {
@@ -26,11 +26,17 @@ export async function POST(request: Request) {
                     },
                 },
             });
+
+            await prisma.comment.deleteMany({
+                where: {
+                    postId: post?.id,
+                }
+            });
         } catch (err: any) {
             console.error(err);
         }
 
-        return NextResponse.json({});
+        return NextResponse.json({} as RecipePostResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {

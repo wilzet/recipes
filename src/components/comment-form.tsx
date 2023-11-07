@@ -1,66 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { UserUI } from "@/types/user";
-import { PostUI } from "@/types/post";
-import { RecipePostRequest, RecipePostResponse } from "@/types/recipe-post";
+import { CommentUI } from "@/types/comments";
+import { CommentRequest, CommentResponse } from "@/types/comments";
 import AppSettings from "@/lib/appsettings";
 import apiRequest from "@/lib/api-request";
 import Form from "@/components/form";
 import TextField from "@/components/text-field";
-import DateField from "@/components/date-field";
 import Button from "@/components/button";
 import Modal from "@/components/modal";
+import TextArea from "@/components/text-area";
 
-interface PostFormComponentProps {
-    user: UserUI | null,
-    date?: Date,
-    post?: PostUI,
+interface CommentFormComponentProps {
+    comment: CommentUI,
     edit?: boolean,
     callback: () => any,
 }
 
-export default function PostForm(props: PostFormComponentProps) {
+export default function CommentForm(props: CommentFormComponentProps) {
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
     const [title, setTitle] = useState<string>();
-    const [url, setUrl] = useState<string>('');
-    const [date, setDate] = useState<Date>(new Date());
+    const [content, setContent] = useState<string>('');
     const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
 
     useEffect(() => {
-        setDate(props.date ?? new Date());
-
-        if (props.post) {
-            setTitle(props.post.title);
-            setUrl(props.post.url);
-            setDate(props.post.date);
+        if (props.comment) {
+            setTitle(props.comment.title);
+            setContent(props.comment.content ?? '');
         }
-    }, [props.date, props.post])
+    }, [props.comment])
 
     const reset = () => {
         setStatusMessage(null);
-        setTitle('');
-        setUrl('');
-        setDate(props.date ?? new Date());
+        setTitle(undefined);
+        setContent('');
     }
 
-    const createPost = async () => {
-        if (!props.user) {
+    const createComment = async () => {
+        if (props.comment.authorName === '') {
             setStatusMessage('No author detected...');
             return;
         }
 
-        if (url === '' || !date) {
-            setStatusMessage('Empty fields...');
+        if (content === '') {
+            setStatusMessage('Empty comment...');
             return;
         }
         
-        let body: RecipePostRequest = {
-          url: url,
-          author: props.user.name,
-          date: date,
-        }
-
-        if (title !== '') {
-            body = { title: title, ...body };
+        let body: CommentRequest = {
+            postID: props.comment.postID,
+            title: title,
+            content: content,
+            authorName: props.comment.authorName,
         }
 
         const options = {
@@ -70,35 +59,32 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/create', options);
+        const response = await apiRequest<CommentResponse>('/api/comment/create', options);
 
         if (response && !response.error) {
             close();
         } else {
-            setStatusMessage('Error while posting...');
+            setStatusMessage('Error while commenting...');
         }
     }
 
-    const updatePost = async () => {
-        if (!props.user) {
+    const updateComment = async () => {
+        if (props.comment.authorName === '') {
             setStatusMessage('No author detected...');
             return;
         }
 
-        if (url === '' || !date) {
-            setStatusMessage('Empty fields...');
+        if (content === '') {
+            setStatusMessage('Empty comment...');
             return;
         }
         
-        let body: RecipePostRequest = {
-            id: props.post?.id,
-            url: url,
-            author: props.user.name,
-            date: date,
-        }
-
-        if (title !== '') {
-            body = { title: title, ...body };
+        let body: CommentRequest = {
+            id: props.comment.id,
+            postID: props.comment.postID,
+            title: title,
+            content: content,
+            authorName: props.comment.authorName,
         }
 
         const options = {
@@ -108,7 +94,7 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/update', options);
+        const response = await apiRequest<CommentResponse>('/api/comment/update', options);
 
         if (response && !response.error) {
             close();
@@ -117,17 +103,16 @@ export default function PostForm(props: PostFormComponentProps) {
         }
     }
 
-    const removePost = async () => {
-        if (!props.user) {
+    const removeComment = async () => {
+        if (props.comment.authorName === '') {
             setStatusMessage('No author detected...');
             return;
         }
         
-        let body: RecipePostRequest = {
-            id: props.post?.id,
-            url: url,
-            author: props.user.name,
-            date: date,
+        let body: CommentRequest = {
+            id: props.comment.id,
+            postID: props.comment.postID,
+            authorName: props.comment.authorName,
         }
 
         const options = {
@@ -137,21 +122,13 @@ export default function PostForm(props: PostFormComponentProps) {
           },
           body: JSON.stringify(body)
         };
-        const response = await apiRequest<RecipePostResponse>('/api/recipes/delete', options);
+        const response = await apiRequest<CommentResponse>('/api/comment/delete', options);
 
         if (response && !response.error) {
             close();
         } else {
             setStatusMessage('Error while deleting...');
         }
-    }
-
-    const formatDate = (date: Date) => {
-        const year = date.getFullYear().toString().padStart(4, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-
-        return year+'-'+month+'-'+day;
     }
 
     const close = () => {
@@ -161,23 +138,14 @@ export default function PostForm(props: PostFormComponentProps) {
 
     return (
         <Form
-            id={date.toString()}
-            title={'Post a new recipe'}
+            id={'comment-form-id'}
+            title={'Comment'}
             statusMessage={statusMessage}
-            submit={props.edit ? updatePost : createPost}
+            submit={props.edit ? updateComment : createComment}
             callback={close}
         >
             <TextField
-                id={'url'}
-                label={'URL'}
-                value={url}
-                placeholder={'https://...'}
-                class={''}
-                width={'min(1000px, 60vw)'}
-                onChange={(e) => setUrl(e)}
-            />
-            <TextField
-                id={'title'}
+                id={'comment-title'}
                 label={'Title'}
                 value={title ?? ''}
                 placeholder={'Optional'}
@@ -186,12 +154,15 @@ export default function PostForm(props: PostFormComponentProps) {
                 width={'min(1000px, 60vw)'}
                 onChange={(e) => setTitle(e)}
             />
-            <DateField
-                id={'date'}
-                label={'Date'}
-                value={formatDate(date)}
-                class={''}
-                onChange={(e) => {const date = new Date(e); date.setUTCHours(0, 0, 0, 0); setDate(new Date(e))}}
+            <TextArea
+                id={'comment-content'}
+                label={'Text'}
+                value={content}
+                placeholder={'...'}
+                rows={5}
+                columns={80}
+                width={'min(1000px, 60vw)'}
+                onChange={(e) => setContent(e)}
             />
             {props.edit && <div className='containerH left' style={{ marginRight: '10%' }}>
                 <Button
@@ -200,10 +171,10 @@ export default function PostForm(props: PostFormComponentProps) {
                     class={'buttonRed'}
                     onClick={() => setShowConfirmDialog(true)}
                 />
-                <Modal active={showConfirmDialog} parent={date.toString()}>
+                <Modal active={showConfirmDialog} parent={'comment-form-id'}>
                     <div className='containerV'>
                         <div className='containerH'>
-                            Do you want to remove this post?
+                            Do you want to remove this comment?
                         </div>
                         <div className='containerH'>
                             <Button
@@ -216,7 +187,7 @@ export default function PostForm(props: PostFormComponentProps) {
                                 value={'Yes'}
                                 class={'buttonRed'}
                                 active={true}
-                                onClick={async () => {await removePost(); setShowConfirmDialog(false)}}
+                                onClick={async () => {await removeComment(); setShowConfirmDialog(false)}}
                             />
                         </div>
                     </div>

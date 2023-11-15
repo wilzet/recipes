@@ -111,7 +111,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 />
             </div>
 
-            {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{(props.date ?? (props.posts ? (props.posts.length > 0 ? props.posts[0].date : new Date()) : new Date())).toDateString().slice(0, -5)}</h2>}
+            {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{(props.date ?? new Date()).toDateString().slice(0, -5)}</h2>}
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}
@@ -120,7 +120,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
             <Modal active={postForm} parent='posts-display'>
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}
-                    date={props.date ?? (props.posts ? (props.posts.length > 0 ? props.posts[0].date : new Date()) : new Date())}
+                    date={props.date ?? new Date()}
                     callback={closePostForm}
                 />
             </Modal>

@@ -73,6 +73,14 @@ export default function Page() {
     setSelectedUser(user);
   }
 
+  const updateUser = async () => {
+    await fetchLeaderboard();
+    const user = leaderboard.find(u => u.name === selectedUser?.name);
+    if (user) {
+      setSelectedUser(user);
+    }
+  }
+
   const logOut = async () => {
     setWelcomeMessage(defaultWelcome);
     setSelectedUser(null);
@@ -99,6 +107,11 @@ export default function Page() {
       await fetchLeaderboard();
       setUser(user);
     }
+  }
+
+  const closeProfile = async () => {
+    setProfile(false);
+    await updateUser();
   }
 
   return (
@@ -136,7 +149,8 @@ export default function Page() {
       </AnimateHeight>}
 
       <Calendar
-        selectedUsername={selectedUser?.name}
+        selectedUser={selectedUser ?? undefined}
+        update={updateUser}
       />
       <Leaderboard
           selectedUserName={selectedUser?.name}
@@ -152,7 +166,7 @@ export default function Page() {
       <Modal active={profile}>
         <Profile
           user={selectedUser}
-          callback={() => setProfile(false)}
+          callback={closeProfile}
         />
       </Modal>
     </Main>

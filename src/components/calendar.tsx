@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { PostUI } from '@/types/post';
+import { UserUI } from '@/types/user';
 import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
 import { getNameOfMonth, getCurrentMonth, daysInMonth, dayNames } from '@/lib/calendar';
 import apiRequest from '@/lib/api-request';
@@ -10,7 +11,8 @@ import Modal from '@/components/modal';
 import PostDisplay from '@/components/post-display';
 
 interface CalendarComponentProps {
-    selectedUsername?: string,
+    selectedUser?: UserUI,
+    update?: () => any,
 }
 
 export default function Calendar(props: CalendarComponentProps) {
@@ -42,7 +44,7 @@ export default function Calendar(props: CalendarComponentProps) {
         }
 
         asyncCall();
-    }, [month]);
+    }, [month, props.selectedUser]);
 
     const getRecipes = async () => {
         const year = month.getFullYear();
@@ -101,7 +103,7 @@ export default function Calendar(props: CalendarComponentProps) {
         return (
             <CalendarDay
                 key={index}
-                username={props.selectedUsername}
+                username={props.selectedUser?.name}
                 day={day}
                 month={month.getMonth()}
                 year={month.getFullYear()}
@@ -114,10 +116,15 @@ export default function Calendar(props: CalendarComponentProps) {
     }
 
     const showDayRecipes = (data: PostUI[] | undefined, day: number) => {
-        if (!props.selectedUsername && !data) return;
+        if (!props.selectedUser && !data) return;
 
         setShowRecipes(true);
         setDayNumber(day);
+    }
+
+    const closePostDisplay = async () => {
+        setShowRecipes(false);
+        if (props.update) await props.update();
     }
 
     return (
@@ -152,12 +159,12 @@ export default function Calendar(props: CalendarComponentProps) {
 
             <Modal active={showRecipes}>
                 <PostDisplay
-                    selectedUser={props.selectedUsername}
+                    selectedUser={props.selectedUser?.name}
                     date={new Date(month.getFullYear(), month.getMonth(), dayNumber)}
                     title={true}
                     posts={dayRecipes}
                     update={getRecipes}
-                    callback={() => setShowRecipes(false)}
+                    callback={closePostDisplay}
                 />
             </Modal>
         </div>

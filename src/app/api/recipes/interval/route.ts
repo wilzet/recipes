@@ -20,6 +20,7 @@ export async function POST(request: Request) {
             include: {
                 url: true,
                 author: true,
+                comments: true,
             }
         });
 

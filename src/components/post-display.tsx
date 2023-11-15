@@ -56,7 +56,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     (Updated on {post.updateDate.toDateString()})
                 </div>
                 <Button
-                    value={'Comments'}
+                    value={post.comments > 0 ? post.comments > 1 ? post.comments > 5 ? '(5+) Comments' : '(' + post.comments + ') Comments' : '(1) Comment' : 'Comment!' }
                     active={true}
                     class={'buttonBlue'}
                     style={{
@@ -91,6 +91,11 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
 
     const closePostForm = async () => {
         setPostForm(false);
+        await props.update();
+    }
+
+    const closeComments = async () => {
+        setComments(false);
         await props.update();
     }
 
@@ -138,7 +143,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 <Comments
                     selectedUser={props.selectedUser}
                     post={props.posts ? props.posts[postIndex] : undefined}
-                    callback={() => setComments(false)}
+                    callback={closeComments}
                 />
             </Modal>
         </div>

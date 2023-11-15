@@ -64,7 +64,7 @@ export default function Comments(props: CommentsComponentProps) {
                 {comment.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'inherit' }}>
                     {comment.title}
                 </h2>}
-                {comment.content && <p>
+                {comment.content && <p style={{ wordBreak: 'break-word' }}>
                     {comment.content}    
                 </p>}
                 <div className='containerH' style={{ textAlign: 'left' }}>

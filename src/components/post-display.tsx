@@ -55,21 +55,29 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     on {post.createDate.toDateString()}<br/>
                     (Updated on {post.updateDate.toDateString()})
                 </div>
-                <Button
-                    value={post.comments > 0 ? post.comments > 1 ? post.comments > 5 ? '(5+) Comments' : '(' + post.comments + ') Comments' : '(1) Comment' : 'Comment!' }
-                    active={true}
-                    class={'buttonBlue'}
-                    style={{
-                        padding: '5px',
-                        paddingRight: '30px',
-                        paddingLeft: '5px',
-                        marginLeft: '20px',
-                        position: 'relative',
-                    }}
-                    onClick={() => openComments(key)}
-                >
-                    <div className='comment-icon'/>
-                </Button>
+                <div className='containerH'>
+                    <Button
+                        value={post.comments > 0 ? post.comments > 1 ? post.comments > 5 ? '(5+) Comments' : '(' + post.comments + ') Comments' : '(1) Comment' : 'Comment!' }
+                        active={true}
+                        class={'buttonBlue'}
+                        style={{
+                            padding: '5px',
+                            paddingRight: '30px',
+                            paddingLeft: '5px',
+                            marginLeft: '20px',
+                            position: 'relative',
+                        }}
+                        onClick={() => openComments(key)}
+                    >
+                        <div className='comment-icon'/>
+                    </Button>
+                    <Button
+                        value={'Rate!'}
+                        active={true}
+                        class={'buttonGreen'}
+                        onClick={() => {}}
+                    />
+                </div>
             </div>
         );
     }

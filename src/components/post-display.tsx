@@ -51,7 +51,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     >
                         <div className='edit-icon'/>
                     </Button>}
-                    Created by {post.authorName}<br/>
+                    Posted by {post.authorName}<br/>
                     on {post.createDate.toDateString()}<br/>
                     (Updated on {post.updateDate.toDateString()})
                 </div>
@@ -120,7 +120,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}
-            {props.posts && props.posts.length > 0 && <div style={{ height: '100px' }}/>}
+            {props.posts && props.posts.length > 0 && <div style={{ height: '200px' }}/>}
             
             <Modal active={postForm} parent='posts-display'>
                 <PostForm

@@ -109,7 +109,7 @@ export default function Profile(props: ProfileComponentProps) {
                 </div>
             </div>}
 
-            <div style={{ minWidth: 'min(50vw, 1200px)', maxHeight: 'max(40vh, calc(80vh - 300px))', overflowY: 'auto' }}>
+            <div style={{ minWidth: 'min(50vw, 1200px)' }}>
                 <PostDisplay
                     selectedUser={props.user.name}
                     title={false}

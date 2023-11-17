@@ -63,7 +63,7 @@ export default function RateForm(props: RateFormComponentProps) {
         }
     }
 
-    const createRating = async () => {
+    const upsertRating = async () => {
         if (!props.selectedUser || !props.post) {
             setStatusMessage('No author detected...');
             return;
@@ -102,6 +102,34 @@ export default function RateForm(props: RateFormComponentProps) {
         }
     }
 
+    const clearRating = async () => {
+        if (!id || !props.selectedUser) {
+            setStatusMessage('Error when deleting...');
+            return;
+        }
+
+        let body: CommentRequest = {
+            id: id,
+            postID: 0,
+            authorName: props.selectedUser,
+        }
+
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        };
+        const response = await apiRequest<CommentResponse>('/api/comment/delete', options);
+
+        if (response && !response.error) {
+            close();
+        } else {
+            setStatusMessage('Error while deleting...');
+        }
+    }
+
     const giveRating = (r: number) => {
         setRating(r);
     } 
@@ -115,7 +143,7 @@ export default function RateForm(props: RateFormComponentProps) {
         <Form
             title={'Rate the post!'}
             statusMessage={statusMessage}
-            submit={createRating}
+            submit={upsertRating}
             callback={close}
         >
             <div className='containerH'>
@@ -130,6 +158,12 @@ export default function RateForm(props: RateFormComponentProps) {
                     );
                 })}
             </div>
+            {id && <Button
+                value={'Clear'}
+                class={'buttonRed'}
+                active={true}
+                onClick={clearRating}
+            />}
         </Form>
     );
 }

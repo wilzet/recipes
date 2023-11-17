@@ -158,7 +158,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 />
             </Modal>
 
-            <Modal active={rating} parent='post-display'>
+            <Modal active={rating} parent='posts-display'>
                 <RateForm
                     selectedUser={props.selectedUser}
                     post={props.posts ? props.posts[postIndex] : undefined}

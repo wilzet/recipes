@@ -58,7 +58,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 <div className='containerH'>
                     <Button
                         value={post.comments > 0 ? post.comments > 1 ? post.comments > 5 ? '(5+) Comments' : '(' + post.comments + ') Comments' : '(1) Comment' : 'Comment!' }
-                        active={true}
+                        active={props.selectedUser ? true : post.comments > 0}
                         class={'buttonBlue'}
                         style={{
                             padding: '5px',
@@ -73,7 +73,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     </Button>
                     <Button
                         value={'Rate!'}
-                        active={true}
+                        active={props.selectedUser ? true : false}
                         class={'buttonGreen'}
                         onClick={() => {}}
                     />

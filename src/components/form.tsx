@@ -14,7 +14,7 @@ export default function Form(props: PropsWithChildren<FormComponentProps>) {
         <div className='overlay-form' id={props.id}>
             <div className='overlay-form-inner'>
                 <div className='form-container' style={{width: 'fit-content'}}>
-                    <h2 style={{fontSize: '30px', color: 'var(--color-gray)'}}>
+                    <h2 style={{fontSize: '30px', color: 'inherit'}}>
                         {props.title}
                     </h2>
                     {props.children}

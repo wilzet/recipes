@@ -1,4 +1,5 @@
 import { Post, User } from '@prisma/client';
+import { removeNull } from '@/types/generic-helper';
 
 type CommentWithPostAndAuthor = {
     id: number,
@@ -12,7 +13,12 @@ type CommentWithPostAndAuthor = {
 }
 
 export const toCommentUI = (comment: CommentWithPostAndAuthor) => {
-    return {
+    if (comment.title === process.env.SECRET_RATING_ID) {
+        comment.title = null;
+        comment.content = null;
+    }
+
+    const commentUI = {
         id: comment.id,
         postID: comment.post.id,
         title: comment.title,
@@ -22,6 +28,8 @@ export const toCommentUI = (comment: CommentWithPostAndAuthor) => {
         createDate: comment.created,
         updateDate: comment.updated,
     } as CommentUI;
+
+    return removeNull(commentUI);
 }
 
 export interface CommentUI {

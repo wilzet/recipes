@@ -25,7 +25,7 @@ export const toPostUI = (post: PostWithLinkAndAuthorAndComments) => {
         url: post.url.url,
         authorName: post.author.name,
         rating: rating,
-        comments: post.comments.length,
+        comments: post.comments.length - ratings.length,
         createDate: post.created,
         updateDate: post.updated,
     } as PostUI;

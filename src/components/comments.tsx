@@ -53,6 +53,8 @@ export default function Comments(props: CommentsComponentProps) {
                 val.createDate = new Date(val.createDate);
                 val.updateDate = new Date(val.updateDate);
                 return val;
+            }).filter(val => {
+                return val.title || val.content;
             });
             setComments(commentsWithDates);
         }

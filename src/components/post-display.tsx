@@ -5,6 +5,7 @@ import Button from '@/components/button';
 import Modal from '@/components/modal';
 import PostForm from '@/components/post-form';
 import Comments from '@/components/comments';
+import RateForm from './rate-form';
 
 interface PostDisplayComponentProps {
     selectedUser?: string,
@@ -19,6 +20,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
     const [postForm, setPostForm] = useState<boolean>(false);
     const [editForm, setEditForm] = useState<boolean>(false);
     const [comments, setComments] = useState<boolean>(false);
+    const [rating, setRating] = useState<boolean>(false);
     const [postIndex, setPostIndex] = useState<number>(0);
 
     const renderPostDisplay = (key: number, post: PostUI) => {
@@ -34,6 +36,32 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         {post.url}
                     </p>}
                 </h3>
+                {post.rating && <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'var(--color-pink)' }}>
+                    {`${post.rating}/5`}
+                </h3>}
+                <div className='containerH'>
+                    <Button
+                        value={post.comments > 0 ? post.comments > 1 ? post.comments > 5 ? '(5+) Comments' : `(${post.comments}) Comments` : '(1) Comment' : 'Comment!' }
+                        active={props.selectedUser ? true : post.comments > 0}
+                        class={'buttonBlue'}
+                        style={{
+                            padding: '5px',
+                            paddingRight: '30px',
+                            paddingLeft: '5px',
+                            marginLeft: '20px',
+                            position: 'relative',
+                        }}
+                        onClick={() => openComments(key)}
+                    >
+                        <div className='comment-icon'/>
+                    </Button>
+                    <Button
+                        value={'Rate!'}
+                        active={props.selectedUser ? true : false}
+                        class={'buttonGreen'}
+                        onClick={() => openRating(key)}
+                    />
+                </div>
                 <div className='containerH' style={{ textAlign: 'left' }}>
                     {props.selectedUser === post.authorName && <Button
                         value={'Edit'}
@@ -55,29 +83,6 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     on {post.createDate.toDateString()}<br/>
                     (Updated on {post.updateDate.toDateString()})
                 </div>
-                <div className='containerH'>
-                    <Button
-                        value={post.comments > 0 ? post.comments > 1 ? post.comments > 5 ? '(5+) Comments' : '(' + post.comments + ') Comments' : '(1) Comment' : 'Comment!' }
-                        active={props.selectedUser ? true : post.comments > 0}
-                        class={'buttonBlue'}
-                        style={{
-                            padding: '5px',
-                            paddingRight: '30px',
-                            paddingLeft: '5px',
-                            marginLeft: '20px',
-                            position: 'relative',
-                        }}
-                        onClick={() => openComments(key)}
-                    >
-                        <div className='comment-icon'/>
-                    </Button>
-                    <Button
-                        value={'Rate!'}
-                        active={props.selectedUser ? true : false}
-                        class={'buttonGreen'}
-                        onClick={() => {}}
-                    />
-                </div>
             </div>
         );
     }
@@ -92,18 +97,16 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
         setPostIndex(index);
     }
 
-    const closeEditForm = async () => {
+    const openRating = (index: number) => {
+        setRating(true);
+        setPostIndex(index);
+    }
+
+    const closeForm = async () => {
         setEditForm(false);
-        await props.update();
-    }
-
-    const closePostForm = async () => {
         setPostForm(false);
-        await props.update();
-    }
-
-    const closeComments = async () => {
         setComments(false);
+        setRating(false);
         await props.update();
     }
 
@@ -134,7 +137,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}
                     date={props.date ?? new Date()}
-                    callback={closePostForm}
+                    callback={closeForm}
                 />
             </Modal>
 
@@ -143,7 +146,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     user={{ name: props.selectedUser, score: 0} as UserUI}
                     post={props.posts ? props.posts[postIndex] : undefined}
                     edit={true}
-                    callback={closeEditForm}
+                    callback={closeForm}
                 />
             </Modal>
 
@@ -151,7 +154,15 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 <Comments
                     selectedUser={props.selectedUser}
                     post={props.posts ? props.posts[postIndex] : undefined}
-                    callback={closeComments}
+                    callback={closeForm}
+                />
+            </Modal>
+
+            <Modal active={rating} parent='post-display'>
+                <RateForm
+                    selectedUser={props.selectedUser}
+                    post={props.posts ? props.posts[postIndex] : undefined}
+                    callback={closeForm}
                 />
             </Modal>
         </div>

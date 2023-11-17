@@ -57,6 +57,7 @@
     text-align: center;
     font-size: min(2vw, 1.5rem);
     overflow: hidden;
+    color: var(--color-white);
 }
 
 .calendar-grid-item-daybox-number {

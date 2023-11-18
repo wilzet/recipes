@@ -25,7 +25,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
 
     const renderPostDisplay = (key: number, post: PostUI) => {
         return (
-            <div key={key} className='containerV' style={{ overflow: 'hidden', marginBottom: '20px', textAlign: 'center', wordBreak: 'break-word' }}>
+            <div key={key} className='containerV post-container' style={{ overflow: 'hidden' }}>
                 {post.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'inherit' }}>
                     {post.title}
                 </h2>}
@@ -36,7 +36,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         {post.url}
                     </p>}
                 </h3>
-                {post.rating && <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'var(--color-pink)' }}>
+                {post.rating && <h3 style={{ fontSize: '2rem', marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'var(--color-pink)' }}>
                     {`${post.rating}/5`}
                 </h3>}
                 <div className='containerH'>

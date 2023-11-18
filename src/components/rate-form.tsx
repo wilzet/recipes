@@ -149,12 +149,14 @@ export default function RateForm(props: RateFormComponentProps) {
             <div className='containerH'>
                 {[0, 1, 2, 3, 4, 5].map(val => {
                     return(
-                        <Button
-                            value={`${val}`}
-                            class={val % 3 === 0 ? 'buttonBlue' : val % 2 === 0 ? 'buttonRed' : 'buttonGreen'}
-                            active={rating !== val}
-                            onClick={() => giveRating(val)}
-                        />
+                        <div key={val}>
+                            <Button
+                                value={`${val}`}
+                                class={val % 3 === 0 ? 'buttonBlue' : val % 2 === 0 ? 'buttonRed' : 'buttonGreen'}
+                                active={rating !== val}
+                                onClick={() => giveRating(val)}
+                            />
+                        </div>
                     );
                 })}
             </div>

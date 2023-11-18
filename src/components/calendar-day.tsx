@@ -46,7 +46,7 @@ export default function CalendarDay(props: CalendarDayComponentProps) {
                     <div className='calendar-grid-item-daybox' style={{ height: '0px' }}/>
                     {props.recipes.map((val, index) => {
                         return (
-                            <div key={index} className='calendar-grid-item-daybox' style={{ backgroundColor: val.authorName === props.username ? 'var(--color-lightblue)' : 'var(--color-pink)' }}>
+                            <div key={index} className='calendar-grid-item-daybox containerH' style={{ backgroundColor: val.authorName === props.username ? 'var(--color-lightblue)' : 'var(--color-pink)' }}>
                                 {val.rating && `${val.rating}/5`}
                             </div>
                         );

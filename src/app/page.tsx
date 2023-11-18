@@ -74,17 +74,12 @@ export default function Page() {
   }
 
   const updateUser = async () => {
-    await fetchLeaderboard();
-    const user = leaderboard.find(u => u.name === selectedUser?.name);
-    if (user) {
-      setSelectedUser(user);
-    }
+    if (selectedUser) await fetchUser(selectedUser.name);
   }
 
   const logOut = async () => {
     setWelcomeMessage(defaultWelcome);
     setSelectedUser(null);
-    await fetchLeaderboard();
   }
 
   const renderUserButton = (user: UserUI, index: number) => {
@@ -111,6 +106,7 @@ export default function Page() {
 
   const closeProfile = async () => {
     setProfile(false);
+    await fetchLeaderboard();
     await updateUser();
   }
 
@@ -150,7 +146,7 @@ export default function Page() {
 
       <Calendar
         selectedUser={selectedUser ?? undefined}
-        update={updateUser}
+        update={closeProfile}
       />
       <Leaderboard
           selectedUserName={selectedUser?.name}
@@ -166,6 +162,7 @@ export default function Page() {
       <Modal active={profile}>
         <Profile
           user={selectedUser}
+          update={updateUser}
           callback={closeProfile}
         />
       </Modal>

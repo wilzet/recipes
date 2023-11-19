@@ -25,7 +25,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
 
     const renderPostDisplay = (key: number, post: PostUI) => {
         return (
-            <div key={key} className='containerV post-container' style={{ overflow: 'hidden' }}>
+            <div key={key} className='containerV post-container' style={{ maxWidth: 'min(60vw, 1200px)', overflow: 'hidden' }}>
                 {post.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'inherit' }}>
                     {post.title}
                 </h2>}

@@ -115,15 +115,13 @@ export default function Profile(props: ProfileComponentProps) {
                 </div>
             </div>}
 
-            <div style={{ minWidth: 'min(50vw, 1200px)' }}>
-                <PostDisplay
-                    selectedUser={props.user.name}
-                    title={false}
-                    posts={recipes}
-                    update={update}
-                    callback={props.callback}
-                />
-            </div>
+            <PostDisplay
+                selectedUser={props.user.name}
+                title={false}
+                posts={recipes}
+                update={update}
+                callback={props.callback}
+            />
         </div>
     );
 }

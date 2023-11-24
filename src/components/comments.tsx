@@ -130,7 +130,7 @@ export default function Comments(props: CommentsComponentProps) {
                 {props.post.title}
             </h2>}
             <h3 style={{ fontSize: '1.5rem', marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
-                {props.post.url.includes('://') ? <a href={props.post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
+                {props.post.url.includes('://') ? <a href={props.post.url} target='_blank' style={{ color: 'var(--color-lightblue)', wordBreak: 'break-word' }}>
                     {props.post.url}
                 </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)' }}>
                     {props.post.url}
@@ -140,6 +140,7 @@ export default function Comments(props: CommentsComponentProps) {
             {comments?.map((val, index) => {
                 return renderComment(index, val);
             })}
+            {comments && comments.length > 0 && <div style={{ height: '200px' }}/>}
 
             <Modal active={commentForm} parent='comments'>
                 <CommentForm

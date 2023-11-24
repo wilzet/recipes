@@ -19,6 +19,6 @@ A simple local web app for recipes and meal planning.
 > - New layout
 > - Valuable features
 >   - Comments
->   - Ratings [WIP]
-#### 2?????
+>   - Ratings
+#### 231124
 > Alpha state

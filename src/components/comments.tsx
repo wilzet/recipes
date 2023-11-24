@@ -53,6 +53,8 @@ export default function Comments(props: CommentsComponentProps) {
                 val.createDate = new Date(val.createDate);
                 val.updateDate = new Date(val.updateDate);
                 return val;
+            }).filter(val => {
+                return val.title || val.content;
             });
             setComments(commentsWithDates);
         }
@@ -64,7 +66,7 @@ export default function Comments(props: CommentsComponentProps) {
                 {comment.title && <h2 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'inherit' }}>
                     {comment.title}
                 </h2>}
-                {comment.content && <p>
+                {comment.content && <p style={{ wordBreak: 'break-word' }}>
                     {comment.content}    
                 </p>}
                 <div className='containerH' style={{ textAlign: 'left' }}>
@@ -128,7 +130,7 @@ export default function Comments(props: CommentsComponentProps) {
                 {props.post.title}
             </h2>}
             <h3 style={{ fontSize: '1.5rem', marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
-                {props.post.url.includes('://') ? <a href={props.post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
+                {props.post.url.includes('://') ? <a href={props.post.url} target='_blank' style={{ color: 'var(--color-lightblue)', wordBreak: 'break-word' }}>
                     {props.post.url}
                 </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)' }}>
                     {props.post.url}
@@ -138,6 +140,7 @@ export default function Comments(props: CommentsComponentProps) {
             {comments?.map((val, index) => {
                 return renderComment(index, val);
             })}
+            {comments && comments.length > 0 && <div style={{ height: '200px' }}/>}
 
             <Modal active={commentForm} parent='comments'>
                 <CommentForm

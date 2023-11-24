@@ -11,23 +11,47 @@ export async function POST(request: Request) {
     }
 
     try {
-        await prisma.comment.create({
-            data: {
-                title: data.title,
-                content: data.content,
-                rating: data.rating,
-                post: {
-                    connect: {
-                        id: data.postID,
+        if (data.rating || data.rating === 0) {
+            await prisma.comment.upsert({
+                where: {
+                    id: data.id || -1,
+                },
+                update: {
+                    rating: data.rating,
+                },
+                create: {
+                    title: process.env.SECRET_RATING_ID,
+                    rating: data.rating,
+                    post: {
+                        connect: {
+                            id: data.postID,
+                        },
+                    },
+                    author: {
+                        connect: {
+                            name: data.authorName,
+                        },
                     },
                 },
-                author: {
-                    connect: {
-                        name: data.authorName,
+            });
+        } else { 
+            await prisma.comment.create({
+                data: {
+                    title: data.title,
+                    content: data.content,
+                    post: {
+                        connect: {
+                            id: data.postID,
+                        },
+                    },
+                    author: {
+                        connect: {
+                            name: data.authorName,
+                        },
                     },
                 },
-            },
-        });
+            });
+        }
 
         return NextResponse.json({} as CommentResponse);
     } catch (err: any) {

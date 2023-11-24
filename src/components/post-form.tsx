@@ -161,7 +161,7 @@ export default function PostForm(props: PostFormComponentProps) {
 
     return (
         <Form
-            id={date.toString()}
+            id={'post-form-id'}
             title={'Post a new recipe'}
             statusMessage={statusMessage}
             submit={props.edit ? updatePost : createPost}
@@ -200,8 +200,8 @@ export default function PostForm(props: PostFormComponentProps) {
                     class={'buttonRed'}
                     onClick={() => setShowConfirmDialog(true)}
                 />
-                <Modal active={showConfirmDialog} parent={date.toString()}>
-                    <div className='containerV'>
+                <Modal active={showConfirmDialog} parent={'post-form-id'}>
+                    <div className='containerV form-container' style={{ width: 'fit-content' }}>
                         <div className='containerH'>
                             Do you want to remove this post?
                         </div>
@@ -216,7 +216,7 @@ export default function PostForm(props: PostFormComponentProps) {
                                 value={'Yes'}
                                 class={'buttonRed'}
                                 active={true}
-                                onClick={async () => {await removePost(); setShowConfirmDialog(false)}}
+                                onClick={async () => {setShowConfirmDialog(false); await removePost()}}
                             />
                         </div>
                     </div>

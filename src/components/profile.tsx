@@ -10,6 +10,7 @@ import Button from '@/components/button';
 
 interface ProfileComponentProps {
     user: UserUI | null,
+    update: () => any,
     callback: () => any,
 }
 
@@ -73,6 +74,11 @@ export default function Profile(props: ProfileComponentProps) {
         setMonth(date);
     }
 
+    const update = async () => {
+        await getRecipes();
+        await props.update();
+    }
+
     return (
         <div className='containerV'>
             <h1>{props.user.name}</h1>
@@ -109,15 +115,13 @@ export default function Profile(props: ProfileComponentProps) {
                 </div>
             </div>}
 
-            <div style={{ minWidth: 'min(50vw, 1200px)', maxHeight: 'max(40vh, calc(80vh - 300px))', overflowY: 'auto' }}>
-                <PostDisplay
-                    selectedUser={props.user.name}
-                    title={false}
-                    posts={recipes}
-                    update={getRecipes}
-                    callback={props.callback}
-                />
-            </div>
+            <PostDisplay
+                selectedUser={props.user.name}
+                title={false}
+                posts={recipes}
+                update={update}
+                callback={props.callback}
+            />
         </div>
     );
 }

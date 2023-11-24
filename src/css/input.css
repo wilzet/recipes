@@ -1,6 +1,6 @@
 input[type="text"] {
     appearance: none;
-    background-color: var(--color-white);
+    background-color: var(--color-lightgray);
     border: 2px solid var(--color-gray);
     border-radius: var(--border-radius);
     pointer-events: all;
@@ -32,7 +32,7 @@ input[type="text"] {
 textarea {
     appearance: none;
     inset: 0;
-    background: var(--color-white);
+    background: var(--color-lightgray);
     border: 2px solid var(--color-gray);
     border-radius: var(--border-radius);
     pointer-events: all;
@@ -62,7 +62,7 @@ textarea {
 input[type="date"] {
     appearance: none;
     inset: 0;
-    background: var(--color-white) url(/calendar_icon.svg) 95% 50% no-repeat;
+    background: var(--color-lightgray) url(/calendar_icon.svg) 95% 50% no-repeat;
     border: 2px solid var(--color-gray);
     border-radius: var(--border-radius);
     pointer-events: all;
@@ -93,5 +93,19 @@ input[type="date"] {
         -moz-appearance: none;
         -o-appearance: none;
         appearance: none;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    input[type="text"] {
+        background-color: var(--color-white);
+    }
+
+    input[type="date"] {
+        background-color: var(--color-white);
+    }
+
+    textarea {
+        background-color: var(--color-white);
     }
 }

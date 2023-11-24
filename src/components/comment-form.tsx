@@ -172,7 +172,7 @@ export default function CommentForm(props: CommentFormComponentProps) {
                     onClick={() => setShowConfirmDialog(true)}
                 />
                 <Modal active={showConfirmDialog} parent={'comment-form-id'}>
-                    <div className='containerV'>
+                    <div className='containerV form-container' style={{ width: 'fit-content' }}>
                         <div className='containerH'>
                             Do you want to remove this comment?
                         </div>
@@ -187,7 +187,7 @@ export default function CommentForm(props: CommentFormComponentProps) {
                                 value={'Yes'}
                                 class={'buttonRed'}
                                 active={true}
-                                onClick={async () => {await removeComment(); setShowConfirmDialog(false)}}
+                                onClick={async () => {setShowConfirmDialog(false); await removeComment()}}
                             />
                         </div>
                     </div>

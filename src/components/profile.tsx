@@ -14,12 +14,7 @@ interface ProfileComponentProps {
     callback: () => any,
 }
 
-export default function Profile(props: ProfileComponentProps) {
-    if (!props.user) {
-        props.callback();
-        return <></>;
-    }
-    
+export default function Profile(props: ProfileComponentProps) {    
     const { width } = useWindowDimensions();
     const [month, setMonth] = useState<Date>(getCurrentMonth());
     const [recipes, setRecipes] = useState<PostUI[]>();
@@ -31,6 +26,11 @@ export default function Profile(props: ProfileComponentProps) {
 
         asyncCall();
     }, [month]);
+
+    if (!props.user) {
+        props.callback();
+        return <></>;
+    }
 
     const getRecipes = async () => {
         const year = month.getFullYear();

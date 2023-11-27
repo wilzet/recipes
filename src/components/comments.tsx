@@ -14,11 +14,6 @@ interface CommentsComponentProps {
 }
 
 export default function Comments(props: CommentsComponentProps) {
-    if (!props.post) {
-        props.callback();
-        return <></>;
-    }
-
     const [commentForm, setCommentForm] = useState<boolean>(false);
     const [editForm, setEditForm] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentUI[]>();
@@ -31,6 +26,11 @@ export default function Comments(props: CommentsComponentProps) {
 
         asyncCall();
     }, []);
+
+    if (!props.post) {
+        props.callback();
+        return <></>;
+    }
 
     const getComments = async () => {
         if (!props.post) return;

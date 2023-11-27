@@ -39,6 +39,8 @@ export default function Page() {
     asyncCall();
   }, []);
 
+  const userBoxHeight = useMemo(() => {return selectedUser ? '0px' : 'max(100px, 60vh)'}, [selectedUser]);
+
   const users = useMemo(() => {
     return leaderboard.length > 0 ? leaderboard.toSorted((a, b) => {
       if (a.name < b.name) {
@@ -135,7 +137,7 @@ export default function Page() {
       {users.length > 0 && <AnimateHeight
         class={'users-container'}
         duration={500}
-        heightHook={() => useMemo(() => {return selectedUser ? '0px' : 'max(100px, 60vh)'}, [selectedUser])}
+        heightHook={() => userBoxHeight}
       >
         <Grid<UserUI>
           class='users-grid-container'

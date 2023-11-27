@@ -1,6 +1,5 @@
 import React, { useEffect, PropsWithChildren } from 'react';
 import ReactModal from 'react-modal';
-ReactModal.setAppElement('#main');
 
 interface ModalComponentProps {
     active: boolean,
@@ -18,6 +17,7 @@ export default function Modal(props: PropsWithChildren<ModalComponentProps>) {
 
     return (
         <ReactModal
+            appElement={document.querySelector('#main') as HTMLElement}
             isOpen={props.active}
             style={{ overlay: { backgroundColor: 'rgba(1, 1, 1, 0)', },
                      content: { backgroundColor: 'rgba(1, 1, 1, 0)', border: 'none', inset: '20px' }}}

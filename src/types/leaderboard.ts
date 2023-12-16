@@ -1,6 +1,8 @@
 import { UserUI } from '@/types/user';
 
-// Doesn't expect request body
+export type LeaderboardRequest = {
+    length?: number,
+}
 
 export type LeaderboardResponse = {
     leaderboard?: UserUI[],

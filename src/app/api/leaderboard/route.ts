@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
-import { LeaderboardResponse } from '@/types/leaderboard';
+import { LeaderboardRequest, LeaderboardResponse } from '@/types/leaderboard';
 import { getUserUILeaderboard } from '@/lib/leaderboard';
 
-export async function GET() {
+export async function POST(request: Request) {
+    const data: LeaderboardRequest = await request.json();
+
     try {
-        const leaderboard = await getUserUILeaderboard();
+        let leaderboard = await getUserUILeaderboard();
+        
+        if (data.length && data.length > 0) {
+            const length = Math.min(data.length, leaderboard.length);
+            leaderboard = leaderboard.slice(0, length);
+        }
 
         return NextResponse.json({ leaderboard: leaderboard } as LeaderboardResponse);
     } catch (err) {

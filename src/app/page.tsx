@@ -1,5 +1,4 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
 import { LeaderboardRequest, LeaderboardResponse } from '@/types/leaderboard';
@@ -23,17 +22,9 @@ export default function Page() {
   const [userForm, setUserForm] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
 
-  const searchUser = useSearchParams().get('user');
-  const { replace } = useRouter();
-
   useEffect(() => {
     const asyncCall = async () => {
       await fetchLeaderboard();
-
-      if (searchUser) {
-        await fetchUser(searchUser);
-        replace('/');
-      }
     }
 
     asyncCall();

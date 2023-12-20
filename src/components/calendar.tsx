@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, PropsWithChildren } from 'react';
 import { PostUI } from '@/types/post';
 import { UserUI } from '@/types/user';
 import { RecipeAllRequest, RecipeAllResponse } from '@/types/recipe-all';
@@ -15,7 +15,7 @@ interface CalendarComponentProps {
     update?: () => any,
 }
 
-export default function Calendar(props: CalendarComponentProps) {
+export default function Calendar(props: PropsWithChildren<CalendarComponentProps>) {
     const [month, setMonth] = useState<Date>(getCurrentMonth());
     const [dayNumber, setDayNumber] = useState<number>();
     const [recipes, setRecipes] = useState<PostUI[]>();
@@ -156,6 +156,8 @@ export default function Calendar(props: CalendarComponentProps) {
                 data={days}
                 element={renderDay}
             />
+
+            {props.children}
 
             <Modal active={showRecipes}>
                 <PostDisplay

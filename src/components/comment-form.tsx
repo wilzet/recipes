@@ -149,7 +149,6 @@ export default function CommentForm(props: CommentFormComponentProps) {
                 label={'Title'}
                 value={title ?? ''}
                 placeholder={'Optional'}
-                class={''}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
                 width={'min(1000px, 60vw)'}
                 onChange={(e) => setTitle(e)}

@@ -53,7 +53,6 @@ export default function UserForm(props: UserFormComponentProps) {
                 label={'Username'}
                 value={username}
                 placeholder={'User'}
-                class={''}
                 length={AppSettings.USERNAME_MAX_LENGTH}
                 width={'200px'}
                 onChange={(e) => setUsername(e)}

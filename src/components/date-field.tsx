@@ -4,7 +4,7 @@ interface DateFieldComponentProps {
     id: string,
     label: string,
     value: string,
-    class: string,
+    class?: string,
     onChange: (e: string) => any,
 }
 

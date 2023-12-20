@@ -172,7 +172,6 @@ export default function PostForm(props: PostFormComponentProps) {
                 label={'URL'}
                 value={url}
                 placeholder={'https://...'}
-                class={''}
                 width={'min(1000px, 60vw)'}
                 onChange={(e) => setUrl(e)}
             />
@@ -181,7 +180,6 @@ export default function PostForm(props: PostFormComponentProps) {
                 label={'Title'}
                 value={title ?? ''}
                 placeholder={'Optional'}
-                class={''}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
                 width={'min(1000px, 60vw)'}
                 onChange={(e) => setTitle(e)}
@@ -190,7 +188,6 @@ export default function PostForm(props: PostFormComponentProps) {
                 id={'date'}
                 label={'Date'}
                 value={formatDate(date)}
-                class={''}
                 onChange={(e) => {const date = new Date(e); date.setUTCHours(0, 0, 0, 0); setDate(new Date(e))}}
             />
             {props.edit && <div className='containerH left' style={{ marginRight: '10%' }}>

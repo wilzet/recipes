@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { CommentUI } from "@/types/comments";
-import { CommentRequest, CommentResponse } from "@/types/comments";
-import AppSettings from "@/lib/appsettings";
-import apiRequest from "@/lib/api-request";
-import Form from "@/components/form";
-import TextField from "@/components/text-field";
-import Button from "@/components/button";
-import Modal from "@/components/modal";
-import TextArea from "@/components/text-area";
+import React, { useState, useEffect } from 'react';
+import { CommentUI } from '@/types/comments';
+import { CommentRequest, CommentResponse } from '@/types/comments';
+import AppSettings from '@/lib/appsettings';
+import apiRequest from '@/lib/api-request';
+import Form from '@/components/form';
+import TextField from '@/components/text-field';
+import Button from '@/components/button';
+import Modal from '@/components/modal';
+import TextArea from '@/components/text-area';
 
 interface CommentFormComponentProps {
     comment: CommentUI,
@@ -149,7 +149,6 @@ export default function CommentForm(props: CommentFormComponentProps) {
                 label={'Title'}
                 value={title ?? ''}
                 placeholder={'Optional'}
-                class={''}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
                 width={'min(1000px, 60vw)'}
                 onChange={(e) => setTitle(e)}

@@ -1,6 +1,6 @@
-import React from "react";
-import { PostUI } from "@/types/post";
-import AppSettings from "@/lib/appsettings";
+import React from 'react';
+import { PostUI } from '@/types/post';
+import AppSettings from '@/lib/appsettings';
 
 interface CalendarDayComponentProps {
     key: string | number,

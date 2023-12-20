@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { UserResponse, UserUI } from "@/types/user";
-import AppSettings from "@/lib/appsettings";
-import apiRequest from "@/lib/api-request";
-import Form from "@/components/form";
-import TextField from "@/components/text-field";
+import React, { useState } from 'react';
+import { UserResponse, UserUI } from '@/types/user';
+import AppSettings from '@/lib/appsettings';
+import apiRequest from '@/lib/api-request';
+import Form from '@/components/form';
+import TextField from '@/components/text-field';
 
 interface UserFormComponentProps {
     callback: (user: UserUI | undefined) => any,
@@ -53,7 +53,6 @@ export default function UserForm(props: UserFormComponentProps) {
                 label={'Username'}
                 value={username}
                 placeholder={'User'}
-                class={''}
                 length={AppSettings.USERNAME_MAX_LENGTH}
                 width={'200px'}
                 onChange={(e) => setUsername(e)}

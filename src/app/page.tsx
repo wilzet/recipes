@@ -1,18 +1,18 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
-import { LeaderboardResponse } from '@/types/leaderboard';
+import { LeaderboardRequest, LeaderboardResponse } from '@/types/leaderboard';
 import apiRequest from '@/lib/api-request';
+import useWindowDimensions from '@/lib/window';
 import Main from '@/components/main';
 import Leaderboard from '@/components/leaderboard';
 import Button from '@/components/button';
-import Grid from '@/components/grid';
-import AnimateHeight from '@/components/animate-height';
 import Modal from '@/components/modal';
 import UserForm from '@/components/user-form';
 import Calendar from '@/components/calendar';
 import Profile from '@/components/profile';
+import UsersGrid from '@/components/users-grid';
+import HamburgerMenu from '@/components/hamburger-menu';
 
 const defaultWelcome = 'Please select a user';
 
@@ -22,24 +22,15 @@ export default function Page() {
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const [userForm, setUserForm] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
-
-  const searchUser = useSearchParams().get('user');
-  const { replace } = useRouter();
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     const asyncCall = async () => {
       await fetchLeaderboard();
-
-      if (searchUser) {
-        await fetchUser(searchUser);
-        replace('/');
-      }
     }
 
     asyncCall();
   }, []);
-
-  const userBoxHeight = useMemo(() => {return selectedUser ? '0px' : 'max(100px, 60vh)'}, [selectedUser]);
 
   const users = useMemo(() => {
     return leaderboard.length > 0 ? leaderboard.toSorted((a, b) => {
@@ -54,7 +45,19 @@ export default function Page() {
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard');
+    let body: LeaderboardRequest = {
+      length: 10,
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
+
+    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard', options);
 
     if (response && !response.error) {
       setLeaderboard(response.leaderboard ?? []);
@@ -84,19 +87,6 @@ export default function Page() {
     setSelectedUser(null);
   }
 
-  const renderUserButton = (user: UserUI, index: number) => {
-    return (
-      <div key={index} className='users-grid-item'>
-        <Button
-          value={user.name}
-          class={'buttonFixedSize'}
-          active={true}
-          onClick={() => fetchUser(user.name)}
-        />
-      </div>
-    );
-  }
-
   const closeUserForm = async (user: UserUI | undefined) => {
     setUserForm(false);
     if (user)
@@ -114,7 +104,11 @@ export default function Page() {
 
   return (
     <Main>
-      <div className='containerH left'>
+      <HamburgerMenu
+        centerText={welcomeMessage}
+        width={width}
+        hamburgerTriggerWidth={800}
+      >
         {selectedUser ? <Button
           value={'View profile'}
           class={'buttonBlue'}
@@ -132,28 +126,23 @@ export default function Page() {
           active={selectedUser ? true : false}
           onClick={logOut}
         />
-      </div>
-      <h3>{welcomeMessage}</h3>
-      {users.length > 0 && <AnimateHeight
-        class={'users-container'}
-        duration={500}
-        heightHook={() => userBoxHeight}
-      >
-        <Grid<UserUI>
-          class='users-grid-container'
-          data={users}
-          element={renderUserButton}
-        />
-      </AnimateHeight>}
+      </HamburgerMenu>
+      <UsersGrid
+        active={selectedUser ? true : false}
+        users={users}
+        onClick={fetchUser}
+      />
 
       <Calendar
         selectedUser={selectedUser ?? undefined}
         update={closeProfile}
-      />
-      <Leaderboard
+      >
+        <Leaderboard
           selectedUserName={selectedUser?.name}
+          style={width < 1400 ? {} : { position: 'absolute', left: 'max(min(calc(85%), calc(50% + 800px)), calc(50% + 558px))', top: '220px', transform: 'translate(-50%, -50%)' }}
           leaderboard={leaderboard}
-      />
+        />
+      </Calendar>
 
       <Modal active={userForm}>
         <UserForm

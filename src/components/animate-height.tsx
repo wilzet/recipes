@@ -1,4 +1,4 @@
-import React, { useEffect, useState, PropsWithChildren } from "react";
+import React, { useEffect, useState, PropsWithChildren } from 'react';
 
 interface AnimateHeightComponentProps {
     class: string,

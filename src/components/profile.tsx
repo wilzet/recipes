@@ -83,7 +83,7 @@ export default function Profile(props: ProfileComponentProps) {
         <div className='containerV'>
             <h1>{props.user.name}</h1>
             <h2 style={{ color: 'var(--foreground-default-color)' }}>Score: {props.user.score}</h2>
-            {width > 423 ? <div className='containerH calendar-header-container' style={{ padding: '0px 6px', marginBottom: '20px', borderColor: 'var(--color-white)' }}>
+            {width > 423 ? <div className='containerH calendar-header-container' style={{ marginBottom: '20px', borderColor: 'var(--color-white)' }}>
                 <Button
                     value={'Previous'}
                     active={true}

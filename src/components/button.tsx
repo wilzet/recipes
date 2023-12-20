@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react';
 interface ButtonComponentProps {
     value: string,
     active: Boolean,
-    class: string,
+    class?: string,
     style?: React.CSSProperties,
     onClick: () => void,
 }

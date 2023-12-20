@@ -73,7 +73,6 @@ export default function Comments(props: CommentsComponentProps) {
                     {props.selectedUser === comment.authorName && <Button
                         value={'Edit'}
                         active={true}
-                        class={''}
                         style={{
                             padding: '5px',
                             paddingRight: '27px',

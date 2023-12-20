@@ -22,6 +22,9 @@ body {
   color: var(--foreground-color);
   background-color: var(--background-color);
   white-space: pre-wrap;
+  min-width: 370px;
+  width: auto !important;
+  width: 370px;
 }
 
 input,
@@ -72,7 +75,7 @@ h3 {
   font-weight: bold;
   text-align: center;
   padding: 6px 12px;
-  padding-top: 20px;;
+  padding-top: 20px;
   margin: 10px 0;
 }
 

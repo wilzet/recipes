@@ -5,7 +5,7 @@ interface TextFieldComponentProps {
     label: string,
     value: string,
     placeholder: string,
-    class: string,
+    class?: string,
     length?: number,
     width: string,
     onChange: (e: string) => any,

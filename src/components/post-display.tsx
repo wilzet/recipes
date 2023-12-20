@@ -5,7 +5,7 @@ import Button from '@/components/button';
 import Modal from '@/components/modal';
 import PostForm from '@/components/post-form';
 import Comments from '@/components/comments';
-import RateForm from './rate-form';
+import RateForm from '@/components/rate-form';
 
 interface PostDisplayComponentProps {
     selectedUser?: string,
@@ -66,7 +66,6 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     {props.selectedUser === post.authorName && <Button
                         value={'Edit'}
                         active={true}
-                        class={''}
                         style={{
                             padding: '5px',
                             paddingRight: '27px',

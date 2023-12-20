@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { PostUI } from "@/types/post";
-import { CommentUI } from "@/types/comments";
-import { CommentsAllRequest, CommentsAllResponse } from "@/types/comments-all";
-import { CommentRequest, CommentResponse } from "@/types/comments";
-import apiRequest from "@/lib/api-request";
-import Form from "@/components/form";
-import TextField from "@/components/text-field";
-import Button from "./button";
+import React, { useEffect, useState } from 'react';
+import { PostUI } from '@/types/post';
+import { CommentsAllRequest, CommentsAllResponse } from '@/types/comments-all';
+import { CommentRequest, CommentResponse } from '@/types/comments';
+import apiRequest from '@/lib/api-request';
+import Form from '@/components/form';
+import Button from '@/components/button';
 
 interface RateFormComponentProps {
     selectedUser?: string,

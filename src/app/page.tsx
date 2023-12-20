@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
-import { LeaderboardResponse } from '@/types/leaderboard';
+import { LeaderboardRequest, LeaderboardResponse } from '@/types/leaderboard';
 import apiRequest from '@/lib/api-request';
 import Main from '@/components/main';
 import Leaderboard from '@/components/leaderboard';
@@ -54,7 +54,19 @@ export default function Page() {
   }, [leaderboard]);
 
   const fetchLeaderboard = async () => {
-    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard');
+    let body: LeaderboardRequest = {
+      length: 10,
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
+
+    const response = await apiRequest<LeaderboardResponse>('/api/leaderboard', options);
 
     if (response && !response.error) {
       setLeaderboard(response.leaderboard ?? []);

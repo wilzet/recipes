@@ -1,6 +1,6 @@
 .users-grid-container {
     display: inline-grid;
-    grid-template-columns: repeat(3, min(300px, 24vw));
+    grid-template-columns: repeat(3, max(min(300px, 24vw), 93px));
     grid-gap: 5px;
     grid-auto-flow: row;
     margin: 5px;
@@ -15,7 +15,7 @@
     align-items: center;
     margin: 5px;
     padding: 0px;
-    width: min(295px, calc(24vw - 5px));
+    width: min(295px, calc(100% - 5px));
     height: 50px;
 }
 
@@ -29,7 +29,7 @@
     background-color: var(--background-color);
     border-radius: var(--border-radius-calendar);
     display: inline-grid;
-    grid-template-columns: repeat(7, min(120px, 12vw));
+    grid-template-columns: repeat(7, max(min(120px, 12vw), 45px));
     grid-gap: 0px;
     grid-auto-flow: row;
     margin: 5px;
@@ -45,7 +45,7 @@
     align-items: center;
     margin: 0 auto;
     padding: 0px;
-    width: min(115px, calc(12vw - 5px));
+    width: min(115px, calc(100% - 5px));
 }
 
 .calendar-grid-item-daybox {
@@ -55,7 +55,7 @@
     padding: 0px;
     margin: 0px 0px 5% 30%;
     text-align: center;
-    font-size: min(3vw, 1.5rem);
+    font-size: max(min(3vw, 1.5rem), 7px);
     overflow: hidden;
     color: var(--color-white);
 }

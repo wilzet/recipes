@@ -70,6 +70,10 @@
   display: inline-flex;
 }
 
+.leaderboard-container {
+  margin-top: 10px;
+}
+
 @media (prefers-color-scheme: light) {
   .users-container {
     border-color: var(--color-gray);
@@ -82,5 +86,9 @@
 
   .calendar-header-container {
     border-color: var(--color-gray);
+  }
+
+  .leaderboard-container {
+    background-color: var(--color-lightgray);
   }
 }

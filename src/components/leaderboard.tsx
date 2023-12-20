@@ -19,11 +19,11 @@ export default function Leaderboard(props: LeaderboardComponentProps) {
     }
 
     return props.leaderboard.length > 0 ? (
-        <div className='containerV' style={props.style}>
-            <h2 style={{marginBottom: '2px', paddingBottom: '0px'}}>Leaderboard</h2>
-            <table style={{fontSize: 'large'}}>
+        <div className='containerV leaderboard-container' style={props.style}>
+            <h2 style={{ marginBottom: '2px', paddingBottom: '0px' }}>Leaderboard</h2>
+            <table style={{ fontSize: 'large' }}>
                 <thead>
-                    <tr style={{backgroundColor: '#cccccc', color: '#2d2d3d'}}>
+                    <tr style={{ backgroundColor: 'var(--color-white)', color: 'var(--color-gray)' }}>
                         <th>Name</th>
                         <th>Contributions</th>
                     </tr>

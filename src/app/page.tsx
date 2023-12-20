@@ -12,6 +12,7 @@ import UserForm from '@/components/user-form';
 import Calendar from '@/components/calendar';
 import Profile from '@/components/profile';
 import UsersGrid from '@/components/users-grid';
+import HamburgerMenu from '@/components/hamburger-menu';
 
 const defaultWelcome = 'Please select a user';
 
@@ -101,36 +102,31 @@ export default function Page() {
     await updateUser();
   }
 
-  const renderMenu = () => {
-    return (
-      <h3 className='containerV' style={{ paddingBottom: '15px' }}>
-        {welcomeMessage}
-        <div style={{ position: 'absolute', right: '15px', marginBottom: '0' }}>
-          {selectedUser ? <Button
-            value={'View profile'}
-            class={'buttonBlue'}
-            active={true}
-            onClick={() => setProfile(true)}
-          /> : <Button
-            value={'New user'}
-            class={'buttonGreen'}
-            active={true}
-            onClick={() => setUserForm(true)}
-          />}
-          <Button
-            value={'Log Out'}
-            class={'buttonRed'}
-            active={selectedUser ? true : false}
-            onClick={logOut}
-          />
-        </div>
-      </h3>
-    );
-  }
-
   return (
     <Main>
-      {renderMenu()}
+      <HamburgerMenu
+        centerText={welcomeMessage}
+        width={width}
+        hamburgerTriggerWidth={800}
+      >
+        {selectedUser ? <Button
+          value={'View profile'}
+          class={'buttonBlue'}
+          active={true}
+          onClick={() => setProfile(true)}
+        /> : <Button
+          value={'New user'}
+          class={'buttonGreen'}
+          active={true}
+          onClick={() => setUserForm(true)}
+        />}
+        <Button
+          value={'Log Out'}
+          class={'buttonRed'}
+          active={selectedUser ? true : false}
+          onClick={logOut}
+        />
+      </HamburgerMenu>
       <UsersGrid
         active={selectedUser ? true : false}
         users={users}

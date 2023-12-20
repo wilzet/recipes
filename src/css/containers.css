@@ -36,6 +36,7 @@
 .calendar-header-container {
   border-radius: var(--border-radius);
   border: 2px solid var(--color-white);
+  padding: 0px 6px;
 }
   
 .containerH, .containerV {

@@ -129,7 +129,7 @@ export default function Calendar(props: PropsWithChildren<CalendarComponentProps
 
     return (
         <div className='containerV'>
-            <div className='containerH calendar-header-container' style={{padding: '0px 6px'}}>
+            <div className='containerH calendar-header-container'>
                 <Button
                     value={'Previous'}
                     active={true}

@@ -101,28 +101,36 @@ export default function Page() {
     await updateUser();
   }
 
+  const renderMenu = () => {
+    return (
+      <h3 className='containerV' style={{ paddingBottom: '15px' }}>
+        {welcomeMessage}
+        <div style={{ position: 'absolute', right: '15px', marginBottom: '0' }}>
+          {selectedUser ? <Button
+            value={'View profile'}
+            class={'buttonBlue'}
+            active={true}
+            onClick={() => setProfile(true)}
+          /> : <Button
+            value={'New user'}
+            class={'buttonGreen'}
+            active={true}
+            onClick={() => setUserForm(true)}
+          />}
+          <Button
+            value={'Log Out'}
+            class={'buttonRed'}
+            active={selectedUser ? true : false}
+            onClick={logOut}
+          />
+        </div>
+      </h3>
+    );
+  }
+
   return (
     <Main>
-      <div className='containerH left'>
-        {selectedUser ? <Button
-          value={'View profile'}
-          class={'buttonBlue'}
-          active={true}
-          onClick={() => setProfile(true)}
-        /> : <Button
-          value={'New user'}
-          class={'buttonGreen'}
-          active={true}
-          onClick={() => setUserForm(true)}
-        />}
-        <Button
-          value={'Log Out'}
-          class={'buttonRed'}
-          active={selectedUser ? true : false}
-          onClick={logOut}
-        />
-      </div>
-      <h3>{welcomeMessage}</h3>
+      {renderMenu()}
       <UsersGrid
         active={selectedUser ? true : false}
         users={users}
@@ -135,7 +143,7 @@ export default function Page() {
       >
         <Leaderboard
           selectedUserName={selectedUser?.name}
-          style={width < 1400 ? { position: 'absolute', left: 'max(min(calc(85%), calc(50% + 800px)), calc(50% + 558px))', top: '220px', transform: 'translate(-50%, -50%)' } : {}}
+          style={width < 1400 ? {} : { position: 'absolute', left: 'max(min(calc(85%), calc(50% + 800px)), calc(50% + 558px))', top: '220px', transform: 'translate(-50%, -50%)' }}
           leaderboard={leaderboard}
         />
       </Calendar>

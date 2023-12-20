@@ -12,6 +12,6 @@ export default function Grid<Type>(props: GridComponentProps<Type>) {
             {props.data.map((val, index) => (
                 props.element(val, index)
             ))}
-      </div>
+        </div>
     );
 }

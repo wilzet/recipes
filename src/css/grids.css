@@ -1,6 +1,6 @@
 .users-grid-container {
     display: inline-grid;
-    grid-template-columns: repeat(3, max(min(300px, 24vw), 93px));
+    grid-template-columns: repeat(3, max(min(200px, 24vw), 93px));
     grid-gap: 5px;
     grid-auto-flow: row;
     margin: 5px;
@@ -15,7 +15,7 @@
     align-items: center;
     margin: 5px;
     padding: 0px;
-    width: min(295px, calc(100% - 5px));
+    width: min(195px, calc(100% - 5px));
     height: 50px;
 }
 

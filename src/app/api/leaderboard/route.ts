@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const data: LeaderboardRequest = await request.json();
 
     try {
-        let leaderboard = await getUserUILeaderboard();
+        let leaderboard = await Promise.all(await getUserUILeaderboard());
         
         if (data.length && data.length > 0) {
             const length = Math.min(data.length, leaderboard.length);

@@ -37,7 +37,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
     }
 
     return (
-        <h3 ref={ref} className='containerV' style={{ paddingBottom: '15px' }}>
+        <h3 className='containerV' style={{ paddingBottom: '15px' }}>
             {props.centerText}
             {props.width < props.triggerWidth ? <>
                 {showMenu && renderChildren()}

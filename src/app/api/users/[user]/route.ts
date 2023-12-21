@@ -15,7 +15,7 @@ export async function GET(request: Request, { params }: { params: { user: string
             },
         });
 
-        return NextResponse.json({ user: toUserUI(user) } as UserResponse);
+        return NextResponse.json({ user: await toUserUI(user) } as UserResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {
@@ -44,7 +44,7 @@ export async function POST(request: Request, { params }: { params: { user: strin
             },
         });
 
-        return NextResponse.json({ user: toUserUI(user) } as UserResponse);
+        return NextResponse.json({ user: await toUserUI(user) } as UserResponse);
     } catch (err) {
         console.error(err);
     }

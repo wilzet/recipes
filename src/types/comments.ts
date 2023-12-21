@@ -29,7 +29,7 @@ export const toCommentUI = (comment: CommentWithPostAndAuthor) => {
         updateDate: comment.updated,
     } as CommentUI;
 
-    return removeNull(commentUI);
+    return removeNull(commentUI) as CommentUI;
 }
 
 export interface CommentUI {

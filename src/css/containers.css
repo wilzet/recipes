@@ -90,5 +90,6 @@
 
   .leaderboard-container {
     background-color: var(--color-lightgray);
+    border-radius: var(--border-radius);
   }
 }

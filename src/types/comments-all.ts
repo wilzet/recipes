@@ -1,4 +1,4 @@
-import { CommentUI } from "@/types/comments"
+import { CommentUI } from '@/types/comments'
 
 export type CommentsAllRequest = {
     postID: number,

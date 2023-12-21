@@ -1,22 +1,24 @@
 import prisma from '@/lib/prisma';
+import { calculateScore } from '@/lib/score';
 import { UserWithPosts } from '@/types/user';
 import { UserUI } from '@/types/user';
 
-export function compareUsers(userA: UserWithPosts, userB: UserWithPosts) {
+function compareUsers(userA: UserWithPosts, userB: UserWithPosts) {
     if (userA.posts.length > userB.posts.length) return -1;
     else if (userA.posts.length < userB.posts.length) return 1; 
 
     return userA.id < userB.id ? -1 : 1;
 }
 
-export function toUserUI(user: UserWithPosts) {
+export async function toUserUI(user: UserWithPosts) {
+    const score = await calculateScore(user);
     return {
         name: user.name,
-        score: user.posts.length,
+        score: score,
     } as UserUI;
 }
 
-export async function getFullLeaderboard() {
+async function getFullLeaderboard() {
     const leaderboard = await prisma.user.findMany({
         include: {
             posts: true,
@@ -28,5 +30,5 @@ export async function getFullLeaderboard() {
 
 export async function getUserUILeaderboard() {
     const leaderboard = await getFullLeaderboard();
-    return leaderboard.map(u => toUserUI(u));
+    return leaderboard.map(async u => await toUserUI(u));
 }

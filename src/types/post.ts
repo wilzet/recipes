@@ -30,7 +30,7 @@ export const toPostUI = (post: PostWithLinkAndAuthorAndComments) => {
         updateDate: post.updated,
     } as PostUI;
 
-    return removeNull(postUI);
+    return removeNull(postUI) as PostUI;
 }
 
 export interface PostUI {

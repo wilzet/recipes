@@ -107,7 +107,7 @@ export default function Page() {
       <HamburgerMenu
         centerText={welcomeMessage}
         width={width}
-        hamburgerTriggerWidth={800}
+        triggerWidth={800}
       >
         {selectedUser ? <Button
           value={'View profile'}

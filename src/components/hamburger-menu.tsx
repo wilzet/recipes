@@ -4,7 +4,7 @@ import Button from '@/components/button';
 interface HamburgerMenuComponentProps {
     centerText?: string,
     width: number,
-    hamburgerTriggerWidth: number,
+    triggerWidth: number,
 }
 
 export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComponentProps>) {
@@ -12,7 +12,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
     const ref = useRef<any>();
 
     useEffect(() => {
-        if (props.width >= props.hamburgerTriggerWidth) {
+        if (props.width >= props.triggerWidth) {
             setShowMenu(false);
         }
 
@@ -30,7 +30,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
 
     const renderChildren = () => {
         return (
-            <div style={{ position: 'absolute', right: props.width < props.hamburgerTriggerWidth ? '60px' : '5px', marginBottom: '0px' }}>
+            <div style={{ position: 'absolute', right: props.width < props.triggerWidth ? '60px' : '5px', marginBottom: '0px' }}>
                 {props.children}
             </div>
         );
@@ -39,7 +39,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
     return (
         <h3 ref={ref} className='containerV' style={{ paddingBottom: '15px' }}>
             {props.centerText}
-            {props.width < props.hamburgerTriggerWidth ? <>
+            {props.width < props.triggerWidth ? <>
                 {showMenu && renderChildren()}
                 <div ref={ref} style={{ position: 'absolute', right: '5px' }}>
                     <Button

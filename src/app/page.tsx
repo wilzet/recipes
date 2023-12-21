@@ -12,13 +12,14 @@ import UserForm from '@/components/user-form';
 import Calendar from '@/components/calendar';
 import Profile from '@/components/profile';
 import UsersGrid from '@/components/users-grid';
-import HamburgerMenu from '@/components/hamburger-menu';
+import dynamic from 'next/dynamic';
 
-const defaultWelcome = 'Please select a user';
+const HamburgerMenu = dynamic(() => import('@/components/hamburger-menu'), { ssr: false })
+const defaultMessage = 'Please select a user';
 
 export default function Page() {
   const [selectedUser, setSelectedUser] = useState<UserUI | null>(null);
-  const [welcomeMessage, setWelcomeMessage] = useState<string>(defaultWelcome);
+  const [message, setMessage] = useState<string>(defaultMessage);
   const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
   const [userForm, setUserForm] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
@@ -74,7 +75,7 @@ export default function Page() {
   }
 
   const setUser = (user: UserUI) => {
-    setWelcomeMessage(`Logged in as ${user?.name}!`);
+    setMessage(`Logged in as ${user?.name}!`);
     setSelectedUser(user);
   }
 
@@ -83,7 +84,7 @@ export default function Page() {
   }
 
   const logOut = async () => {
-    setWelcomeMessage(defaultWelcome);
+    setMessage(defaultMessage);
     setSelectedUser(null);
   }
 
@@ -105,7 +106,7 @@ export default function Page() {
   return (
     <Main>
       <HamburgerMenu
-        centerText={welcomeMessage}
+        centerText={message}
         width={width}
         triggerWidth={800}
       >

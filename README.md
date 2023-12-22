@@ -13,28 +13,29 @@ A simple local web app for recipes and meal planning.
 - Run `npm run dev`.
 
 ## History
-#### 230903
-> Idea conceived and began working on the project.
-> - Simple prototype using external read/write
->
-#### 230908
-> Migrated the project to this current repository.
-> - Proper database using Prisma
-> - Important core features implemented
->   - Users
->   - Posts
->   - Calendar
->
-#### 231010(ish)
-> Pre-alpha state
-> - New layout
-> - Valuable features
->   - Comments
->   - Ratings
->
-#### 231124
-> Alpha state
-> - The app is succesfully running on a Raspberry Pi 3 A+
->   - This required the swap memory to be increased (100MB --> 1024MB)
-> - Refactoring and redesign [WIP]
-> - Better score calculation [WIP]
+* #### 230903
+  > Idea conceived and began working on the project.
+  > - Simple prototype using external read/write
+  > 
+* #### 230908
+  > Migrated the project to this current repository.
+  > - Proper database using Prisma
+  > - Important core features implemented
+  >   - Users
+  >   - Posts
+  >   - Calendar
+  > 
+* #### 231010(ish)
+  > Pre-alpha state
+  > - New layout
+  > - Valuable features
+  >   - Comments
+  >   - Ratings
+  > 
+* #### 231124
+  > Alpha state
+  > - The app is succesfully running on a Raspberry Pi 3 A+
+  >   - This required the swap memory to be increased (100MB --> 1024MB)
+  > - Refactoring and redesign
+  > - Better score calculation [WIP]
+  > 

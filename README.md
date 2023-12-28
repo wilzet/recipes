@@ -1,5 +1,5 @@
-# <img align="left" width="100" height="100" src="./public/favicon/android-chrome-512x512.png"> Meal-accounting-tool
-A simple local web app for recipes and meal planning. 
+# Meal-accounting-tool <img align="right" width="200" height="200" src="./public/favicon/android-chrome-512x512.png">
+A simple local web app for recipes and meal planning.
 
 ## Getting started
 1. Install [`Node.js`](https://nodejs.org/en/download), for example by using [`nvm`](https://github.com/nvm-sh/nvm):

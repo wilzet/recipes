@@ -1,4 +1,4 @@
-# Meal-accounting-tool <img align="right" width="200" height="200" src="./public/favicon/android-chrome-512x512.png">
+# Meal-accounting-tool <img align="right" width="120" height="120" src="./public/favicon/android-chrome-512x512.png">
 A simple local web app for recipes and meal planning.
 
 ## Getting started

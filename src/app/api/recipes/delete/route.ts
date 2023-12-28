@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     if (!data.id) return NextResponse.json({ error: 'No post found' } as RecipePostResponse, { status: 400 });
 
     try {
-        const post = await prisma.post.delete({
+        const post = await prisma.post.findUnique({
             where: {
                 id: data.id,
                 author: {
@@ -17,24 +17,30 @@ export async function POST(request: Request) {
             },
         });
 
-        try {
-            await prisma.link.deleteMany({
-                where: {
-                    id: post?.urlId,
-                    posts: {
-                        none: {},
-                    },
-                },
-            });
+        await prisma.comment.deleteMany({
+            where: {
+                postId: post?.id,
+            }
+        });
 
-            await prisma.comment.deleteMany({
-                where: {
-                    postId: post?.id,
-                }
-            });
-        } catch (err: any) {
-            console.error(err);
-        }
+        
+        await prisma.post.delete({
+            where: {
+                id: data.id,
+                author: {
+                    name: data.author,
+                },
+            },
+        });
+
+        await prisma.link.deleteMany({
+            where: {
+                id: post?.urlId,
+                posts: {
+                    none: {},
+                },
+            },
+        });
 
         return NextResponse.json({} as RecipePostResponse);
     } catch (err: any) {

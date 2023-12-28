@@ -2,15 +2,25 @@
 A simple local web app for recipes and meal planning. 
 
 ## Getting started
-- Install [`Node.js`](https://nodejs.org/en), for example by using [`nvm`](https://github.com/nvm-sh/nvm):
-  - Install `nvm`, the node version manager.
-  - Run `nvm install 18.17.1`, or `nvm ls` and choose your preferred version of `Node.js`.
-- Make sure `node --version` >= `18.17.1` and `npm --version` >= `9.6.7`.
-- Clone [this](https://github.com/wilzet/recipes) git repository.
-- Create a file named `.env` based on `.env.example`.
-- Run `npm install`.
-- Run `npx prisma migrate dev --name init` to initialize the database.
-- Run `npm run dev`.
+1. Install [`Node.js`](https://nodejs.org/en/download), for example by using [`nvm`](https://github.com/nvm-sh/nvm):
+    - Install `nvm`, the node version manager.
+    - Run `nvm install 18.17.1`, or `nvm ls` and choose your preferred version of `Node.js`.
+3. Check your `Node.js` and **`npm`** versions.
+    ```bash
+    node --version # >= 18.17.1
+    npm --version  # >= 9.6.7
+    ```
+4. Clone [this](https://github.com/wilzet/recipes) git repository.
+    ```bash
+    git clone https://github.com/wilzet/recipes
+    ```
+5. Create a file named `.env` based on `.env.example`.
+6. Initialise the project.
+    ```bash
+    npm install
+    npx prisma migrate dev --name init
+    npm run dev
+    ```
 
 ## History
 * #### 230903
@@ -37,5 +47,5 @@ A simple local web app for recipes and meal planning.
   > - The app is succesfully running on a Raspberry Pi 3 A+
   >   - This required the swap memory to be increased (100MB --> 1024MB)
   > - Refactoring and redesign
-  > - Better score calculation [WIP]
+  > - Better score calculation
   > 

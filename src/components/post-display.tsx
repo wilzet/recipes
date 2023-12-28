@@ -36,7 +36,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         {post.url}
                     </p>}
                 </h3>
-                {post.rating && <h3 style={{ fontSize: '2rem', marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'var(--color-pink)' }}>
+                {(post.rating || post.rating === 0) && <h3 style={{ fontSize: '2rem', marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px', color: 'var(--color-pink)' }}>
                     {`${post.rating}/5`}
                 </h3>}
                 <div className='containerH'>

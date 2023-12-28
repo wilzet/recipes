@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { LeaderboardRequest, LeaderboardResponse } from '@/types/leaderboard';
-import { getUserUILeaderboard } from '@/lib/leaderboard';
+import { getFullLeaderboard } from '@/lib/leaderboard';
 
 export async function POST(request: Request) {
     const data: LeaderboardRequest = await request.json();
 
     try {
-        let leaderboard = await Promise.all(await getUserUILeaderboard());
+        let leaderboard = await getFullLeaderboard();
         
         if (data.length && data.length > 0) {
             const length = Math.min(data.length, leaderboard.length);

@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { toCommentUI } from "@/types/comments";
 import { UserWithPosts } from "@/types/user";
 
 export async function calculateScore(user: UserWithPosts) {
@@ -10,6 +9,11 @@ export async function calculateScore(user: UserWithPosts) {
         const comments = await prisma.comment.findMany({
             where: {
                 postId: post.id,
+                author: {
+                    name: {
+                        not: user.name,
+                    },
+                },
             },
             include: {
                 post: true,
@@ -17,13 +21,13 @@ export async function calculateScore(user: UserWithPosts) {
             },
         });
 
-        const ratings = comments.map(comment => toCommentUI(comment))
-            .filter(comment => comment.title === process.env.SECRET_RATING_ID)
+        const ratings = comments.filter(comment => comment.title === process.env.SECRET_RATING_ID)
             .map(comment => comment.rating ?? 0);
 
         const scoreFromPost = ratings.length > 0 ? ratings.reduce((sum, rating) => sum += rating) / (5 * ratings.length) : 0;
+        const commentBonus = (comments.length - ratings.length) / 10;
         
-        return (scoreFromPost + 1 + comments.length - ratings.length) / (6 + comments.length - ratings.length);
+        return (1 + scoreFromPost) / 2 + commentBonus;
     });
 
     return Math.round((await Promise.all(score)).reduce((sum, score) => sum += score) * 100);

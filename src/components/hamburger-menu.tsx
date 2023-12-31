@@ -30,7 +30,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
 
     const renderChildren = () => {
         return (
-            <div style={{ position: 'absolute', right: props.width < props.triggerWidth ? '60px' : '5px', marginBottom: '0px' }}>
+            <div className='hamburger-container' style={{ right: props.width < props.triggerWidth ? '60px' : '5px' }}>
                 {props.children}
             </div>
         );

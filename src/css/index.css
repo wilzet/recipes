@@ -25,9 +25,9 @@ body {
   background-color: var(--background-color);
   white-space: pre-wrap;
   min-height: calc(100vh - 10px);
-  min-width: 370px;
+  min-width: 300px;
   width: auto !important;
-  width: 370px;
+  width: 300px;
 }
 
 footer {

@@ -23,7 +23,6 @@ export async function POST(request: Request) {
             }
         });
 
-        
         await prisma.post.delete({
             where: {
                 id: data.id,
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
             },
         });
 
-        await prisma.link.deleteMany({
+        await prisma.link.delete({
             where: {
                 id: post?.urlId,
                 posts: {

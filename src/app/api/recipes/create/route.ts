@@ -41,9 +41,7 @@ export async function POST(request: Request) {
             },
         });
 
-        const user = toUserUI(post.author);
-
-        return NextResponse.json({ user: user } as RecipePostResponse);
+        return NextResponse.json({ user: await toUserUI(post.author) } as RecipePostResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {

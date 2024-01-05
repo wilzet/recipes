@@ -30,7 +30,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     {post.title}
                 </h2>}
                 <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
-                    {post.url.includes('://') ? <a href={post.url} target='_blank' style={{ color: 'var(--color-lightblue)' }}>
+                    {post.url.includes('://') ? <a href={post.url} target='_blank'>
                         {post.url}
                     </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)' }}>
                         {post.url}

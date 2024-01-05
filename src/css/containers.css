@@ -74,6 +74,12 @@
   margin-top: 10px;
 }
 
+.hamburger-container {
+  position: absolute;
+  margin-bottom: 0px;
+  background-color: var(--background-color);
+}
+
 @media (prefers-color-scheme: light) {
   .users-container {
     border-color: var(--color-gray);

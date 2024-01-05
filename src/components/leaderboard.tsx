@@ -19,7 +19,7 @@ export default function Leaderboard(props: LeaderboardComponentProps) {
     }
 
     return props.leaderboard.length > 0 ? (
-        <div className='containerV leaderboard-container' style={props.style}>
+        <div className='leaderboard-container' style={props.style}>
             <h2 style={{ marginBottom: '2px', paddingBottom: '0px' }}>Leaderboard</h2>
             <table style={{ fontSize: 'large' }}>
                 <thead>

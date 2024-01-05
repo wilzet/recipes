@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { RecipePostRequest, RecipePostResponse } from '@/types/recipe-post';
+import { toUserUI } from '@/lib/leaderboard';
 import prisma from '@/lib/prisma';
 import AppSettings from '@/lib/appsettings';
 
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
     }
 
     try {
-        await prisma.post.update({
+        const post = await prisma.post.update({
             where: {
                 id: data.id,
                 author: {
@@ -35,9 +36,16 @@ export async function POST(request: Request) {
                 date: data.date,
                 updated: new Date(),
             },
+            include: {
+                author: {
+                    include: {
+                        posts: true,
+                    },
+                },
+            },
         });
 
-        return NextResponse.json({} as RecipePostResponse);
+        return NextResponse.json({ user: await toUserUI(post.author) } as RecipePostResponse);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'P2025') {

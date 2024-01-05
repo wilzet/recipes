@@ -27,7 +27,7 @@ export default function RootLayout({
                 
                 <footer>
                     <h3>
-                        <a href={'https://github.com/wilzet/recipes'} target='_blank' style={{ textAlign: 'center', color: 'var(--color-lightblue)' }}>
+                        <a href={'https://github.com/wilzet/recipes'} target='_blank'>
                             https://github.com/wilzet/recipes
                         </a>
                     </h3>

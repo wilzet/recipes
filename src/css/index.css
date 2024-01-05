@@ -34,7 +34,11 @@ footer {
   background-color: var(--color-black);
   margin: 0px -20px;
   margin-top: auto;
-  padding-bottom: 40px;
+  padding: 10px 40px 40px;
+}
+
+a {
+  color: var(--color-lightblue);
 }
 
 input,

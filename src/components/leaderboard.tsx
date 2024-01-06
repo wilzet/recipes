@@ -25,7 +25,7 @@ export default function Leaderboard(props: LeaderboardComponentProps) {
                 <thead>
                     <tr style={{ backgroundColor: 'var(--color-white)', color: 'var(--color-gray)' }}>
                         <th>Name</th>
-                        <th>Contributions</th>
+                        <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>

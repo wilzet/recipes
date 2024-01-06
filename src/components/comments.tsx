@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PostUI } from '@/types/post';
 import { CommentUI } from '@/types/comments';
 import { CommentsAllRequest, CommentsAllResponse } from '@/types/comments-all';
+import { toLocaleDate } from '@/lib/calendar';
 import apiRequest from '@/lib/api-request';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
@@ -86,8 +87,8 @@ export default function Comments(props: CommentsComponentProps) {
                         <div className='edit-icon'/>
                     </Button>}
                     Posted by {comment.authorName}<br/>
-                    on {comment.createDate.toDateString()}<br/>
-                    (Updated on {comment.updateDate.toDateString()})
+                    on {toLocaleDate(comment.createDate, 'short')}<br/>
+                    (Updated on {toLocaleDate(comment.updateDate, 'short')})
                 </div>
             </div>
         );

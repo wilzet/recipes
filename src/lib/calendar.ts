@@ -1,10 +1,14 @@
+function getWeekdayName(date: Date, format: 'long' | 'short' | 'narrow' = 'short') {
+    const weekdayName = date.toLocaleString('default', { weekday: format });
+    return weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1);
+}
+
 export const dayNames = (() => {
     const weekdays: string[] = [];
   
     for (let i = 0; i < 7; i++) {
-      const date = new Date(2023, 0, i + 1); // Using January 1, 2023, as an example date
-      const weekdayName = date.toLocaleString('default', { weekday: 'short' });
-      weekdays.push(weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1));
+      const date = new Date(2024, 0, i + 1); // Using January 1, 2024, as an example date
+      weekdays.push(getWeekdayName(date));
     }
   
     return weekdays;
@@ -26,4 +30,13 @@ export const getCurrentMonth = () => {
     date.setUTCDate(1);
     date.setUTCHours(0, 0, 0, 0);
     return date;
+}
+
+export const toLocaleDate = (date: Date, format: 'long' | 'short' | 'narrow') => {
+    const weekdayName = getWeekdayName(date, format);
+    const day = date.getDate();
+    const monthName = getNameOfMonth(date);
+    const year = date.getFullYear();
+
+    return weekdayName + ' ' + day + ' ' + monthName + ' ' + year;
 }

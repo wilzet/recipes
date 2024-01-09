@@ -25,6 +25,8 @@
 
     --border-radius: 10px;
     --border-radius-calendar: 3px;
+
+    --datepicker-width: 180px;
 }
 
 @media (prefers-color-scheme: light) {

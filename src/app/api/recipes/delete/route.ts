@@ -32,14 +32,18 @@ export async function POST(request: Request) {
             },
         });
 
-        await prisma.link.delete({
-            where: {
-                id: post?.urlId,
-                posts: {
-                    none: {},
+        try {
+            await prisma.link.delete({
+                where: {
+                    id: post?.urlId,
+                    posts: {
+                        none: {},
+                    },
                 },
-            },
-        });
+            });
+        } catch (err: any) {
+            console.error(err);
+        }
 
         return NextResponse.json({} as RecipePostResponse);
     } catch (err: any) {

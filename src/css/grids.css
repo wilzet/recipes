@@ -49,11 +49,11 @@
 }
 
 .calendar-grid-item-daybox {
-    width: 60%;
+    width: 70%;
     height: 60%;
     border-radius: var(--border-radius-calendar);
     padding: 0px;
-    margin: 0px 0px 5% 30%;
+    margin: 0px auto 5% 20%;
     text-align: center;
     font-size: max(min(3vw, 1.5rem), 7px);
     overflow: hidden;

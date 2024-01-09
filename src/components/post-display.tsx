@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PostUI } from '@/types/post';
 import { UserUI } from '@/types/user';
+import { toLocaleDate } from '@/lib/calendar';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
 import PostForm from '@/components/post-form';
@@ -79,8 +80,8 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         <div className='edit-icon'/>
                     </Button>}
                     Posted by {post.authorName}<br/>
-                    on {post.createDate.toDateString()}<br/>
-                    (Updated on {post.updateDate.toDateString()})
+                    on {toLocaleDate(post.createDate, 'short')}<br/>
+                    (Updated on {toLocaleDate(post.updateDate, 'short')})
                 </div>
             </div>
         );
@@ -126,7 +127,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                 />
             </div>
 
-            {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{(props.date ?? new Date()).toDateString().slice(0, -5)}</h2>}
+            {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{toLocaleDate(props.date ?? new Date(), 'long')}</h2>}
             {props.posts?.map((val, index) => {
                 return renderPostDisplay(index, val);
             })}

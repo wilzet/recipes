@@ -22,10 +22,10 @@ input[type="text"] {
     transition: all 200ms cubic-bezier(.23, 1, 0.32, 1);
     touch-action: manipulation;
     &:focus {
-        border: 10px solid var(--color-blue);
+        border-color: var(--color-blue);
     }
     &:hover:not(:focus) {
-        border: 5px solid var(--color-pink);
+        border-color: var(--color-pink);
     }
 }
 
@@ -60,48 +60,34 @@ textarea {
 }
 
 input[type="date"] {
-    appearance: none;
-    inset: 0;
-    background: var(--color-lightgray) url(/calendar_icon.svg) 95% 50% no-repeat;
-    border: 2px solid var(--color-gray);
-    border-radius: var(--border-radius);
-    pointer-events: all;
-    box-sizing: border-box;
-    color: var(--color-gray);
-    box-shadow: none;
-    font: 1rem var(--font-mono);
-    font-weight: 400;
-    line-height: normal;
-    padding: 5px 5px;
-    margin: 5px;
-    min-height: 50px;
-    min-width: 150px;
-    outline: none;
-    text-align: left;
-    text-decoration: none;
-    transition: all 200ms cubic-bezier(.23, 1, 0.32, 1);
-    touch-action: manipulation;
-    &:focus {
-        border-color: var(--color-blue);
-    }
-    &:hover:not(:focus) {
-        border-color: var(--color-pink);
-    }
-    &::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        -o-appearance: none;
-        appearance: none;
-    }
+    position: absolute;
+    left: calc(50% - 50px);
+    top: -370px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.datepicker-text {
+    max-width: var(--datepicker-width) !important;
+    width: var(--datepicker-width) !important;
+    font-weight: 400 !important;
+    padding: 5px 5px 5px 12px !important;
+    text-align: left !important;
+}
+
+.datepicker-area {
+    background: rgba(0, 0, 0, 0) url(/calendar_icon.svg) 50% 50% no-repeat;
+    position: absolute;
+    left: calc(50% + 52px);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 75px;
+    height: 60px;
+    cursor: pointer;
 }
 
 @media (prefers-color-scheme: light) {
     input[type="text"] {
-        background-color: var(--color-white);
-    }
-
-    input[type="date"] {
         background-color: var(--color-white);
     }
 

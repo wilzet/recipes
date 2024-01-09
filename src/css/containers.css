@@ -72,6 +72,7 @@
 
 .leaderboard-container {
   margin-top: 10px;
+  border-radius: var(--border-radius-calendar);
 }
 
 .hamburger-container {

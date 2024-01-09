@@ -21,9 +21,11 @@ export default function RootLayout({
                 <link rel="manifest" href="/favicon/manifest.json"/>
             </head>
             <body>
-                <h1>Meal-accounting-tool</h1>
-                
-                {children}
+                <div style={{ margin: '10px 20px 0px 20px' }}>
+                    <h1>Meal-accounting-tool</h1>
+                    
+                    {children}
+                </div>
                 
                 <footer>
                     <h3>

@@ -4,6 +4,7 @@ import { PostUI } from '@/types/post';
 import { RecipePostRequest, RecipePostResponse } from '@/types/recipe-post';
 import AppSettings from '@/lib/appsettings';
 import apiRequest from '@/lib/api-request';
+import { formatDate, isFormatted } from '@/lib/helper';
 import Form from '@/components/form';
 import TextField from '@/components/text-field';
 import DateField from '@/components/date-field';
@@ -22,16 +23,14 @@ export default function PostForm(props: PostFormComponentProps) {
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
     const [title, setTitle] = useState<string>();
     const [url, setUrl] = useState<string>('');
-    const [date, setDate] = useState<Date>(new Date());
+    const [date, setDate] = useState<string>(formatDate(props.date ?? props.post?.date ?? new Date()));
     const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
 
     useEffect(() => {
-        setDate(props.date ?? new Date());
-
         if (props.post) {
             setTitle(props.post.title);
             setUrl(props.post.url);
-            setDate(props.post.date);
+            setDate(formatDate(props.post.date));
         }
     }, [props.date, props.post])
 
@@ -39,7 +38,7 @@ export default function PostForm(props: PostFormComponentProps) {
         setStatusMessage(null);
         setTitle('');
         setUrl('');
-        setDate(props.date ?? new Date());
+        setDate(formatDate(props.date ?? props.post?.date ?? new Date()));
     }
 
     const createPost = async () => {
@@ -47,16 +46,21 @@ export default function PostForm(props: PostFormComponentProps) {
             setStatusMessage('No author detected...');
             return;
         }
+        
+        if (url === '') {
+            setStatusMessage('No URL...');
+            return;
+        }
 
-        if (url === '' || !date) {
-            setStatusMessage('Empty fields...');
+        if (!isFormatted(date)) {
+            setStatusMessage('Invalid date...');
             return;
         }
         
         let body: RecipePostRequest = {
           url: url,
           author: props.user.name,
-          date: date,
+          date: new Date(date),
         }
 
         if (title !== '') {
@@ -85,8 +89,13 @@ export default function PostForm(props: PostFormComponentProps) {
             return;
         }
 
-        if (url === '' || !date) {
-            setStatusMessage('Empty fields...');
+        if (url === '') {
+            setStatusMessage('No URL...');
+            return;
+        }
+
+        if (!isFormatted(date)) {
+            setStatusMessage('Invalid date...');
             return;
         }
         
@@ -94,7 +103,7 @@ export default function PostForm(props: PostFormComponentProps) {
             id: props.post?.id,
             url: url,
             author: props.user.name,
-            date: date,
+            date: new Date(date),
         }
 
         if (title !== '') {
@@ -127,7 +136,7 @@ export default function PostForm(props: PostFormComponentProps) {
             id: props.post?.id,
             url: url,
             author: props.user.name,
-            date: date,
+            date: new Date(date),
         }
 
         const options = {
@@ -144,14 +153,6 @@ export default function PostForm(props: PostFormComponentProps) {
         } else {
             setStatusMessage('Error while deleting...');
         }
-    }
-
-    const formatDate = (date: Date) => {
-        const year = date.getFullYear().toString().padStart(4, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-
-        return year+'-'+month+'-'+day;
     }
 
     const close = () => {
@@ -187,8 +188,8 @@ export default function PostForm(props: PostFormComponentProps) {
             <DateField
                 id={'date'}
                 label={'Date'}
-                value={formatDate(date)}
-                onChange={(e) => {const date = new Date(e); date.setUTCHours(0, 0, 0, 0); setDate(new Date(e))}}
+                value={date}
+                onChange={(e) =>  setDate(e)}
             />
             {props.edit && <div className='containerH left' style={{ marginRight: '10%' }}>
                 <Button

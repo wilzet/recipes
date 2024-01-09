@@ -11,6 +11,12 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Title bad' } as RecipePostResponse, { status: 400 });
     }
 
+    const oneYearForward = new Date();
+    oneYearForward.setFullYear(oneYearForward.getFullYear() + 1);
+    if (new Date(data.date) > oneYearForward) {
+        return NextResponse.json({ error: 'Post is too far in the future' } as RecipePostResponse, { status: 400 });
+    }
+
     try {
         const post = await prisma.post.create({
             data: {

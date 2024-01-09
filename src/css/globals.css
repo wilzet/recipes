@@ -9,7 +9,7 @@
 
     --color-mainblue: #0088ff;
 
-    --glass-blur: 7px;
+    --glass-blur: 4px;
 
     --modal-timeout-ms: 300ms;
 
@@ -25,6 +25,8 @@
 
     --border-radius: 10px;
     --border-radius-calendar: 3px;
+
+    --datepicker-width: 180px;
 }
 
 @media (prefers-color-scheme: light) {

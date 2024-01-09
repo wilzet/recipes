@@ -6,6 +6,18 @@
     right: 0;
 }
 
+.overlay-form-inner {
+    position: relative;
+    display: flex;
+    top: clamp(0%, calc(50% - 250px), 250px);
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
 .ReactModal__Overlay {
     color: var(--default-foreground-color);
     z-index: 10;
@@ -19,16 +31,4 @@
 
 .ReactModal__Overlay--before-close {
     backdrop-filter: blur(0px) brightness(100%);
-}
-
-.overlay-form-inner {
-    position: relative;
-    display: flex;
-    top: clamp(0%, calc(50% - 250px), 250px);
-    left: 50%;
-    transform: translateX(-50%);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
 }

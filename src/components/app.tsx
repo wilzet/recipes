@@ -124,16 +124,24 @@ export default function App() {
                 />
             </HamburgerMenu>
 
-            <UsersGrid
+            <h3>{message}</h3>
+            {width < 1400 && <UsersGrid
                 active={selectedUser ? true : false}
                 users={users}
                 onClick={fetchUser}
-            />
+            />}
 
             <Calendar
                 selectedUser={selectedUser ?? undefined}
                 update={closeProfile}
             >
+                {width >= 1400 && <UsersGrid
+                    active={selectedUser ? true : false}
+                    users={users}
+                    onClick={fetchUser}
+                    style={{ position: 'absolute', left: 'min(max(calc(15%), calc(50% - 800px)), calc(50% - 558px))', top: '220px', transform: 'translateX(-50%)' }}
+                    gridStyle={width < 2000 ? { gridTemplateColumns: 'repeat(1, max(min(200px, 24vw), 93px))' } : { gridTemplateColumns: 'repeat(2, max(min(200px, 24vw), 93px))' }}
+                />}
                 <Leaderboard
                     selectedUserName={selectedUser?.name}
                     style={width < 1400 ? {} : { position: 'absolute', left: 'max(min(calc(85%), calc(50% + 800px)), calc(50% + 558px))', top: '220px', transform: 'translate(-50%, -50%)' }}

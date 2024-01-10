@@ -7,6 +7,8 @@ import Grid from '@/components/grid';
 interface UsersGridComponentProps {
     active: boolean,
     users: UserUI[],
+    style?: React.CSSProperties,
+    gridStyle?: React.CSSProperties,
     onClick: (user: string) => any, 
 }
 
@@ -32,12 +34,14 @@ export default function UsersGrid(props: UsersGridComponentProps) {
             class={'users-container'}
             duration={500}
             heightHook={() => userBoxHeight}
+            style={props.style}
         >
-            <Grid<UserUI>
-                class='users-grid-container'
-                data={props.users}
-                element={renderUserButton}
-            />
+          <Grid<UserUI>
+              class='users-grid-container'
+              data={props.users}
+              element={renderUserButton}
+              style={props.gridStyle}
+          />
         </AnimateHeight>}
     </>
   );

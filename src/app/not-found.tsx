@@ -13,7 +13,7 @@ export default function NotFound() {
                 offsetAngle={70}
                 blankEnd={20}
             />
-            <h2 style={{ fontFamily: 'monospace' }}>
+            <h2 style={{ fontFamily: 'monospace', marginTop: '80px' }}>
                 Go back to the <Link href="/">home page</Link>
             </h2>
         </div>

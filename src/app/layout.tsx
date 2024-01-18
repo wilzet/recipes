@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/css/index.css';
+import TextRing from '@/components/text-ring';
 
 export const metadata: Metadata = {
     title: 'Recipes',
@@ -28,11 +29,17 @@ export default function RootLayout({
                 </div>
                 
                 <footer>
-                    <h3>
-                        <a href={'https://github.com/wilzet/recipes'} target='_blank'>
-                            https://github.com/wilzet/recipes
+                    <div className='containerH'>
+                        <a href={'https://github.com/wilzet/recipes'} target='_blank' style={{ display: 'flex', justifyContent: 'center' }}>
+                            <TextRing
+                                text={'wilzet * recipes * GitHub * '}
+                                fontSize={1.1}
+                                characterWidth={1.3}
+                                offsetAngle={45}
+                                style={{ fontSize: '0.8rem', fontWeight: 'bolder' }}
+                            />
                         </a>
-                    </h3>
+                    </div>
                 </footer>
             </body>
         </html>

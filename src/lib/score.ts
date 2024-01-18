@@ -30,7 +30,7 @@ export async function calculateScore(user: UserWithPosts) {
         return (1 + scoreFromPost) / 2 + commentBonus;
     });
 
-    return Math.round((await Promise.all(score)).reduce((sum, score) => sum += score) * 100);
+    return Math.round((await Promise.all(score)).reduce((sum, score) => sum += score, 0) * 100);
 }
 
 function getOneMonthBack() {

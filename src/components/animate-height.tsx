@@ -4,6 +4,7 @@ interface AnimateHeightComponentProps {
     class: string,
     duration: number,
     hide?: Boolean,
+    style?: React.CSSProperties,
     heightHook: () => string,
 }
 
@@ -35,7 +36,7 @@ export default function AnimateHeight(props: PropsWithChildren<AnimateHeightComp
     }, []);
 
     return (
-        <div id={props.class} className={props.class} style={{maxHeight: props.heightHook(), transition: `max-height ${props.duration}ms`}}>
+        <div id={props.class} className={props.class} style={{ ...props.style, maxHeight: props.heightHook(), transition: `max-height ${props.duration}ms`}}>
             {props.children}
         </div>
     );

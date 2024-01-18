@@ -128,7 +128,7 @@ export default function Calendar(props: PropsWithChildren<CalendarComponentProps
     }
 
     return (
-        <div className='containerV'>
+        <div className='containerV' style={{ marginTop: '20px' }}>
             <div className='containerH calendar-header-container'>
                 <Button
                     value={'Previous'}

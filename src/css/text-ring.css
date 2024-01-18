@@ -1,0 +1,25 @@
+/*
+    Made with help from this resource: https://jhey.dev/cheep/circular-text-with-css/
+    This .css file is closely linked with the text-ring React component
+*/
+
+.text-ring {
+    position: relative;
+    font-size: calc(var(--font-size, 2) * 1rem);
+    width: calc(var(--size) * 1ch);
+    height: calc(var(--size) * 1ch);
+}
+
+.text-ring [style*=--index][style*=--offset-angle] {
+    display: block;
+    position: absolute;
+    font-family: monospace;
+    text-transform: uppercase;
+
+    --inner-angle: calc(var(--index) / var(--total) * 360deg - var(--offset-angle) * 1deg);
+    left: 50%;
+    top: 50%;
+    transform:
+        translate(calc(-50% + var(--radius) * sin(var(--inner-angle)) * var(--character-width) * 1ch), calc(-50% - var(--radius) * cos(var(--inner-angle)) * var(--character-width) * 1ch))
+        rotate(var(--inner-angle));
+}

@@ -18,6 +18,7 @@ export default function App() {
     const [selectedUser, setSelectedUser] = useState<UserUI | null>(null);
     const [message, setMessage] = useState<string>(defaultMessage);
     const [leaderboard, setLeaderboard] = useState<UserUI[]>([]);
+    const [users, setUsers] = useState<UserUI[]>([]);
     const [userForm, setUserForm] = useState<boolean>(false);
     const [profile, setProfile] = useState<boolean>(false);
     const { width } = useWindowDimensions();
@@ -25,26 +26,27 @@ export default function App() {
     useEffect(() => {
         const asyncCall = async () => {
             await fetchLeaderboard();
+            const response = await fetchUsers(100);
+
+            if (response && response.leaderboard) {
+                setUsers(response.leaderboard.length > 0 ? response.leaderboard.toSorted((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    } else if (a.name > b.name) {
+                        return 1;
+                    }
+
+                    return 0;
+                }) : []);
+            }
         }
 
         asyncCall();
     }, []);
 
-    const users = useMemo(() => {
-        return leaderboard.length > 0 ? leaderboard.toSorted((a, b) => {
-            if (a.name < b.name) {
-                return -1;
-            } else if (a.name > b.name) {
-                return 1;
-            }
-
-            return 0;
-        }) : [];
-    }, [leaderboard]);
-
-    const fetchLeaderboard = async () => {
+    const fetchUsers = async (length: number) => {
         let body: LeaderboardRequest = {
-            length: 10,
+            length,
         }
 
         const options = {
@@ -55,7 +57,11 @@ export default function App() {
             body: JSON.stringify(body)
         };
 
-        const response = await apiRequest<LeaderboardResponse>('/api/leaderboard', options);
+        return await apiRequest<LeaderboardResponse>('/api/leaderboard', options);
+    }
+
+    const fetchLeaderboard = async () => {
+        let response = await fetchUsers(10);
 
         if (response && !response.error) {
             setLeaderboard(response.leaderboard ?? []);
@@ -124,10 +130,13 @@ export default function App() {
                 />
             </HamburgerMenu>
 
+            <h3>{message}</h3>
             <UsersGrid
                 active={selectedUser ? true : false}
                 users={users}
                 onClick={fetchUser}
+                style={width < 1400 ? {} : { position: 'absolute', left: 'min(max(calc(15%), calc(50% - 800px)), calc(50% - 558px))', top: '260px', transform: 'translateX(-50%)' }}
+                gridStyle={width < 1400 ? {} : { gridTemplateColumns: width < 2000 ? 'repeat(1, max(min(200px, 24vw), 93px))' : 'repeat(2, max(min(200px, 24vw), 93px))' }}
             />
 
             <Calendar

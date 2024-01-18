@@ -30,18 +30,17 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
 
     const renderChildren = () => {
         return (
-            <div className='hamburger-container' style={{ right: props.width < props.triggerWidth ? '60px' : '5px' }}>
+            <div className='hamburger-container' style={{ right: props.width < props.triggerWidth ? '70px' : '15px' }}>
                 {props.children}
             </div>
         );
     }
 
     return (
-        <h3 className='containerV' style={{ paddingBottom: '15px' }}>
-            {props.centerText}
+        <>
             {props.width < props.triggerWidth ? <>
                 {showMenu && renderChildren()}
-                <div ref={ref} style={{ position: 'absolute', right: '5px' }}>
+                <div ref={ref} style={{ position: 'absolute', right: '15px' }}>
                     <Button
                         value={''}
                         active={true}
@@ -52,6 +51,6 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
                     </Button>
                 </div>
             </> : renderChildren()}
-      </h3>
+        </>
     );
 }

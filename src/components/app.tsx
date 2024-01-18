@@ -26,26 +26,14 @@ export default function App() {
     useEffect(() => {
         const asyncCall = async () => {
             await fetchLeaderboard();
-            const response = await fetchUsers(100);
-
-            if (response && response.leaderboard) {
-                setUsers(response.leaderboard.length > 0 ? response.leaderboard.toSorted((a, b) => {
-                    if (a.name < b.name) {
-                        return -1;
-                    } else if (a.name > b.name) {
-                        return 1;
-                    }
-
-                    return 0;
-                }) : []);
-            }
+            await fetchAllUsers();
         }
 
         asyncCall();
     }, []);
 
-    const fetchUsers = async (length: number) => {
-        let body: LeaderboardRequest = {
+    const fetchUsers = async (length?: number) => {
+        const body: LeaderboardRequest = {
             length,
         }
 
@@ -61,10 +49,26 @@ export default function App() {
     }
 
     const fetchLeaderboard = async () => {
-        let response = await fetchUsers(10);
+        const response = await fetchUsers(10);
 
         if (response && !response.error) {
             setLeaderboard(response.leaderboard ?? []);
+        }
+    }
+
+    const fetchAllUsers = async () => {
+        const response = await fetchUsers();
+
+        if (response && response.leaderboard) {
+            setUsers(response.leaderboard.length > 0 ? response.leaderboard.toSorted((a, b) => {
+                if (a.name < b.name) {
+                    return -1;
+                } else if (a.name > b.name) {
+                    return 1;
+                }
+
+                return 0;
+            }) : []);
         }
     }
 
@@ -88,6 +92,7 @@ export default function App() {
     const logOut = async () => {
         setMessage(defaultMessage);
         setSelectedUser(null);
+        await fetchAllUsers();
     }
 
     const closeUserForm = async (user: UserUI | undefined) => {
@@ -135,7 +140,7 @@ export default function App() {
                 active={selectedUser ? true : false}
                 users={users}
                 onClick={fetchUser}
-                style={width < 1400 ? {} : { position: 'absolute', left: 'min(max(calc(15%), calc(50% - 800px)), calc(50% - 558px))', top: '260px', transform: 'translateX(-50%)' }}
+                style={width < 1400 ? {} : { position: 'absolute', zIndex: 10, left: 'min(max(calc(15%), calc(50% - 800px)), calc(50% - 558px))', top: '260px', transform: 'translateX(-50%)' }}
                 gridStyle={width < 1400 ? {} : { gridTemplateColumns: width < 2000 ? 'repeat(1, max(min(200px, 24vw), 93px))' : 'repeat(2, max(min(200px, 24vw), 93px))' }}
             />
 

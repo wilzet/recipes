@@ -1,4 +1,9 @@
 # Meal-accounting-tool <img align="right" width="120" height="120" src="./public/favicon/android-chrome-512x512.png">
+<div align="center">
+
+  [![Version](https://img.shields.io/github/package-json/v/wilzet/recipes.svg?color=blue)]()
+  [![MIT License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/wilzet/recipes/LICENSE.md)
+</div>
 A simple local web app for recipes and meal planning.
 
 ## Getting started

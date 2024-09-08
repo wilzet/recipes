@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { RecipeSearchRequest, RecipeAllResponse } from '@/types/recipe-all';
-import { toPostUI } from '@/types/post';
+import { toPostUI, removeDuplicatePost } from '@/types/post';
 import prisma from '@/lib/prisma';
 
 export async function POST(request: Request) {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
             }
         });
 
-        const postsUI = posts.map(post => toPostUI(post));
+        const postsUI = removeDuplicatePost(posts.map(post => toPostUI(post)));
 
         return NextResponse.json({ posts: postsUI } as RecipeAllResponse);
     } catch (err: any) {

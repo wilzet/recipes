@@ -33,6 +33,18 @@ export const toPostUI = (post: PostWithLinkAndAuthorAndComments) => {
     return removeNull(postUI) as PostUI;
 }
 
+export const removeDuplicatePost = (posts: PostUI[]) => {
+    const seen = new Set<string>();
+
+    return posts.filter(post => {
+        const key = post.url + '|' + post.title + '|' + post.rating;
+        if (seen.has(key)) return false;
+
+        seen.add(key);
+        return true;
+    })
+}
+
 export interface PostUI {
     id: number,
     date: Date,

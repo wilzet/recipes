@@ -15,6 +15,7 @@ interface PostDisplayComponentProps {
     posts: PostUI[] | undefined,
     update: () => any,
     callback: () => any,
+    hideButtons?: boolean,
 }
 
 export default function PostDisplay(props: PostDisplayComponentProps) {
@@ -112,7 +113,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
 
     return (
         <div id='posts-display'>
-            <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 20vw)', zIndex: 100 }}>
+            {!props.hideButtons && <div className='containerV' style={{ position: 'fixed', bottom: 'min(10vh, 25vw)', right: 'min(10vh, 20vw)', zIndex: 100 }}>
                 {props.selectedUser && <Button
                     value={'Make post'}
                     class={'buttonBlue'}
@@ -125,7 +126,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                     class={'buttonRed'}
                     onClick={props.callback}
                 />
-            </div>
+            </div>}
 
             {props.title && <h2 style={{ fontSize: '2rem', color: 'var(--foreground-default-color)' }}>{toLocaleDate(props.date ?? new Date(), 'long')}</h2>}
             {props.posts?.map((val, index) => {

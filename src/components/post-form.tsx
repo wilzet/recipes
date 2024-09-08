@@ -175,10 +175,12 @@ export default function PostForm(props: PostFormComponentProps) {
                     label={'URL'}
                     value={url}
                     placeholder={'https://...'}
-                    width={'calc(min(1000px, 60vw) - 100px)'}
+                    width={'calc(min(1000px, 62vw) - 100px)'}
                     onChange={(e) => setUrl(e)}
                 />
-                <SearchButton/>
+                <SearchButton
+                    useValue={true}
+                />
             </div>
             <TextField
                 id={'title'}
@@ -186,7 +188,7 @@ export default function PostForm(props: PostFormComponentProps) {
                 value={title ?? ''}
                 placeholder={'Optional'}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
-                width={'min(1000px, 60vw)'}
+                width={'min(1000px, 62vw)'}
                 onChange={(e) => setTitle(e)}
             />
             <DateField

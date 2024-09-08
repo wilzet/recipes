@@ -10,6 +10,7 @@ import TextField from '@/components/text-field';
 import DateField from '@/components/date-field';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
+import SearchButton from '@/components/search-button';
 
 interface PostFormComponentProps {
     user: UserUI | null,
@@ -168,14 +169,17 @@ export default function PostForm(props: PostFormComponentProps) {
             submit={props.edit ? updatePost : createPost}
             callback={close}
         >
-            <TextField
-                id={'url'}
-                label={'URL'}
-                value={url}
-                placeholder={'https://...'}
-                width={'min(1000px, 60vw)'}
-                onChange={(e) => setUrl(e)}
-            />
+            <div className='containerH'>
+                <TextField
+                    id={'url'}
+                    label={'URL'}
+                    value={url}
+                    placeholder={'https://...'}
+                    width={'calc(min(1000px, 60vw) - 100px)'}
+                    onChange={(e) => setUrl(e)}
+                />
+                <SearchButton/>
+            </div>
             <TextField
                 id={'title'}
                 label={'Title'}

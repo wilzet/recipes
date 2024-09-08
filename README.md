@@ -58,5 +58,6 @@ A simple local web app for recipes and meal planning.
   > Beta state
   > - More redesign [WIP]
   > - Other:
-  >     - Shopping lists [WIP]
-  >     - Recipe adding options [WIP]
+  >     - ~~Shopping lists~~
+  >     - ~~Recipe adding options~~
+  >     - Search recipes

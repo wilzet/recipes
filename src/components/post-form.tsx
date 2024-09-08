@@ -156,6 +156,11 @@ export default function PostForm(props: PostFormComponentProps) {
         }
     }
 
+    const setFieldsFromPost = (post: PostUI) => {
+        setUrl(post.url)
+        setTitle(post.title)
+    }
+
     const close = () => {
         reset();
         props.callback();
@@ -179,7 +184,10 @@ export default function PostForm(props: PostFormComponentProps) {
                     onChange={(e) => setUrl(e)}
                 />
                 <SearchButton
+                    user={props.user}
                     useValue={true}
+                    hideInteractions={true}
+                    callback={setFieldsFromPost}
                 />
             </div>
             <TextField

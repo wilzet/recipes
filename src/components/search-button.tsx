@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import apiRequest from '@/lib/api-request';
+import { UserUI } from '@/types/user';
 import { PostUI } from '@/types/post';
 import { RecipeSearchRequest, RecipeAllResponse } from '@/types/recipe-all';
+import apiRequest from '@/lib/api-request';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
 import TextField from '@/components/text-field';
 import PostDisplay from '@/components/post-display';
 
 interface SearchButtonProps {
+    user: UserUI | null,
     useValue?: boolean,
+    hideInteractions?: boolean,
+    callback: (post: PostUI) => any
 }
 
 export default function SearchButton(props: SearchButtonProps) {
@@ -19,7 +23,6 @@ export default function SearchButton(props: SearchButtonProps) {
     const searchRecipes = async () => {
         if (searchText === '') return;
 
-        console.log('OK');
         let body: RecipeSearchRequest = {
             searchWord: searchText
         }
@@ -48,8 +51,25 @@ export default function SearchButton(props: SearchButtonProps) {
         }
     }
 
+    const useSearch = (post: PostUI) => {
+        props.callback(post);
+        closeSearch();
+    }
+
     const closeSearch = () => {
+        setSearchText('');
         setSearchForm(false);
+    }
+
+    const postButton = (post: PostUI) => {
+        return (
+            <Button
+                value={'Use'}
+                active={true}
+                onClick={() => useSearch(post)}
+                style={{ margin: '5px', marginBottom: '25px', marginRight: '20px', float: 'right' }}
+            />
+        );
     }
 
     return (
@@ -92,7 +112,8 @@ export default function SearchButton(props: SearchButtonProps) {
                                     onClick={searchRecipes}
                                     style={{
                                         alignSelf: 'end',
-                                        marginBottom: '10px',
+                                        marginBottom: '8px',
+                                        padding: '25px',
                                         position: 'relative'
                                     }}
                                 >
@@ -100,12 +121,14 @@ export default function SearchButton(props: SearchButtonProps) {
                                 </Button>
                             </div>
                             <PostDisplay
-                                selectedUser={undefined}
+                                selectedUser={props.user?.name}
                                 title={false}
                                 posts={recipes}
                                 update={async () => { }}
                                 callback={() => { }}
                                 hideButtons={true}
+                                hideInteractions={props.hideInteractions}
+                                postButton={props.useValue ? postButton : undefined}
                             />
                             <div className='containerH' style={{ marginTop: '20px' }}>
                                 <Button
@@ -114,12 +137,6 @@ export default function SearchButton(props: SearchButtonProps) {
                                     active={true}
                                     onClick={closeSearch}
                                 />
-                                {props.useValue && <Button
-                                    value={'Use'}
-                                    class={'buttonGreen'}
-                                    active={true}
-                                    onClick={() => { }}
-                                />}
                             </div>
                         </div>
                     </div>

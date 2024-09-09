@@ -150,7 +150,7 @@ export default function CommentForm(props: CommentFormComponentProps) {
                 value={title ?? ''}
                 placeholder={'Optional'}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
-                width={'min(1000px, 60vw)'}
+                width={'min(1000px, 62vw)'}
                 onChange={(e) => setTitle(e)}
             />
             <TextArea
@@ -160,7 +160,7 @@ export default function CommentForm(props: CommentFormComponentProps) {
                 placeholder={'...'}
                 rows={5}
                 columns={80}
-                width={'min(1000px, 60vw)'}
+                width={'min(1000px, 62vw)'}
                 onChange={(e) => setContent(e)}
             />
             {props.edit && <div className='containerH left' style={{ marginRight: '10%' }}>

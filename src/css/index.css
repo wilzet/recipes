@@ -25,6 +25,7 @@ body {
   color: var(--foreground-color);
   background-color: var(--background-color);
   white-space: pre-wrap;
+  text-wrap: pretty;
   min-height: 100vh;
   min-width: 366px;
   width: auto !important;

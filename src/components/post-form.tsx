@@ -10,6 +10,7 @@ import TextField from '@/components/text-field';
 import DateField from '@/components/date-field';
 import Button from '@/components/button';
 import Modal from '@/components/modal';
+import SearchButton from '@/components/search-button';
 
 interface PostFormComponentProps {
     user: UserUI | null,
@@ -32,7 +33,7 @@ export default function PostForm(props: PostFormComponentProps) {
             setUrl(props.post.url);
             setDate(formatDate(props.post.date));
         }
-    }, [props.date, props.post])
+    }, [props.post])
 
     const reset = () => {
         setStatusMessage(null);
@@ -155,6 +156,11 @@ export default function PostForm(props: PostFormComponentProps) {
         }
     }
 
+    const setFieldsFromPost = (post: PostUI) => {
+        setUrl(post.url)
+        setTitle(post.title)
+    }
+
     const close = () => {
         reset();
         props.callback();
@@ -168,21 +174,29 @@ export default function PostForm(props: PostFormComponentProps) {
             submit={props.edit ? updatePost : createPost}
             callback={close}
         >
-            <TextField
-                id={'url'}
-                label={'URL'}
-                value={url}
-                placeholder={'https://...'}
-                width={'min(1000px, 60vw)'}
-                onChange={(e) => setUrl(e)}
-            />
+            <div className='containerH'>
+                <TextField
+                    id={'url'}
+                    label={'URL'}
+                    value={url}
+                    placeholder={'https://...'}
+                    width={'calc(min(1000px, 62vw) - 100px)'}
+                    onChange={(e) => setUrl(e)}
+                />
+                <SearchButton
+                    user={props.user}
+                    hideInteractions={true}
+                    callback={setFieldsFromPost}
+                    style={{ marginBottom: '10px' }}
+                />
+            </div>
             <TextField
                 id={'title'}
                 label={'Title'}
                 value={title ?? ''}
                 placeholder={'Optional'}
                 length={AppSettings.POSTTITLE_MAX_LENGTH}
-                width={'min(1000px, 60vw)'}
+                width={'min(1000px, 62vw)'}
                 onChange={(e) => setTitle(e)}
             />
             <DateField

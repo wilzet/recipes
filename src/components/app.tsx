@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { UserResponse, UserUI } from '@/types/user';
+import { PostUI } from '@/types/post';
 import { LeaderboardRequest, LeaderboardResponse } from '@/types/leaderboard';
 import apiRequest from '@/lib/api-request';
 import useWindowDimensions from '@/lib/window';
@@ -11,6 +12,7 @@ import Calendar from '@/components/calendar';
 import Profile from '@/components/profile';
 import UsersGrid from '@/components/users-grid';
 import HamburgerMenu from '@/components/hamburger-menu';
+import SearchButton from '@/components/search-button';
 
 const defaultMessage = 'Please select a user';
 
@@ -21,6 +23,7 @@ export default function App() {
     const [users, setUsers] = useState<UserUI[]>([]);
     const [userForm, setUserForm] = useState<boolean>(false);
     const [profile, setProfile] = useState<boolean>(false);
+    const [searchPost, setSearchPost] = useState<PostUI>();
     const { width } = useWindowDimensions();
 
     useEffect(() => {
@@ -105,8 +108,13 @@ export default function App() {
 
     const closeProfile = async () => {
         setProfile(false);
+        setSearchPost(undefined);
         await fetchLeaderboard();
         await updateUser();
+    }
+
+    const openPostFormFromSearch = (post: PostUI) => {
+        setSearchPost(post);
     }
 
     return (
@@ -114,8 +122,12 @@ export default function App() {
             <HamburgerMenu
                 centerText={message}
                 width={width}
-                triggerWidth={800}
+                triggerWidth={900}
             >
+                <SearchButton
+                    user={selectedUser}
+                    callback={openPostFormFromSearch}
+                />
                 {selectedUser ? <Button
                     value={'View profile'}
                     class={'buttonBlue'}
@@ -147,6 +159,7 @@ export default function App() {
             <Calendar
                 selectedUser={selectedUser ?? undefined}
                 update={closeProfile}
+                makePostTrigger={searchPost}
             >
                 <Leaderboard
                     selectedUserName={selectedUser?.name}

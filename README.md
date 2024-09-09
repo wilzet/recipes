@@ -63,4 +63,4 @@ A simple local web app for recipes and meal planning.
   >     - Search recipes
 * #### 240909
   > "Finished" state
-  > Only patches remain
+  > - Only patches remain

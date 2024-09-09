@@ -10,9 +10,9 @@ import PostDisplay from '@/components/post-display';
 
 interface SearchButtonProps {
     user: UserUI | null,
-    useValue?: boolean,
     hideInteractions?: boolean,
-    callback: (post: PostUI) => any
+    callback: (post: PostUI) => any,
+    style?: React.CSSProperties
 }
 
 export default function SearchButton(props: SearchButtonProps) {
@@ -80,7 +80,7 @@ export default function SearchButton(props: SearchButtonProps) {
                 class='buttonBlue'
                 onClick={() => setSearchForm(true)}
                 style={{
-                    marginBottom: '10px',
+                    ...props.style,
                     padding: '5px',
                     paddingLeft: '27px',
                     position: 'relative'
@@ -128,7 +128,7 @@ export default function SearchButton(props: SearchButtonProps) {
                                 callback={() => { }}
                                 hideButtons={true}
                                 hideInteractions={props.hideInteractions}
-                                postButton={props.useValue ? postButton : undefined}
+                                postButton={postButton}
                                 useSubtitleColor={true}
                             />
                             <div className='containerH' style={{ marginTop: '20px' }}>

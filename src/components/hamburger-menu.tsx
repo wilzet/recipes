@@ -12,9 +12,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
     const ref = useRef<any>();
 
     useEffect(() => {
-        if (props.width >= props.triggerWidth) {
-            setShowMenu(false);
-        }
+        setShowMenu(props.width >= props.triggerWidth);
 
         const handleClickOutside = (event: MouseEvent) => {
             if (ref.current && !ref.current.contains(event.target)) {
@@ -30,7 +28,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
 
     const renderChildren = () => {
         return (
-            <div className='hamburger-container' style={{ right: props.width < props.triggerWidth ? '70px' : '15px' }}>
+            <div className='hamburger-container containerH' style={{ right: props.width < props.triggerWidth ? '70px' : '15px', visibility: showMenu ? 'visible' : 'hidden' }}>
                 {props.children}
             </div>
         );
@@ -38,8 +36,8 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
 
     return (
         <>
-            {props.width < props.triggerWidth ? <>
-                {showMenu && renderChildren()}
+            {renderChildren()}
+            {props.width < props.triggerWidth && <>
                 <div ref={ref} style={{ position: 'absolute', right: '15px' }}>
                     <Button
                         value={''}
@@ -50,7 +48,7 @@ export default function HamburgerMenu(props: PropsWithChildren<HamburgerMenuComp
                         <div className='hamburger-icon'/>
                     </Button>
                 </div>
-            </> : renderChildren()}
+            </>}
         </>
     );
 }

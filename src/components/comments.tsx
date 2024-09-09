@@ -132,7 +132,7 @@ export default function Comments(props: CommentsComponentProps) {
             <h3 style={{ fontSize: '1.5rem', marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
                 {props.post.url.includes('://') ? <a href={props.post.url} target='_blank' style={{ wordBreak: 'break-word' }}>
                     {props.post.url}
-                </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)' }}>
+                </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)', wordBreak: 'break-word' }}>
                     {props.post.url}
                 </p>}
             </h3>

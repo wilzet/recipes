@@ -11,6 +11,8 @@ import Calendar from '@/components/calendar';
 import Profile from '@/components/profile';
 import UsersGrid from '@/components/users-grid';
 import HamburgerMenu from '@/components/hamburger-menu';
+import SearchButton from '@/components/search-button';
+import { PostUI } from '@/types/post';
 
 const defaultMessage = 'Please select a user';
 
@@ -114,8 +116,14 @@ export default function App() {
             <HamburgerMenu
                 centerText={message}
                 width={width}
-                triggerWidth={800}
+                triggerWidth={875}
             >
+                <SearchButton
+                    user={selectedUser}
+                    callback={function (post: PostUI) {
+                        throw new Error('Function not implemented.');
+                    }}
+                />
                 {selectedUser ? <Button
                     value={'View profile'}
                     class={'buttonBlue'}

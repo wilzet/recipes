@@ -185,9 +185,9 @@ export default function PostForm(props: PostFormComponentProps) {
                 />
                 <SearchButton
                     user={props.user}
-                    useValue={true}
                     hideInteractions={true}
                     callback={setFieldsFromPost}
+                    style={{ marginBottom: '10px' }}
                 />
             </div>
             <TextField

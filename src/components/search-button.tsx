@@ -51,7 +51,7 @@ export default function SearchButton(props: SearchButtonProps) {
         }
     }
 
-    const useSearch = (post: PostUI) => {
+    const searchedPostUse = (post: PostUI) => {
         closeSearch();
         props.callback(post);
     }
@@ -66,7 +66,7 @@ export default function SearchButton(props: SearchButtonProps) {
             <Button
                 value={'Use'}
                 active={true}
-                onClick={() => useSearch(post)}
+                onClick={() => searchedPostUse(post)}
                 style={{ margin: '5px', marginBottom: '25px', marginRight: '20px', float: 'right' }}
             />
         );

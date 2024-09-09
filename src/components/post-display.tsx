@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { PostUI } from '@/types/post';
 import { UserUI } from '@/types/user';
 import { toLocaleDate } from '@/lib/calendar';
@@ -19,6 +19,7 @@ interface PostDisplayComponentProps {
     hideInteractions?: boolean,
     postButton?: (post: PostUI) => React.JSX.Element,
     useSubtitleColor?: boolean,
+    makePostTrigger?: PostUI | undefined
 }
 
 export default function PostDisplay(props: PostDisplayComponentProps) {
@@ -27,6 +28,11 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
     const [comments, setComments] = useState<boolean>(false);
     const [rating, setRating] = useState<boolean>(false);
     const [postIndex, setPostIndex] = useState<number>(0);
+
+    const triggerMakePost = useMemo(() => {
+        if (props.makePostTrigger) setPostForm(true);
+        return props.makePostTrigger;
+    }, [props.makePostTrigger]);
 
     const renderPostDisplay = (key: number, post: PostUI) => {
         return (
@@ -145,6 +151,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
             {!props.hideButtons && <Modal active={postForm} parent='posts-display'>
                 <PostForm
                     user={{ name: props.selectedUser, score: 0} as UserUI}
+                    post={triggerMakePost}
                     date={props.date ?? new Date()}
                     callback={closeForm}
                 />

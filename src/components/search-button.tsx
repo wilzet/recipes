@@ -52,8 +52,8 @@ export default function SearchButton(props: SearchButtonProps) {
     }
 
     const useSearch = (post: PostUI) => {
-        props.callback(post);
         closeSearch();
+        props.callback(post);
     }
 
     const closeSearch = () => {
@@ -128,7 +128,7 @@ export default function SearchButton(props: SearchButtonProps) {
                                 callback={() => { }}
                                 hideButtons={true}
                                 hideInteractions={props.hideInteractions}
-                                postButton={postButton}
+                                postButton={props.user ? postButton : undefined}
                                 useSubtitleColor={true}
                             />
                             <div className='containerH' style={{ marginTop: '20px' }}>

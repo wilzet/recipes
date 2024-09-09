@@ -33,7 +33,7 @@ export default function PostForm(props: PostFormComponentProps) {
             setUrl(props.post.url);
             setDate(formatDate(props.post.date));
         }
-    }, [props.date, props.post])
+    }, [props.post])
 
     const reset = () => {
         setStatusMessage(null);

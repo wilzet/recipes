@@ -13,11 +13,12 @@ import PostDisplay from '@/components/post-display';
 interface CalendarComponentProps {
     selectedUser?: UserUI,
     update?: () => any,
+    makePostTrigger?: PostUI | undefined
 }
 
 export default function Calendar(props: PropsWithChildren<CalendarComponentProps>) {
     const [month, setMonth] = useState<Date>(getCurrentMonth());
-    const [dayNumber, setDayNumber] = useState<number>();
+    const [dayNumber, setDayNumber] = useState<number>(new Date().getDate());
     const [recipes, setRecipes] = useState<PostUI[]>();
     const [showRecipes, setShowRecipes] = useState<boolean>(false);
     
@@ -37,6 +38,11 @@ export default function Calendar(props: PropsWithChildren<CalendarComponentProps
     const firstDayOffset = useMemo(() => {
         return (month.getDay() + 6) % 7 + 1;
     }, [month]);
+
+    const triggerMakePost = useMemo(() => {
+        if (props.makePostTrigger) setShowRecipes(true);
+        return props.makePostTrigger;
+    }, [props.makePostTrigger]);
 
     useEffect(() => {
         const asyncCall = async () => {
@@ -167,6 +173,7 @@ export default function Calendar(props: PropsWithChildren<CalendarComponentProps
                     posts={dayRecipes}
                     update={getRecipes}
                     callback={closePostDisplay}
+                    makePostTrigger={triggerMakePost}
                 />
             </Modal>
         </div>

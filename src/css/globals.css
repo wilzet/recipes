@@ -8,6 +8,7 @@
     --default-background-color: #131016;
 
     --color-mainblue: #0088ff;
+    --color-subtitle: var(--color-lightgray);
 
     --glass-blur: 4px;
 
@@ -33,6 +34,7 @@
     :root {
         --foreground-color: #131016;
         --background-color: #b3b4cc;
+        --color-subtitle: var(--color-blue);
     }
 }
 

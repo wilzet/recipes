@@ -92,11 +92,11 @@ export default function SearchButton(props: SearchButtonProps) {
             <Modal active={searchForm} parent='search'>
                 <div className='overlay-form'>
                     <div className='overlay-form-inner'>
-                        <div className='form-container' style={{ width: 'fit-content' }}>
+                        <div className='form-container' style={{ width: 'min(62vw, 1200px)'  }}>
                             <h2 style={{ fontSize: '30px', color: 'inherit' }}>
                                 Search Recipes
                             </h2>
-                            <div className='containerH'>
+                            <div className='containerH' style={{ marginBottom: '20px' }}>
                                 <TextField
                                     id={'search-text'}
                                     label={''}
@@ -129,6 +129,7 @@ export default function SearchButton(props: SearchButtonProps) {
                                 hideButtons={true}
                                 hideInteractions={props.hideInteractions}
                                 postButton={props.useValue ? postButton : undefined}
+                                useSubtitleColor={true}
                             />
                             <div className='containerH' style={{ marginTop: '20px' }}>
                                 <Button

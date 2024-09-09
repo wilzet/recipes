@@ -18,6 +18,7 @@ interface PostDisplayComponentProps {
     hideButtons?: boolean,
     hideInteractions?: boolean,
     postButton?: (post: PostUI) => React.JSX.Element,
+    useSubtitleColor?: boolean,
 }
 
 export default function PostDisplay(props: PostDisplayComponentProps) {
@@ -38,7 +39,7 @@ export default function PostDisplay(props: PostDisplayComponentProps) {
                         <h3 style={{ marginTop: '2px', paddingTop: '2px', marginBottom: '2px', paddingBottom: '2px' }}>
                             {post.url.includes('://') ? <a href={post.url} target='_blank'>
                                 {post.url}
-                            </a> : <p style={{ margin: '0px', padding: '0px', color: 'var(--color-lightgray)' }}>
+                            </a> : <p style={{ margin: '0px', padding: '0px', color: props.useSubtitleColor ? 'var(--color-subtitle)' : 'var(--color-lightgray)' }}>
                                 {post.url}
                             </p>}
                         </h3>
